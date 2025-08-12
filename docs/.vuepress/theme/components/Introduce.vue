@@ -1,6 +1,7 @@
 <template>
   <div style="height: 100px; background-color: transparent;"></div>
   <div class="container">
+    <canvas ref="canvasRef"></canvas>
     <div class="about-me">
       <div class="card-content grid-row-3-2">
         <AboutMeName />
@@ -102,6 +103,27 @@ interface Comet {
   progress: number
   speed: number
 }
+
+// 在原有脚本中添加鼠标移动事件处理
+const handleMouseMove = (e: MouseEvent) => {
+  mouseX.value = e.clientX
+  mouseY.value = e.clientY
+}
+
+onMounted(() => {
+  initCanvas()
+  animate()
+  setInterval(createComet, 600)
+  // 添加鼠标事件监听
+  window.addEventListener('mousemove', handleMouseMove)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', resizeCanvas)
+  // 添加移除鼠标事件监听
+  window.removeEventListener('mousemove', handleMouseMove)
+  cancelAnimationFrame(animationFrameId)
+})
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const ctx = ref<CanvasRenderingContext2D | null>(null)
