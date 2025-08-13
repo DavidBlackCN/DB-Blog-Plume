@@ -58,6 +58,8 @@ export default defineUserConfig({
   ],
 
   theme: plumeTheme({
+    copyright: 'CC-BY-NC-SA-4.0',
+
     /* 添加您的部署域名, 有助于 SEO, 生成 sitemap */
     hostname: 'https://www.davidblackcn.cc',
 
@@ -105,19 +107,19 @@ export default defineUserConfig({
      },
 
     /* 本地搜索, 默认启用 */
-    search: { provider: 'local' },
+    /* search: false,
 
     /**
      * Algolia DocSearch
      * 启用此搜索需要将 本地搜索 search 设置为 false
      * @see https://theme-plume.vuejs.press/config/plugins/search/#algolia-docsearch
      */
-    // search: {
-    //   provider: 'algolia',
-    //   appId: '',
-    //   apiKey: '',
-    //   indexName: '',
-    // },
+    search: {
+      provider: 'algolia',
+      appId: 'X95S574UKR',
+      apiKey: '00db4eaa76ef9aa137303d494e1202ef',
+      indexName: 'vuepress-blog-plume',
+    },
 
     /**
      * Shiki 代码高亮
@@ -184,17 +186,18 @@ export default defineUserConfig({
      * 评论 comments
      * @see https://theme-plume.vuejs.press/guide/features/comments/
      */
-    // comment: {
-    //   provider: '', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
-    //   comment: true,
-    //   repo: '',
-    //   repoId: '',
-    //   category: '',
-    //   categoryId: '',
-    //   mapping: 'pathname',
-    //   reactionsEnabled: true,
-    //   inputPosition: 'top',
-    // },
+    comment: {
+      provider: 'Twikoo', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
+      comment: true,
+      envId: 'https://dbdev-twikoo.netlify.app/.netlify/functions/twikoo'
+      //repo: '',
+      //repoId: '',
+      //category: '',
+      //categoryId: '',
+      //mapping: 'pathname',
+      //reactionsEnabled: true,
+      //inputPosition: 'top',
+    },
 
     /**
      * 资源链接替换

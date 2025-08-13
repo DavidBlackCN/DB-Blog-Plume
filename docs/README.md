@@ -7,7 +7,7 @@ config:
     type: 'Hitokoto'
   -
     type: image-text
-    description: 欢迎来到<a href='https://physnya.top/'>『黑姐姐の驿站w』</a>！这里是 <a href='https://physnya.top/'>@𝓓𝓪𝓿𝓲𝓭_𝓑𝓵𝓪𝓬𝓴_</a> 的个人 Blog，同时存放了一些笔记.
+    description: 欢迎来到<a href='https://www.davidblackcn.cc/'>『黑姐姐の驿站w』</a>！这里是 <a href='https://www.davidblackcn.cc/'>@𝓓𝓪𝓿𝓲𝓭_𝓑𝓵𝓪𝓬𝓴_</a> 的个人 Blog，同时存放了一些笔记.
     image: ./avatar/davidblack-round.png
     list:
       -
@@ -27,7 +27,7 @@ config:
         description: 本站点已经配置了 Twikoo 评论系统，欢迎发表观点w~ 评论的回复会用邮件进行通知，请及时查收.
       - 
         title: 『 镜像·𝓜𝓲𝓻𝓻𝓸𝓻 』
-        description: 若国内访问速度较慢，可访问部署在 EdgeOne Pages 上的镜像站点：<a href='https://blog.physnya.top' target='_blank'>『镜像』</a>. 
+        description: 若国内访问速度较慢，可访问部署在 EdgeOne Pages 上的镜像站点：<a href='https://mirror.davidblackcn.cc' target='_blank'>『镜像』</a>. 
       - 
         title: 『 简介·𝓘𝓷𝓽𝓻𝓸𝓭𝓾𝓬𝓮 』
         description: 下方Dock栏为为本人联系方式和常用网站，再往下则为个人介绍w~
