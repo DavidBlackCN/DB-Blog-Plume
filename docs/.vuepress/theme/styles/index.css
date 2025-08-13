@@ -1,7 +1,7 @@
 /* 定义字体 */
 @font-face {
-  font-family: 'MapleMono-Bold';
-  src: url('/fonts/MapleMono-Bold.ttf') format('truetype');
+  font-family: 'MapleMono-SemiBold';
+  src: url('/fonts/MapleMono-SemiBold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -19,13 +19,12 @@
 
 /* 应用字体 */
 body {
-  font-family: 'MapleMono-Bold';
+  font-family: 'MapleMono-SemiBold';
 }
 
 /* 导航 */
 .vp-navbar {
   .navbar-menu-link {
-    font-family: "MapleMono-Bold";
     font-size: 18px;
   }
 }
