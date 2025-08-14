@@ -35,12 +35,3 @@ body {
     font-weight: bolder;
     font-size: 1.4rem;
 }
-
-.vp-blog-container {
-  background-size: 26px 26px;
-  background-position: center center;
-  background-image: 
-    linear-gradient(to right, var(--vp-c-divider) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--vp-c-divider) 1px, transparent 1px);
-} 
-

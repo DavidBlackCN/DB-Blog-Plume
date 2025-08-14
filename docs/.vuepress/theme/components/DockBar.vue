@@ -94,7 +94,7 @@ export default {
 /* 使用VuePress主题变量 */
 .dock-container {
   position: relative;
-  bottom: 990px;
+  bottom: 1000px;
   left: 0;
   right: 0;
   display: flex;
@@ -191,6 +191,12 @@ export default {
     width: 55px;
     height: 55px;
     margin: 0 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dock-container {
+    display: none; /* 在手机端隐藏整个dock栏 */
   }
 }
 

@@ -71,8 +71,8 @@
 /* --- 微调 --- */
 
 :root {
-    --vp-font-family-base: "LXGW Bright", sans-serif;
-    --vp-font-family-mono: "Cascadia code";
+    --vp-font-family-base: "MapleMono-SemiBold";
+    --vp-font-family-mono: "MapleMono-SemiBold";
     font-optical-sizing: auto;
     --vp-custom-block-font-size: 17px;
 }
@@ -92,7 +92,7 @@
 
 :root:where(:lang(zh)),
 :root:where(:lang(zh-CN)) {
-    --vp-font-family-base: "LXGW Bright", sans-serif;
+    --vp-font-family-base: "MapleMono-SemiBold";
 }
 
 html {
@@ -132,11 +132,11 @@ blockquote::before {
 .blog-post-item-content .post-meta a,
 .vp-category-group .folder,
 .vp-doc-meta .tag {
-    font-family: "Ysabeau";
+    font-family: "MapleMono-SemiBold";
 }
 
 .vp-footer {
-    font-family: "Ysabeau";
+    font-family: "MapleMono-SemiBold";
 }
 
 .root {
@@ -201,7 +201,7 @@ html.dark {
 }
 
 .profile-info {
-    font-family: "Ysabeau";
+    font-family: "MapleMono-SemiBold";
 }
 
 .vp-repo-card {

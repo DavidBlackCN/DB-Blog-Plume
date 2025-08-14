@@ -41,21 +41,22 @@ export default defineThemeConfig({
 
   /* 站点页脚 */
   footer: {
-    message: '🥼Power by <a target="_blank" href="https://v2.vuepress.vuejs.org/">VuePress</a> & <a target="_blank" href="https://theme-plume.vuejs.press">vuepress-theme-plume</a> <br> Copyright © 2025 - present by David_Black_',
+    message: 'Copyright © 2025 - present by David_Black_ <br> 🥼Power by <a target="_blank" href="https://v2.vuepress.vuejs.org/">VuePress</a> & <a target="_blank" href="https://theme-plume.vuejs.press">vuepress-theme-plume</a>',
     copyright: "<a href='https://beian.miit.gov.cn/'>粤ICP备2025435487号-2</a>",
   },
 
   /**
    * @see https://theme-plume.vuejs.press/config/basic/#profile
    */
-  profile: {
-    avatar: 'https://theme-plume.vuejs.press/plume.png',
-    name: '黑姐姐の驿站',
-    description: '',
-    // circle: true,
-    // location: '',
-    // organization: '',
-  },
+    profile: {
+      name: 'David_Black_',
+      description: '有些事你不要太当真。——《售梦者》',
+      avatar: './avatar/davidblack-round.png',
+      location: 'HuiZhou & ShenZhen',
+      organization: 'MDS Union',
+      circle: false,
+      layout: 'right'
+    },
 
   navbar,
   notes,
@@ -72,10 +73,10 @@ export default defineThemeConfig({
   // },
 
   /* 过渡动画 @see https://theme-plume.vuejs.press/config/basic/#transition */
-  // transition: {
-  //   page: true,        // 启用 页面间跳转过渡动画
-  //   postList: true,    // 启用 博客文章列表过渡动画
-  //   appearance: 'fade',  // 启用 深色模式切换过渡动画, 或配置过渡动画类型
-  // },
+  transition: {
+    page: true,        // 启用 页面间跳转过渡动画
+    postList: true,    // 启用 博客文章列表过渡动画
+    appearance: 'fade',  // 启用 深色模式切换过渡动画, 或配置过渡动画类型
+  },
 
 })

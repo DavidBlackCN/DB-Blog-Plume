@@ -167,7 +167,7 @@ export default {
 </script>
 
 <style scoped>
-/* 原有样式保持不变 */
+/* 原有样式 */
 .nav-page {
   max-width: 1880px;
   margin: 0 auto;
@@ -192,19 +192,6 @@ export default {
   top: -10px;
   margin-bottom: 1.5rem;
 }
-
-/* Title弃用
-.title {
-  font-size: 2.4rem;
-  margin-bottom: 0.5rem;
-  color: var(--vp-c-text-1);
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--vp-c-brand) 0%, var(--vp-c-brand-light) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: all 0.3s ease;
-} */
 
 .subtitle {
   font-size: 1.1rem;
@@ -294,15 +281,15 @@ export default {
   display: flex;
   flex-direction: column;
   background: var(--vp-c-bg-soft);
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 5px 15px var(--vp-c-shadow);
-  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px var(--vp-c-shadow);
+  transition: all 0.2s ease;
   text-decoration: none;
   color: inherit;
   border: 1.5px solid var(--vp-c-divider);
-  height: 140px;
-  padding: 1.5rem;
+  padding: 0.5rem 0.7rem 0.7rem; /* 顶部内边距减少 */
+  min-height: 120px;
 }
 
 .site-card:hover {
@@ -314,25 +301,27 @@ export default {
 .site-header {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  position: relative;
-  top: -35px
+  margin-bottom: 0.3rem;
+  margin-top: 0;
 }
 
 .logo-container {
   background: rgba(0,0,0,0.15);
   border-radius: 10px;
-  padding: 5px;
+  padding: 6px;
   margin-right: 12px;
-  margin-left: -10px;
+  margin-bottom: 2rem;
   border: 1px solid var(--vp-c-divider);
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center; /* 确保图标在容器中居中 */
+  justify-content: center; /* 确保图标在容器中居中 */
 }
 
 .site-logo {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,43 +349,41 @@ export default {
 }
 
 .site-name {
-  font-size: 1.1rem;
+  font-size: 1.0rem;
   font-weight: 600;
   color: var(--vp-c-text-1);
-  transition: color 0.3s ease;
-  line-height: 1.4;
-  flex: 1;
+  transition: color 0.2s ease;
+  line-height: 1.2;
   position: relative;
-  top: -8px
+  top: -1.4rem; /* 偏移量 */
 }
 
 .site-desc {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--vp-c-text-2);
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  margin-left: -10px;
-  min-height: 60px;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  flex-grow: 1;
   transition: color 0.3s ease;
-  position: relative;
-  top: -80px
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-top: -1.6rem; /* 偏移量 */
 }
 
 .site-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: auto;
-  margin-left: -10px;
-  position: relative;
-  top: -125px
+  gap: 0.3rem;
+  margin-top: auto; /* 确保标签在底部 */
 }
 
 .site-tag {
   background: var(--vp-c-bg-soft-up);
   color: var(--vp-c-text-2);
-  font-size: 0.55rem;
-  padding: 0.01rem 0.2rem;
+  font-size: 0.52rem;
+  padding: 0.05rem 0.15rem;
   border-radius: 6px;
   transition: all 0.3s ease;
   border: 1.5px solid var(--vp-c-divider);
@@ -447,10 +434,6 @@ export default {
     padding: 0.5rem 0;
   }
   
-  .title {
-    font-size: 2.2rem;
-  }
-  
   .search-box {
     padding: 0.7rem 1.3rem;
   }
@@ -460,25 +443,74 @@ export default {
   }
 }
 
+/* 响应式调整 - 修复移动端布局 */
 @media (max-width: 768px) {
-  .title {
-    font-size: 2rem;
+  /* 调整搜索框 */
+  .search-container {
+    max-width: 100%;
+    padding: 0 1rem;
   }
   
-  .site-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  .search-box {
+    top: -10px;
+    padding: 0.7rem 1.2rem;
   }
   
-  .site-card {
-    padding: 1.3rem;
+  /* 调整分类标题 */
+  .category-title {
+    margin: 1rem 0;
+    font-size: 1.3rem;
+  }
+  
+  /* 修复资源卡片布局 */
+  .site-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .logo-container {
+    padding: 4px;
+    margin-right: 8px;
+  }
+
+  .site-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  .site-name {
+    font-size: 1.05rem;
+    top: -1.4rem; /* 偏移量 */
   }
   
   .site-desc {
+    font-size: 0.78rem;
     min-height: auto;
+    margin-bottom: 0.5rem;
+    -webkit-line-clamp: 2;
+    margin-top: -1.6rem; /* 偏移量 */
   }
   
-  .category-title {
-    font-size: 1.3rem;
+  .site-tags {
+    gap: 0.3rem;
+    margin-top: auto;
+  }
+  
+  /* 调整资源卡片高度 */
+  .site-card {
+    padding: 0.5rem;
+    min-height: 130px;
+    padding: 1.2rem;
+  }
+  
+  /* 调整页脚 */
+  .footer p {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+  
+  /* 调整侧边栏位置 */
+  .category-sidebar {
+    top: 40%;
   }
 }
 
@@ -487,33 +519,71 @@ export default {
     padding: 1.5rem 1rem;
   }
   
-  .title {
-    font-size: 1.8rem;
+  /* 进一步缩小标题 */
+  .category-title {
+    font-size: 1.2rem;
+    margin: 0.8rem 0;
   }
   
+  /* 调整副标题 */
+  .subtitle {
+    font-size: 0.95rem;
+    padding: 0 1rem;
+  }
+  
+  /* 资源网格单列显示 */
   .site-grid {
     grid-template-columns: 1fr;
   }
   
-  .header-content {
-    margin-bottom: 1.2rem;
+  /* 调整卡片内部间距 */
+  .site-header {
+    margin-bottom: 0.5rem;
   }
   
-  .logo-container {
-    padding: 6px;
+  .site-desc {
+    margin-bottom: 0.5rem;
   }
   
-  .site-logo {
-    width: 36px;
-    height: 36px;
+  .site-tags {
+    margin-top: 0.5rem;
   }
   
-  .site-name {
-    font-size: 1.1rem;
+  /* 调整无结果提示 */
+  .no-results {
+    padding: 2rem 1rem;
   }
   
-  .category-title {
-    font-size: 1.2rem;
+  .no-results h3 {
+    font-size: 1.3rem;
+  }
+  
+  /* 调整侧边栏 */
+  .category-sidebar {
+    top: 35%;
+    right: -150px;
+  }
+  
+  .sidebar-content {
+    width: 150px;
+    padding: 1rem;
+  }
+  
+  .sidebar-trigger {
+    left: -30px;
+    width: 30px;
+    height: 60px;
+  }
+  
+  .trigger-icon {
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* 页脚文本换行 */
+  .footer p {
+    white-space: normal;
+    line-height: 1.4;
   }
 }
 
