@@ -355,7 +355,7 @@ export default {
   transition: color 0.2s ease;
   line-height: 1.2;
   position: relative;
-  top: -1.4rem; /* 偏移量 */
+  top: -1.35rem; /* 偏移量 */
 }
 
 .site-desc {
@@ -369,7 +369,7 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  margin-top: -1.6rem; /* 偏移量 */
+  margin-top: -1.7rem; /* 偏移量 */
 }
 
 .site-tags {
@@ -479,7 +479,7 @@ export default {
 
   .site-name {
     font-size: 1.05rem;
-    top: -1.4rem; /* 偏移量 */
+    top: -1.35rem; /* 偏移量 */
   }
   
   .site-desc {
@@ -487,7 +487,7 @@ export default {
     min-height: auto;
     margin-bottom: 0.5rem;
     -webkit-line-clamp: 2;
-    margin-top: -1.6rem; /* 偏移量 */
+    margin-top: -1.7rem; /* 偏移量 */
   }
   
   .site-tags {
