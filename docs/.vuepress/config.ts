@@ -69,9 +69,9 @@ export default defineUserConfig({
     // docsBranch: '',
 
     /* 页内信息 */
-    editLink: true,
+    editLink: false,
     lastUpdated: false,
-    contributors: true,
+    contributors: false,
     changelog: true,
 
     /**

@@ -7,6 +7,7 @@ import EmptyDiv from './theme/components/EmptyDiv.vue'
 import Hitokoto from './theme/components/Hitokoto.vue'
 import ColourPicker from './theme/components/ColourPicker.vue'
 import NavPage from './theme/components/NavPage.vue'
+import NavPageMinecraft from './theme/components/NavPage-Minecraft.vue'
 import AsideOutlineAfter from './theme/components/AsideOutlineAfter.vue'
 import './theme/styles/custom.css'
 import './theme/styles/index.css'
@@ -32,6 +33,7 @@ export default defineClientConfig({
     app.component('ColourPicker', ColourPicker)
     app.component('NavPage', NavPage)
     app.component('AsideOutlineAfter', AsideOutlineAfter)
+    app.component('NavPageMinecraft', NavPageMinecraft)
     // built-in components
     // app.component('RepoCard', RepoCard)
     // app.component('NpmBadge', NpmBadge)

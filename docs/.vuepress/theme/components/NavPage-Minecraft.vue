@@ -5,7 +5,7 @@
     <!-- 原有页面内容 -->
     <div class="header">
       <div class="header-content">
-        <p class="subtitle">本页面为NavPage.vue组件的预览页面！</p>
+        <p class="subtitle">Minecraft Nav | MC导航页</p>
       </div>
       
       <div class="search-container">
@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { categories, sites } from '../data/NavData.ts';
+import { categories, sites } from '../data/NavData-Minecraft.ts';
 
 export default {
   name: 'NavPage',
