@@ -2,6 +2,10 @@
 title: 【Linux】云服务器自动化部署VuePress博客（Jenkins）
 createTime: 2025/08/16 09:35:37
 permalink: /article/w5w03ppj/
+tags:
+  - linux
+  - vuepress
+  - jenkins
 ---
 
 ## 写在话前
