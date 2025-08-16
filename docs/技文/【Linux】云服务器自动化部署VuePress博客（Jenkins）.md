@@ -2,15 +2,12 @@
 title: 【Linux】云服务器自动化部署VuePress博客（Jenkins）
 createTime: 2025/08/16 09:35:37
 permalink: /article/w5w03ppj/
+excerpt: 如果Vuepress是部署在自己的云服务器上，就可以采用==Jenkins==来自动化部署，每次只要push了新的内容就会自动拉取并进行构建。
 tags:
   - linux
   - vuepress
   - jenkins
 ---
-
-- 如果Vuepress是部署在自己的云服务器上，就可以采用==Jenkins==来自动化部署，每次只要push了新的内容就会自动拉取并进行构建。
-
-<!-- more -->
 
 ## 写在话前
 
