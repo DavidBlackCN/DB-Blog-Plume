@@ -8,6 +8,10 @@ tags:
   - jenkins
 ---
 
+- 如果Vuepress是部署在自己的云服务器上，就可以采用==Jenkins==来自动化部署，每次只要push了新的内容就会自动拉取并进行构建。
+
+<!-- more -->
+
 ## 写在话前
 
 - 由于Vuepress是每次生成静态文件，没有数据库和后台，因此每次更新了文章源码就需要`npm run build`构建一次。  
@@ -227,7 +231,7 @@ cp -R docs/.vuepress/dist/* "$TARGET_DIR"/
 ```
 
 ::: warning 关于jenkins权限问题
-由于jenkins用户并没有权限直接指向sudo命令，此处我们需要更改配置文件，允许jenkins用户无需密码执行部署命令到对应文件夹
+由于jenkins用户并没有权限直接执行sudo命令，此处我们需要更改配置文件，允许jenkins用户无需密码执行部署命令到对应文件夹
 :::
 
 ``` bash

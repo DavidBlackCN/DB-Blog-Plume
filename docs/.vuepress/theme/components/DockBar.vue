@@ -55,13 +55,13 @@ export default {
         {
           id: 4,
           name: "Discord",
-          icon: "meteor-icons:discord",
+          icon: "ic:baseline-discord",
           link: "https://discord.com/",
         },
         {
           id: 5,
           name: "Kook",
-          icon: "ic:baseline-discord",
+          icon: "meteor-icons:discord",
           link: "https://discord.com/",
         },        
         {

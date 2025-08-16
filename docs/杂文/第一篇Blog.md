@@ -2,9 +2,18 @@
 title: 第一篇Blog
 createTime: 2025/08/13 23:08:56
 permalink: /article/8da3soyk/
+cover: /assets/202508/13-1.png
+coverStyle:
+  width: 200
+sticky: true
 tags: 
     - 杂七杂八
 ---
+
+- 似乎是驿站的第一篇Blog欸
+- 来自远方的旅人，你好呀~ 
+
+<!-- more -->
 
 > 似乎是驿站的第一篇Blog欸
 
