@@ -77,7 +77,7 @@
     --vp-custom-block-font-size: 17px;
 }
 
-/* --- 回复原有样式 
+/* --- 恢复原有样式 
 .vp-doc :not(pre) > code {
     color: var(--vp-c-text-1);
 } --- */
@@ -91,13 +91,8 @@
     font-variant-ligatures: normal;
 }
 
-:root:where(:lang(zh)),
-:root:where(:lang(zh-CN)) {
-    --vp-font-family-base: "MapleMono-SemiBold";
-}
-
 html {
-    font-size: 19px;
+    font-size: 18px;
     font-weight: 450;
     text-rendering: optimizeLegibility;
     font-feature-settings: "liga" 1, "dlig" 1;
@@ -118,7 +113,7 @@ blockquote::before {
 } --- */
 
 .vp-doc h2 {
-    margin: 0 0 16px;
+    margin: 0 0 18px;
 }
 
 .vp-doc table {
@@ -127,18 +122,6 @@ blockquote::before {
 
 .vp-doc img {
     text-align: center;
-}
-
-.tag-name,
-.blog-post-item-content .post-meta .tag-list,
-.blog-post-item-content .post-meta a,
-.vp-category-group .folder,
-.vp-doc-meta .tag {
-    font-family: "MapleMono-SemiBold";
-}
-
-.vp-footer {
-    font-family: "MapleMono-SemiBold";
 }
 
 .root {
@@ -203,7 +186,7 @@ html.dark {
 }
 
 .profile-info {
-    font-family: "MapleMono-SemiBold";
+    font-family: "MapleMono-CN-SemiBold";
 }
 
 .vp-repo-card {

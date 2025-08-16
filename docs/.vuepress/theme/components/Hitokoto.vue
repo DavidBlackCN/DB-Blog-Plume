@@ -1,7 +1,7 @@
 <template>
   <div class="text">
     <p class="hitokoto">{{ hitokoto }}</p>
-    <div style="height: 40px; background-color: transparent;"></div>
+    <div style="height: 10px; background-color: transparent;"></div>
   </div>
 </template>
 

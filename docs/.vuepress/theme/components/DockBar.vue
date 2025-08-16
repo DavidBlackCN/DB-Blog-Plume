@@ -94,7 +94,7 @@ export default {
 /* 使用VuePress主题变量 */
 .dock-container {
   position: relative;
-  bottom: 1000px;
+  bottom: 1080px;
   left: 0;
   right: 0;
   display: flex;

@@ -1,7 +1,7 @@
 /* 定义字体 */
 @font-face {
-  font-family: 'MapleMono-SemiBold';
-  src: url('/fonts/MapleMono-SemiBold.ttf') format('truetype');
+  font-family: 'MapleMono-CN-SemiBold';
+  src: url('/fonts/MapleMono-CN-SemiBold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -13,13 +13,13 @@
 }
 
 @font-face {
-    font-family: 'MapleMono-LightItalic'; /* 一言 字体 */
-    src: url('/fonts/MapleMono-LightItalic.ttf') format('truetype'); /* TTF字体文件的路径 */
+    font-family: 'MapleMono-CN-LightItalic'; /* 一言 字体 */
+    src: url('/fonts/MapleMono-CN-LightItalic.ttf') format('truetype'); /* TTF字体文件的路径 */
 }
 
 /* 应用字体 */
 body {
-  font-family: 'MapleMono-SemiBold';
+  font-family: 'MapleMono-CN-SemiBold';
 }
 
 /* 导航 */
