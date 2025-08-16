@@ -71,8 +71,8 @@
 /* --- 微调 --- */
 
 :root {
-    --vp-font-family-base: "MapleMono-SemiBold";
-    --vp-font-family-mono: "MapleMono-SemiBold";
+    --vp-font-family-base: "MapleMono-CN-SemiBold";
+    --vp-font-family-mono: "MapleMono-CN-SemiBold";
     font-optical-sizing: auto;
     --vp-custom-block-font-size: 17px;
 }
