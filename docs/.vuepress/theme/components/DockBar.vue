@@ -1,5 +1,5 @@
 <!-- DeepSeek生成后人工精修 -->
-<!-- 凑合着用（（（ -->
+<!-- 已修复浅色模式显示问题 -->
 <template>
   <div class="dock-container">
     <div class="dock">
@@ -144,11 +144,19 @@ export default {
   transition: all 0.3s ease;
   position: relative;
   z-index: 2;
-  box-shadow: 0 5px 15px var(--icon-shadow, rgba(0, 0, 0, 0.2));
+  /* 修复：使用主题背景色确保对比度 */
+  background: var(--c-bg-soft);
+  box-shadow: 
+    0 5px 15px var(--icon-shadow, rgba(0, 0, 0, 0.2)),
+    inset 0 0 0 1px var(--vp-c-divider);
 }
 
 .icon-container:hover {
   transform: translateY(-15px) scale(1.2);
+  /* 悬停时增加对比度 */
+  box-shadow: 
+    0 8px 20px var(--icon-hover-shadow, rgba(0, 0, 0, 0.3)),
+    inset 0 0 0 1px var(--vp-c-divider);
 }
 
 .icon-container:hover ~ .app-name {
@@ -159,15 +167,17 @@ export default {
 .custom-icon {
   width: 30px;
   height: 30px;
-  color: var(--icon-color, #fff);
+  /* 修复：使用主题文本颜色确保对比度 */
+  color: var(--c-text);
   transition: color 0.3s ease;
 }
 
 .app-name {
   position: absolute;
   bottom: -35px;
-  background: var(--app-name-bg, rgba(var(--c-bg-alt-rgb), 0.9));
-  color: var(--app-name-color, var(--c-text));
+  /* 修复：使用主题背景色确保可读性 */
+  background: var(--c-bg-soft);
+  color: var(--c-text);
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 6px;
@@ -177,7 +187,10 @@ export default {
   z-index: 1;
   white-space: nowrap;
   pointer-events: none;
-  box-shadow: 0 2px 8px var(--app-name-shadow, rgba(0, 0, 0, 0.1));
+  /* 增加边框提升可读性 */
+  box-shadow: 
+    0 2px 8px var(--app-name-shadow, rgba(0, 0, 0, 0.1)),
+    0 0 0 1px var(--vp-c-divider);
 }
 
 /* 响应式设计 */

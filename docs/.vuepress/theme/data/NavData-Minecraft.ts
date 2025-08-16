@@ -233,7 +233,7 @@ export const sites: Site[] = [
   },
   {
     name: 'VM 汉化组',
-    url: 'https://www.ningna-cn.asia/',
+    url: 'https://vmct-cn.top/',
     desc: '一个用爱发电专注于汉化MC整合包与地图的非盈利组织',
     logo: 'https://vmct-cn.top/imgs/logo/logo_256.png',
     category: 'host',

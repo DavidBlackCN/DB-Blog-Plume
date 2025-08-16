@@ -77,9 +77,10 @@
     --vp-custom-block-font-size: 17px;
 }
 
+/* --- 回复原有样式 
 .vp-doc :not(pre) > code {
     color: var(--vp-c-text-1);
-}
+} --- */
 
 .vp-doc .hint-container.tip code {
     color: var(--vp-c-text-1);
@@ -107,13 +108,14 @@ html {
     padding: 10px 0;
 }
 
+/* --- 恢复原有样式
 .hint-container-title {
     display: none;
 }
 
 blockquote::before {
     display: none;
-}
+} --- */
 
 .vp-doc h2 {
     margin: 0 0 16px;
@@ -226,9 +228,10 @@ html.dark {
     background-color: transparent;
 }
 
+/* --- 恢复原有样式
 .vp-navbar .vp-social-link.no-icon {
     display: none;
-}
+} --- */
 
 /* --- Twikoo 相关 --- */
 

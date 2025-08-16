@@ -123,6 +123,10 @@ Chat Impressive Animation](https://www.mcmod.cn/class/15367.html), [ChatImage](h
 - 新增结构mod：[Medieval Buildings系列](https://www.mcmod.cn/class/12814.html), [Qraftyfied](https://www.mcmod.cn/class/12257.html), [Structory系列](https://www.mcmod.cn/class/6793.html), [Simply Houses](https://www.mcmod.cn/class/6612.html)
 
 
+## 2025.8.15
+- 移除DeathFinder，noexpensive，polaroidcamera
+
+
 # TODO
 - 品质兼容
 
@@ -137,6 +141,15 @@ Chat Impressive Animation](https://www.mcmod.cn/class/15367.html), [ChatImage](h
 - KJS教程：https://www.mcmod.cn/post/4751.html，https://www.mcmod.cn/post/3160.html
 
 - HUD修改：https://modrinth.com/resourcepack/simple-hotbar，https://modrinth.com/resourcepack/fresh-hud
+
+- https://www.curseforge.com/minecraft/data-packs/supplementaries-compat
+
+- https://modrinth.com/mod/armour-weight
+- https://www.mcmod.cn/class/12520.html
+- https://modrinth.com/mod/crop-growth-modifier
+
+- https://www.mcmod.cn/class/9340.html
+- https://www.mcmod.cn/class/10314.html
 
 
 
