@@ -1,19 +1,26 @@
 /* 定义字体 */
 @font-face {
   font-family: 'MapleMono-CN-SemiBold';
-  src: url('/fonts/MapleMono-CN-SemiBold.ttf') format('truetype');
+  src: url('/fonts/MapleMono-CN-SemiBold.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+  font-display: swap; /* 优化加载体验 */
 }
 
 @font-face {
     font-family: 'LogoFont'; /* 站名 字体 */
-    src: url('/fonts/Segoesc.ttf') format('truetype'); /* TTF字体文件的路径 */
+    src: url('/fonts/Segoesc.woff2') format('woff2'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* 优化加载体验 */
 }
 
 @font-face {
     font-family: 'MapleMono-CN-LightItalic'; /* 一言 字体 */
-    src: url('/fonts/MapleMono-CN-LightItalic.ttf') format('truetype'); /* TTF字体文件的路径 */
+    src: url('/fonts/MapleMono-CN-LightItalic.woff2') format('woff2'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* 优化加载体验 */
 }
 
 /* 应用字体 */
