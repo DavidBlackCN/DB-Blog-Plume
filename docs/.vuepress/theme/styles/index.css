@@ -2,6 +2,8 @@
 @font-face {
   font-family: 'MapleMono-CN-SemiBold';
   src: url('/fonts/MapleMono-CN-SemiBold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
@@ -16,7 +18,7 @@
 
 /* 应用字体 */
 body {
-  font-family: 'MapleMono-CN-SemiBold';
+  font-family: 'MapleMono-CN-SemiBold', sans-serif;
 }
 
 /* 导航 */
