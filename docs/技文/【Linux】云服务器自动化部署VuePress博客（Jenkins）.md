@@ -167,14 +167,14 @@ ssh-keygen -t rsa -C "你的邮箱地址"
 
 ::: steps
 1. 获取公钥的值，添加到Github的SSH key中：
-``` ssh
+``` bash
 cat ~/.ssh/id_rsa.pub
 ```
 
 ![](/assets/202508/16-10.png)
 
 2. 获取私钥的值，新建凭据并添加到Credentials中
-``` ssh
+``` bash
 cat ~/.ssh/id_rsa
 ```
 

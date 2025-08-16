@@ -2,7 +2,7 @@
     <div class="aside-nav-wrapper">
         <a
             class="vp-link"
-            href="https://ifdian.net/order/create?user_id=7d8be312ae6111ef823652540025c377&remark=&affiliate_code="
+            href="https://github.com/DavidBlackCN/DB-Blog-Plume"
             target="_blank"
             rel="noreferrer"
         >
@@ -12,7 +12,7 @@
         </a>
         <a
             class="vp-link"
-            href="https://ifdian.net/order/create?user_id=7d8be312ae6111ef823652540025c377&remark=&affiliate_code="
+            href="https://github.com/DavidBlackCN/DB-Blog-Plume/issues/new/choose"
             target="_blank"
             rel="noreferrer"
         >
@@ -22,7 +22,7 @@
         </a>
         <a
             class="vp-link"
-            href="https://ifdian.net/order/create?user_id=7d8be312ae6111ef823652540025c377&remark=&affiliate_code="
+            href="https://afdian.com/a/DBdev"
             target="_blank"
             rel="noreferrer"
         >
