@@ -66,8 +66,6 @@
 /* --- 微调 --- */
 
 :root {
-    --vp-font-family-base: "MapleMono-CN-SemiBold";
-    --vp-font-family-mono: "MapleMono-CN-SemiBold";
     font-optical-sizing: auto;
     --vp-custom-block-font-size: 17px;
 }
@@ -180,16 +178,11 @@ html.dark {
     color: var(--vp-c-text-1) !important;
 }
 
-.profile-info {
-    font-family: "MapleMono-CN-SemiBold";
-}
-
 .vp-repo-card {
     background-color: var(--vp-code-block-bg);
 }
 
 .search-input {
-    font-family: var(--vp-font-family-base);
     font-feature-settings: "liga" 1, "dlig" 1;
     background-color: var(--vp-c-bg);
 }
