@@ -38,13 +38,13 @@ export default {
           id: 1,
           name: "GitHub",
           icon: "mdi:github",
-          link: "https://github.com",
+          link: "https://github.com/DavidBlackCN",
         },    
         {
           id: 2,
           name: "Bilibili",
           icon: "ri:bilibili-fill",
-          link: "https://www.bilibili.com",
+          link: "https://space.bilibili.com/453841968",
         },
         {
           id: 3,

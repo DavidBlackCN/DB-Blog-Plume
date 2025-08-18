@@ -53,7 +53,7 @@ export const sites: Site[] = [
   },
   {
     name: 'MC导航网',
-    url: 'https://developer.mozilla.org',
+    url: 'https://www.mcnav.net/',
     desc: '一个精致、全面的Minecraft网址导航站，收录各类型的MC网站',
     logo: 'https://cdn.jsdelivr.net/gh/DavidBlackCN/my-icons@main/public/icon/Minecraft/MCNav.gif',
     category: 'community',
@@ -238,6 +238,14 @@ export const sites: Site[] = [
     logo: 'https://vmct-cn.top/imgs/logo/logo_256.png',
     category: 'host',
     tags: ['托管', '资源', '汉化']
+  },
+  {
+    name: 'MC Packs',
+    url: 'https://mc-packs.net/',
+    desc: 'MC资源包托管，用于服务器获取',
+    logo: 'https://cdn.jsdelivr.net/gh/DavidBlackCN/my-icons@main/public/icon/Minecraft/Minecraft.png',
+    category: 'host',
+    tags: ['托管', '资源', '材质']
   },
 
 
