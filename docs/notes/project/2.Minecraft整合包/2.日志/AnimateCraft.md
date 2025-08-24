@@ -1,7 +1,7 @@
 ---
 title: AnimateCraft+Alex
-createTime: 2025/08/05 21:45:35
-permalink: /project/gqbyxcxv/
+createTime: 2025/08/24 23:09:54
+permalink: /project/avf3h8f8/
 ---
 
 # 日志
@@ -127,6 +127,12 @@ Chat Impressive Animation](https://www.mcmod.cn/class/15367.html), [ChatImage](h
 - 移除DeathFinder，noexpensive，polaroidcamera
 
 
+## 2025.8.22
+- 新增模组：[Combat Bash](https://www.mcmod.cn/class/12193.html)
+- Better Combat -> Rekindled Combat 
+
+## 2025.8.23
+- 移除模组：Crop Growth Modifier，Fixed Anvil Repair Cost，Chicken Nerf
 # TODO
 - 品质兼容
 
@@ -145,11 +151,6 @@ Chat Impressive Animation](https://www.mcmod.cn/class/15367.html), [ChatImage](h
 - https://www.curseforge.com/minecraft/data-packs/supplementaries-compat
 
 - https://modrinth.com/mod/armour-weight
-- https://www.mcmod.cn/class/12520.html
-- https://modrinth.com/mod/crop-growth-modifier
-
-- https://www.mcmod.cn/class/9340.html
-- https://www.mcmod.cn/class/10314.html
 
 
 
