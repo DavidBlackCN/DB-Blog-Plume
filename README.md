@@ -33,7 +33,7 @@ import Introduce from './theme/components/Introduce.vue'
 
 1. components中 `Introduce.vue` 为主页核心卡片组件, `AboutMeCharacter.vue`, `AboutMeFriendLink.vue`, `AboutMeName.vue`, `AboutMeProject.vue`, `AboutMeSkill.vue`, `AboutMeText.vue` 以及 `Introduce.vue` 均修改自[该博客](https://github.com/zhenghaoyang24/hoey-blog-plume)，以上组件的使用说明可查看原仓库的README，此处主要进行细微修改并修改手机浏览兼容性.
 2. components中 `AsideOutlineAfter.vue` 为右边侧边栏目录下方显示的额外跳转链接，可按需求修改或新增更多链接.
-3. components中 `ColourPicker.vue` 为导航栏的颜色选择器，可修改主题颜色，来自[该博客](https://github.com/physnya/blog).
+3. components中 `ColourPicker.vue` 为导航栏的颜色选择器，可修改主题颜色，修改自[该博客](https://github.com/physnya/blog).
 4. components中 `DockBar.vue` 为主页的Dock栏，可在其中对应位置修改Dock内容，icon请使用[iconify](https://icon-sets.iconify.design/)图标，并于下方 `.dock-container` 字段修改Dock栏位置.
 5. components中 `Hitokoto.vue` 为主页上方一言，开箱即用.
 6. components中 `NavPage.vue` 为导航页面专用组件，在此处修改引入的外部数据文件：

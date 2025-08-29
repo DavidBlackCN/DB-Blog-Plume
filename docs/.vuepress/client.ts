@@ -9,6 +9,7 @@ import ColourPicker from './theme/components/ColourPicker.vue'
 import NavPage from './theme/components/NavPage.vue'
 import NavPageMinecraft from './theme/components/NavPage-Minecraft.vue'
 import AsideOutlineAfter from './theme/components/AsideOutlineAfter.vue'
+import RepoCard from './theme/components/RepoCard.vue'
 import './theme/styles/custom.css'
 import './theme/styles/index.css'
 import './theme/styles/introduce.css'
@@ -34,6 +35,7 @@ export default defineClientConfig({
     app.component('NavPage', NavPage)
     app.component('AsideOutlineAfter', AsideOutlineAfter)
     app.component('NavPageMinecraft', NavPageMinecraft)
+    app.component('RepoCard', RepoCard)
     // built-in components
     // app.component('RepoCard', RepoCard)
     // app.component('NpmBadge', NpmBadge)
