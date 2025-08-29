@@ -1,8 +1,8 @@
-<!-- 加了一点动画 -->
-<!-- 点击页面其他区域也能关闭面板 -->
 <template>
   <div class="color-picker" ref="colorPicker">
-    <button class="toggle-button" @click.stop="togglePanel">主题颜色</button>
+    <button class="toggle-button" @click.stop="togglePanel">
+      <i class="icon-palette"></i> 主题颜色
+    </button>
     
     <transition name="panel">
       <div 
@@ -11,6 +11,10 @@
         ref="panel"
       >
         <div class="slider-container">
+          <div class="slider-label">
+            <span>色调选择</span>
+            <span>{{ hue }}°</span>
+          </div>
           <input 
             type="range" 
             min="0" 
@@ -52,10 +56,24 @@ export default {
     
     // 添加全局点击监听
     document.addEventListener('click', this.handleClickOutside)
+    
+    // 隐藏社交链接图标
+    this.hideSocialIcons()
+    
+    // 初始设置按钮样式
+    this.updateButtonAppearance()
+    
+    // 监听主题变化
+    this.observeThemeChange()
   },
   beforeUnmount() {
     // 移除全局点击监听
     document.removeEventListener('click', this.handleClickOutside)
+    
+    // 移除主题变化监听
+    if (this.themeObserver) {
+      this.themeObserver.disconnect()
+    }
   },
   methods: {
     togglePanel() {
@@ -81,38 +99,92 @@ export default {
           !this.$refs.colorPicker.contains(event.target)) {
         this.showPanel = false
       }
+    },
+    hideSocialIcons() {
+      // 隐藏社交链接图标
+      setTimeout(() => {
+        const socialLinks = document.querySelectorAll('.social-links a, .social-links button')
+        if (socialLinks.length > 0) {
+          socialLinks[0].style.display = 'none'
+        }
+      }, 100)
+    },
+    updateButtonAppearance() {
+      // 检测当前是否深色模式
+      const isDark = document.documentElement.classList.contains('dark')
+      
+      // 根据模式更新按钮样式
+      const button = this.$el.querySelector('.toggle-button')
+      if (button) {
+        if (isDark) {
+          button.style.setProperty('color', 'var(--vp-c-text-2)')
+          button.style.setProperty('border-color', 'var(--vp-c-text-2)')
+        } else {
+          button.style.setProperty('color', 'var(--vp-c-text-1)')
+          button.style.setProperty('border-color', 'var(--vp-c-text-1)')
+        }
+      }
+    },
+    observeThemeChange() {
+      // 监听主题变化
+      this.themeObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'class') {
+            this.updateButtonAppearance()
+          }
+        })
+      })
+      
+      // 观察html元素的class变化
+      this.themeObserver.observe(document.documentElement, { 
+        attributes: true 
+      })
     }
   }
 }
 </script>
 
 <style scoped>
+  .color-picker {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+  }
+
   .toggle-button {
     padding: 8px 16px;
     font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
-    background-color: transparent;
-    color: var(--vp-button-brand-text);
-    border: 1px solid var(--vp-button-brand-border);
-    border-radius: 4px;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: var(--vp-c-text-1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .toggle-button:hover {
-    background-color: transparent;
     transform: scale(1.05);
+  }
+
+  .icon-palette {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: linear-gradient(45deg, #FF5252, #FF4081, #E040FB, #7C4DFF, #536DFE, #448AFF, #40C4FF, #18FFFF, #64FFDA, #69F0AE, #B2FF59, #EEFF41, #FFFF00, #FFEB3B, #FFC107, #FF9800, #FF5722);
+    border-radius: 2px;
   }
 
   .control-panel {
     margin-top: 10px;
-    padding: 15px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    width: 250px;
-    position: fixed;
-    bottom: 10%;
-    right: 10%;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    width: 280px;
+    position: absolute;
+    top: 100%;
+    right: 0;
     background-color: var(--vp-code-block-bg);
     display: flex;
     flex-direction: column;
@@ -120,14 +192,21 @@ export default {
   }
 
   .slider-container {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: var(--vp-c-text-1);
+  }
+
+  .slider-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 500;
   }
 
   .slider {
     width: 100%;
-    height: 8px;
-    border-radius: 4px;
+    height: 10px;
+    border-radius: 5px;
     background: linear-gradient(to right, red, yellow, lime, cyan, blue, magenta, red);
     outline: none;
     appearance: none;
@@ -142,13 +221,14 @@ export default {
 
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: white;
     border: 2px solid var(--vp-c-divider);
     cursor: pointer;
     transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
   .slider::-webkit-slider-thumb:hover {
@@ -156,33 +236,36 @@ export default {
   }
 
   .color-preview {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    margin: 10px auto;
-    border: 1px solid var(--vp-c-divider);
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    margin: 15px auto;
+    border: 2px solid var(--vp-c-divider);
     transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .reset-button {
-    padding: 8px 16px;
-    margin-top: 10px;
+    padding: 10px 16px;
+    margin-top: 15px;
     background-color: var(--vp-button-alt-bg);
     color: var(--vp-button-alt-text);
-    border: 1px solid var(--vp-button-alt-border);
-    border-radius: 4px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 8px;
     font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   }
 
   .reset-button:hover {
     background-color: var(--vp-button-alt-hover-bg);
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
   }
 
   .reset-button .icon {
@@ -203,5 +286,13 @@ export default {
   .panel-leave-to {
     opacity: 0;
     transform: translateY(10px);
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .control-panel {
+      width: 260px;
+      right: -20px;
+    }
   }
 </style>
