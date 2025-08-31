@@ -3,7 +3,6 @@ import { Layout } from 'vuepress-theme-plume/client'
 import { h } from 'vue'
 import DockBar from './theme/components/DockBar.vue'
 import Introduce from './theme/components/Introduce.vue'
-import EmptyDiv from './theme/components/EmptyDiv.vue'
 import Hitokoto from './theme/components/Hitokoto.vue'
 import ColourPicker from './theme/components/ColourPicker.vue'
 import NavPage from './theme/components/NavPage.vue'
@@ -29,7 +28,6 @@ export default defineClientConfig({
   enhance({ app }) {
     app.component('DockBar', DockBar)
     app.component('Introduce', Introduce)
-    app.component('EmptyDiv', EmptyDiv)
     app.component('Hitokoto', Hitokoto)
     app.component('ColourPicker', ColourPicker)
     app.component('NavPage', NavPage)

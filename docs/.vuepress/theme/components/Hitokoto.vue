@@ -1,7 +1,6 @@
 <template>
   <div class="text">
     <p class="hitokoto">{{ hitokoto }}</p>
-    <div style="height: 10px; background-color: transparent;"></div>
   </div>
 </template>
 
@@ -27,7 +26,7 @@ export default {
 <style scoped>
 .text {
   position: relative;
-  bottom: -25px;
+  bottom: -30px;
   text-align: center;
   padding: 2rem;
   color: #6a737d;

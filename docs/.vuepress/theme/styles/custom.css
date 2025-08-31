@@ -205,6 +205,7 @@ html.dark {
 } --- */
 
 /* --- Twikoo 相关 --- */
+/* --- 评论系统优化样式 --- */
 
 .tk-submit .tk-avatar {
     display: none;
@@ -217,7 +218,7 @@ html.dark {
     }
 }
 
-/* 个人信息 */
+/* 个人信息输入框 */
 .tk-meta-input {
     min-height: 40px;
     position: relative;
@@ -227,14 +228,21 @@ html.dark {
         border-top-right-radius: 8px;
         border-bottom-right-radius: 8px;
         min-height: inherit;
+        background-color: var(--vp-c-bg);
+        border: 1.5px solid var(--vp-c-divider);
+        color: var(--vp-c-text-1);
     }
 
     .el-input__inner:focus {
-        border-color: rgba(144, 147, 153, 0.7);
+        border-color: var(--vp-c-brand-1);
+        outline: none;
     }
 
     .el-input-group__prepend {
-        background: inherit;
+        background: var(--vp-c-bg-soft);
+        border: 1.5px solid var(--vp-c-divider);
+        border-right: none;
+        color: var(--vp-c-text-2);
     }
 
     div {
@@ -252,6 +260,14 @@ html.dark {
         min-height: 150px !important;
         height: auto;
         line-height: 1.5;
+        background-color: var(--vp-c-bg);
+        border: 1.5px solid var(--vp-c-divider);
+        color: var(--vp-c-text-1);
+        
+        &:focus {
+            border-color: var(--vp-c-brand-1);
+            outline: none;
+        }
     }
 }
 
@@ -264,14 +280,22 @@ html.dark {
 
     button.el-button {
         border-radius: 12px !important;
+        background-color: var(--vp-c-brand-soft);
+        border: 1.5px solid var(--vp-c-brand-3);
+        color: var(--vp-c-brand-1);
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background-color: var(--vp-c-brand-2);
+            color: white;
+            transform: translateY(-1px);
+        }
     }
 
     .__markdown {
         display: none;
     }
 }
-
-/*~ tk-comments-container ~*/
 
 /* 评论区主题样式 */
 .tk-comments-container {
@@ -284,6 +308,7 @@ html.dark {
     margin-bottom: 1.5rem;
     display: flex;
     justify-content: space-between;
+    color: var(--vp-c-text-1);
 
     .__comments {
         color: inherit;
@@ -298,14 +323,15 @@ html.dark {
     display: flex;
     flex-direction: row;
     word-break: break-all;
-    border: var(--tk-comment-border);
+    border: 1.5px solid var(--vp-c-divider);
     border-radius: 1rem;
     transition: all 0.3s ease;
     position: relative;
     z-index: 1;
+    background-color: var(--vp-c-bg-soft);
 
     &:hover {
-        border-color: rgba(144, 147, 153, 0.5);
+        border-color: var(--vp-c-brand-3);
         box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
     }
 
@@ -343,6 +369,11 @@ html.dark {
         a {
             text-decoration: none !important;
             background-image: none !important;
+            color: var(--vp-c-brand-1);
+            
+            &:hover {
+                color: var(--vp-c-brand-2);
+            }
         }
     }
 
@@ -356,8 +387,10 @@ html.dark {
             font-size: 1rem !important;
             line-height: 1.5;
             font-weight: 500;
+            color: var(--vp-c-brand-1);
 
             &:hover {
+                color: var(--vp-c-brand-2);
                 transition: color 0.2s ease;
             }
 
@@ -369,19 +402,23 @@ html.dark {
         .tk-time {
             font-size: 0.8rem;
             margin-left: auto;
+            color: var(--vp-c-text-2);
         }
     }
 
     .tk-action {
-        border: var(--style-border-always);
-        border-radius: var(--tk-second-radius);
+        border: 1.5px solid var(--vp-c-divider);
+        border-radius: 6px;
         padding: 2px 6px;
         cursor: pointer;
         transition: all 0.3s ease;
         text-align: center;
+        background-color: var(--vp-c-bg-soft);
+        color: var(--vp-c-text-2);
 
         &:hover {
-            background-color: var(--tk-action-bg);
+            background-color: var(--vp-c-brand-soft);
+            color: var(--vp-c-brand-1);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
@@ -396,22 +433,33 @@ html.dark {
 
     .tk-content {
         margin-top: 0.2rem;
+        color: var(--vp-c-text-1);
+
+        p {
+            margin: 0.5rem 0;
+        }
 
         img {
             max-width: 100%;
             height: auto;
             display: inline-block;
             vertical-align: middle;
+            border-radius: 4px;
         }
 
         a {
             text-decoration: none;
             background-image: none;
+            color: var(--vp-c-brand-1);
+            
+            &:hover {
+                color: var(--vp-c-brand-2);
+            }
         }
     }
 }
 
-/* 回复卡片的表情面板 */
+/* 回复卡片 */
 .tk-replies {
     max-height: 10rem !important;
 
@@ -422,8 +470,9 @@ html.dark {
     .tk-comment {
         padding: 1rem;
         margin: 0.5rem 0 !important;
-        border: var(--tk-comment-border);
+        border: 1.5px solid var(--vp-c-divider);
         opacity: 0.9;
+        background-color: var(--vp-c-bg);
 
         &:hover {
             transform: none;
@@ -433,22 +482,34 @@ html.dark {
 
     .tk-content span:first-child:not(.token) {
         font-size: .75rem;
-        color: var(--tk-text);
+        color: var(--vp-c-text-2);
     }
 }
 
 .tk-ruser {
     text-decoration: none !important;
     background-image: none !important;
+    color: var(--vp-c-brand-1);
+    
+    &:hover {
+        color: var(--vp-c-brand-2);
+    }
 }
 
 .twikoo {
     svg {
-        color: var(--tk-text);
+        color: var(--vp-c-text-2);
     }
 
     .tk-expand {
-        border-radius: var(--tk-radius);
+        border-radius: 12px;
+        background-color: var(--vp-c-bg-soft);
+        color: var(--vp-c-text-2);
+        
+        &:hover {
+            background-color: var(--vp-c-brand-soft);
+            color: var(--vp-c-brand-1);
+        }
     }
 }
 
@@ -459,10 +520,11 @@ html.dark {
     border-radius: 0.375rem;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #fff;
+    color: white;
     white-space: nowrap;
     margin: 0;
     line-height: 1.2;
+    background-color: var(--vp-c-brand-1);
 }
 
 @media (max-width: 768px) {
@@ -480,6 +542,9 @@ html.dark {
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     z-index: 999;
+    background-color: var(--vp-c-brand-soft);
+    border: 1px solid var(--vp-c-brand-3);
+    color: var(--vp-c-brand-1);
 
     a {
         color: inherit;
@@ -495,22 +560,14 @@ html.dark {
 
 .tk-preview-container {
     margin-left: 0 !important;
+    background-color: var(--vp-c-bg-soft);
+    border: 1.5px solid var(--vp-c-divider);
+    border-radius: 8px;
 }
 
 .tk-row.actions {
     margin-left: 0 !important;
 }
-
-
-/* --- 取消方格背景及相关调整 
-
-body {
-  background-size: 26px 26px;
-  background-position: center center;
-  background-image: 
-    linear-gradient(to right, var(--vp-c-divider) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--vp-c-divider) 1px, transparent 1px);
-} --- */
 
 .tk-input.el-textarea {
     textarea {
@@ -526,4 +583,28 @@ body {
 
 .demo-head {
     background-color: var(--vp-c-bg);
+}
+
+/* 表情选择器样式 */
+.tk-owo {
+    background-color: var(--vp-c-bg);
+    border: 1.5px solid var(--vp-c-divider);
+    
+    .owo-body {
+        background-color: var(--vp-c-bg-soft);
+    }
+}
+
+/* 预览区域样式 */
+.tk-preview {
+    color: var(--vp-c-text-1);
+    
+    code {
+        background-color: var(--vp-code-block-bg);
+        color: var(--vp-c-text-code);
+    }
+    
+    pre {
+        background-color: var(--vp-code-block-bg);
+    }
 }
