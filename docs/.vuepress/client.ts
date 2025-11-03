@@ -12,6 +12,8 @@ import RepoCard from './theme/components/RepoCard.vue'
 import './theme/styles/custom.css'
 import './theme/styles/index.css'
 import './theme/styles/introduce.css'
+
+import ProfileCard from "./theme/components/ProfileCard.vue"
 // import RepoCard from 'vuepress-theme-plume/features/RepoCard.vue'
 // import NpmBadge from 'vuepress-theme-plume/features/NpmBadge.vue'
 // import NpmBadgeGroup from 'vuepress-theme-plume/features/NpmBadgeGroup.vue'
