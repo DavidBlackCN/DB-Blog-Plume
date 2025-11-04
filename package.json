@@ -33,6 +33,10 @@
     "vue-feather-icons": "^5.1.0",
     "vuepress": "2.0.0-rc.26",
     "vuepress-plugin-oh-my-live2d": "0.19.3",
+<<<<<<< HEAD
     "vuepress-theme-plume": "1.0.0-rc.175"
+=======
+    "vuepress-theme-plume": "1.0.0-rc.173"
+>>>>>>> 3f4557d057fcce17e64b6112af9a92c2251b0f81
   }
 }

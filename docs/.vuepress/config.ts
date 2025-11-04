@@ -82,14 +82,45 @@ export default defineUserConfig({
      * 博客
      * @see https://theme-plume.vuejs.press/config/basic/#blog
      */
-     blog: {
-       postList: true, // 是否启用文章列表页
-       tags: true, // 是否启用标签页
-       archives: true, // 是否启用归档页
-       categories: true, // 是否启用分类页
-       postCover: 'right', // 文章封面位置
-       pagination: 15, // 每页显示文章数量
-     },
+
+    // 使用 collections 配置
+    collections: [
+      {
+        type: 'post', // 替代原博客功能
+        dir: 'blog', // 指向 docs/blog 目录
+        title: '博客' // 集合显示名称
+        // 原博客配置继续保留
+        // ...
+      },
+      {
+        type: 'doc', // 替代原笔记功能
+        dir: 'demo', // 指向 docs/typescript 目录
+        title: 'demo',
+        linkPrefix: '/demo/', // 页面链接前缀、侧边栏判断依据
+        sidebar: 'auto', // 自动生成侧边栏
+      },
+      {
+        type: 'doc',
+        dir: 'more',
+        title: '更多', 
+        linkPrefix: 'more',
+        sidebar: 'auto'
+      },
+      {
+        type: 'doc',
+        dir: 'project',
+        title: '项目', 
+        linkPrefix: 'project',
+        sidebar: 'auto'
+      },
+      {
+        type: 'doc',
+        dir: 'nav',
+        title: '导航', 
+        linkPrefix: 'nav',
+        sidebar: 'auto'
+      }      
+    ],
 
     /* 博客文章页面链接前缀 */
     article: '/article/',

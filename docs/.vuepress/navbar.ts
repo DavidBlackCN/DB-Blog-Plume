@@ -13,7 +13,7 @@ export default defineNavbarConfig([
   {
     text: '笔记',
     icon: 'hugeicons:note-edit',
-    items: [{ text: '示例', link: '/notes/demo/foo' }]
+    items: [{ text: '示例', link: '/demo/foo' }]
   },
   {
     text: '项目',
