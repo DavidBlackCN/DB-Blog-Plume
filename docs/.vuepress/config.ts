@@ -58,6 +58,10 @@ export default defineUserConfig({
   ],
 
   theme: plumeTheme({
+    collections: [
+      { type: 'post', dir: 'blog', title: '博客' },
+      { type: 'doc', dir: 'notes', title: '项目' }
+    ],
     copyright: 'CC-BY-NC-SA-4.0',
 
     /* 添加您的部署域名, 有助于 SEO, 生成 sitemap */
