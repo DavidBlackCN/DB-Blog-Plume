@@ -19,8 +19,8 @@ export default defineNavbarConfig([
     text: '项目',
     icon: 'ant-design:project-outlined',
     items: [
-      { text: 'Github项目', link: '/notes/project/1.我的项目/github', icon: 'mdi:github'},
-      { text: '其他项目', link: '/notes/project/1.我的项目/other', icon: 'material-symbols:other-admission-outline'}
+      { text: 'Github项目', link: '/ghProject/github', icon: 'mdi:github'},
+      { text: 'Minecraft项目', link: '/mcProject/1.整合包/AlsaceDesign', icon: 'material-symbols:other-admission-outline'}
     ]
   },
   {

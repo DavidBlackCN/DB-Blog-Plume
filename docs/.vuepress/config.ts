@@ -12,7 +12,8 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defineUserConfig } from 'vuepress'
 import { plumeTheme } from 'vuepress-theme-plume'
-import { oml2dPlugin } from 'vuepress-plugin-oh-my-live2d';
+import { oml2dPlugin } from 'vuepress-plugin-oh-my-live2d'
+import { collections } from './collections'
 
 export default defineUserConfig({
   base: '/',
@@ -58,10 +59,7 @@ export default defineUserConfig({
   ],
 
   theme: plumeTheme({
-    collections: [
-      { type: 'post', dir: 'blog', title: '博客' },
-      { type: 'doc', dir: 'notes', title: '项目' }
-    ],
+    collections,
     copyright: 'CC-BY-NC-SA-4.0',
 
     /* 添加您的部署域名, 有助于 SEO, 生成 sitemap */
@@ -82,45 +80,6 @@ export default defineUserConfig({
      * 博客
      * @see https://theme-plume.vuejs.press/config/basic/#blog
      */
-
-    // 使用 collections 配置
-    collections: [
-      {
-        type: 'post', // 替代原博客功能
-        dir: 'blog', // 指向 docs/blog 目录
-        title: '博客' // 集合显示名称
-        // 原博客配置继续保留
-        // ...
-      },
-      {
-        type: 'doc', // 替代原笔记功能
-        dir: 'demo', // 指向 docs/typescript 目录
-        title: 'demo',
-        linkPrefix: '/demo/', // 页面链接前缀、侧边栏判断依据
-        sidebar: 'auto', // 自动生成侧边栏
-      },
-      {
-        type: 'doc',
-        dir: 'more',
-        title: '更多', 
-        linkPrefix: 'more',
-        sidebar: 'auto'
-      },
-      {
-        type: 'doc',
-        dir: 'project',
-        title: '项目', 
-        linkPrefix: 'project',
-        sidebar: 'auto'
-      },
-      {
-        type: 'doc',
-        dir: 'nav',
-        title: '导航', 
-        linkPrefix: 'nav',
-        sidebar: 'auto'
-      }      
-    ],
 
     /* 博客文章页面链接前缀 */
     article: '/article/',

@@ -19,34 +19,55 @@
  *
  * 通过 `defineNoteConfig` 定义的 note 配置，应该填入 `defineNotesConfig` 的 notes 数组中
  */
-import { defineNoteConfig, defineNotesConfig } from 'vuepress-theme-plume'
+import { defineCollection, defineCollections } from 'vuepress-theme-plume'
 
-const noteDemo = defineNoteConfig({
-  dir: "demo",
-  link: "/demo/",
+export const blog = defineCollection({
+  type: 'post',
+  dir: 'blog',
+  title: '博客',
+})
+
+export const demo = defineCollection({
+  type: 'doc',
+  dir: 'demo',
+  title: 'demo',
+  sidebar: 'auto'
+});
+
+export const more = defineCollection({
+  type: 'doc',
+  dir: 'more',
+  title: "more",
   sidebar: "auto",
 });
 
-const noteMore = defineNoteConfig({
-  dir: "more",
-  link: "/more/",
-  sidebar: "auto",
+export const nav = defineCollection({
+  type: 'doc',
+  dir: 'nav',
+  title: 'nav',
+  sidebar: 'auto',
 });
 
-const noteNav = defineNoteConfig({
-  dir: "nav",
-  link: "/nav/",
-  sidebar: "auto",
+export const ghProject = defineCollection({
+  type: 'doc',
+  dir: 'ghProject',
+  title: 'Github项目',
+  sidebar: 'auto',
 });
 
-const noteProject = defineNoteConfig({
-  dir: "project",
-  link: "/project/",
-  sidebar: "auto",
+export const mcProject = defineCollection({
+  type: 'doc',
+  dir: 'mcProject',
+  title: 'Minecraft项目',
+  sidebar: 'auto',
 });
 
-export const notes = defineNotesConfig({
-  dir: "notes",
-  link: "/",
-  notes: [noteDemo, noteMore, noteNav, noteProject],
-});
+export const collections = defineCollections([
+  blog,
+  demo,
+  more,
+  nav,
+  ghProject,
+  mcProject
+
+])

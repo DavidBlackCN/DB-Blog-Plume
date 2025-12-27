@@ -1,7 +1,7 @@
 ---
-title: Alsace Design
+title: AlsaceDesign
 createTime: 2025/08/24 23:15:23
-permalink: /project/2m0pqzcx/
+permalink: /mcProject/2m0pqzcx/
 ---
 
 ## 简介
