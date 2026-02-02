@@ -41,7 +41,7 @@ export default defineThemeConfig({
   /* 站点页脚 */
   footer: {
     message: 'Copyright © 2025 - present by David_Black_ <br> 🥼Power by <a target="_blank" href="https://v2.vuepress.vuejs.org/">VuePress</a> & <a target="_blank" href="https://theme-plume.vuejs.press">vuepress-theme-plume</a>',
-    copyright: "<a href='https://beian.miit.gov.cn/'>粤ICP备2025435487号-2</a>",
+    copyright: "<a href='https://beian.miit.gov.cn/'>粤ICP备2025435487号-3</a>",
   },
 
   /**
