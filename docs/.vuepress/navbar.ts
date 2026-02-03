@@ -34,6 +34,9 @@ export default defineNavbarConfig([
   {
     text: '更多',
     icon: 'mdi:read-more-outline',
-    items: [{ text: 'README', link: '/notes/more/gh-readme', icon: 'gg:readme' }]
+    items: [
+      { text: 'README', link: '/more/gh-readme', icon: 'gg:readme' },
+      { text: '关于我', link: '/more/index', icon: 'mdi:account-circle' }
+    ]
   },
 ])

@@ -26,9 +26,9 @@ export default {
 <style scoped>
 .text {
   position: relative;
-  bottom: -30px;
+  bottom: -10px;
   text-align: center;
-  padding: 2rem;
+  padding: 0.5rem;
   color: #6a737d;
 }
 .hitokoto {

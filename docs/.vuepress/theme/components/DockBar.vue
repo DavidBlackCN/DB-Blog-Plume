@@ -32,57 +32,6 @@ export default {
     items: {
       type: Array,
       required: true,
-      /* --- 此处添加Dock内容 --- */
-      default: () => [
-        {
-          id: 1,
-          name: "Sun-Panel",
-          icon: "mingcute:windows-fill",
-          link: "https://nav.davidblackcn.cc/",
-        },
-        {
-          id: 2,
-          name: "GitHub",
-          icon: "mdi:github",
-          link: "https://github.com/DavidBlackCN",
-        },    
-        {
-          id: 3,
-          name: "Bilibili",
-          icon: "ri:bilibili-fill",
-          link: "https://space.bilibili.com/453841968",
-        },
-        {
-          id: 4,
-          name: "Email",
-          icon: "mdi:email-edit-outline",
-          link: "mailto:davidblackcn@outlook.com",
-        },
-        {
-          id: 5,
-          name: "Discord",
-          icon: "ic:baseline-discord",
-          link: "https://discord.com/",
-        },
-        {
-          id: 6,
-          name: "Kook",
-          icon: "meteor-icons:discord",
-          link: "https://discord.com/",
-        },        
-        {
-          id: 7,
-          name: "DeepSeek",
-          icon: "hugeicons:deepseek",
-          link: "https://chat.deepseek.com/",
-        },
-        {
-          id: 8,
-          name: "Theme-Plume",
-          icon: "ph:feather",
-          link: "https://theme-plume.vuejs.press/",
-        }
-      ]
     }
   },
   methods: {
@@ -100,13 +49,13 @@ export default {
 /* 使用VuePress主题变量 */
 .dock-container {
   position: relative;
-  bottom: 1080px; 
+  margin-top: 10px; 
+  bottom: 0; 
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  z-index: var(--z-index-dock, 100);
-  transition: all 0.3s ease;
+  padding-bottom: 10px;
 }
 
 .dock {
