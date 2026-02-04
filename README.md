@@ -16,15 +16,15 @@
 ### 配置
 
 1. 自定义页面的[vue组件路径](https://github.com/DavidBlackCN/DB-Blog-Plume/tree/main/docs/.vuepress/theme/components)：docs/.vuepress/theme/components
-2. 自定义页面的[css样式文件](https://github.com/DavidBlackCN/DB-Blog-Plume/tree/main/docs/.vuepress/theme/styles)：docs/.vuepress/theme/styles/introduce.css
-3. 在 `docs/.vuepress/client.ts` 中导入相应的组件和样式，示例：
+2. 自定义页面的[css样式文件](https://github.com/DavidBlackCN/DB-Blog-Plume/tree/main/docs/.vuepress/theme/styles)：docs/.vuepress/theme/styles
+3. 全局组件：在 `docs/.vuepress/client.ts` 中导入相应的组件和样式，示例如下
 ```
 import './theme/styles/introduce.css'
-import Introduce from './theme/components/Introduce.vue'
+import Introduce from './theme/components/ColourPicker.vue'
 
   export default defineClientConfig({
     enhance({ app }) {
-    app.component('Introduce', Introduce) 
+    app.component('ColourPicker', ColourPicker) 
   },
 })
 ```
@@ -52,5 +52,5 @@ import { categories, sites } from '../data/NavData.ts';
 
 ### 主页
 
-- 主页布局请看 [BlogHero.vue](https://github.com/DavidBlackCN/DB-Blog-Plume/blob/main/docs/.vuepress/heme/components/BlogHero.vue)
+- 主页布局请看 [BlogHero.vue](https://github.com/DavidBlackCN/DB-Blog-Plume/blob/main/docs/.vuepress/theme/components/BlogHero.vue)
 - 参考[该博客](https://blog.jursin.top/)
