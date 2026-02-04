@@ -4,6 +4,7 @@ import { h } from 'vue'
 import ColourPicker from './theme/components/ColourPicker.vue'
 import AsideOutlineAfter from './theme/components/AsideOutlineAfter.vue'
 import RepoCard from './theme/components/RepoCard.vue'
+import GitHubCard from './theme/components/GitHubCard.vue'
 import './theme/styles/custom.css'
 import './theme/styles/index.css'
 import './theme/styles/introduce.css'
@@ -25,6 +26,7 @@ export default defineClientConfig({
     app.component('ColourPicker', ColourPicker)
     app.component('AsideOutlineAfter', AsideOutlineAfter)
     app.component('RepoCard', RepoCard)
+    app.component('GitHubCard', GitHubCard)
     // built-in components
     // app.component('RepoCard', RepoCard)
     // app.component('NpmBadge', NpmBadge)

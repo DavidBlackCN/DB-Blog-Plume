@@ -12,7 +12,7 @@
         <div class="avatar-section">
           <div class="avatar-wrapper">
             <img src="/avatar/davidblack-round.png" alt="Avatar" class="avatar-img" />
-            <div class="emoji-badge">😋</div>
+            <div class="emoji-badge">🥳</div>
           </div>
         </div>
 

@@ -360,7 +360,7 @@ async def handle_mn():
 
 在参考上述写法的情况下，仍可以继续添加新功能，如根据用户命令传入请求参数等等，可以参考我自用的Nonebot插件仓库。
 
-<RepoCard repo="DavidBlackCN/nonebot-plugin-repository " />
+<GitHubCard url="DavidBlackCN/nonebot-plugin-repository " />
 
 ## 参考&鸣谢
 
