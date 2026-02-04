@@ -1,19 +1,13 @@
 import { defineClientConfig } from 'vuepress/client'
 import { Layout } from 'vuepress-theme-plume/client'
 import { h } from 'vue'
-import DockBar from './theme/components/DockBar.vue'
-import Introduce from './theme/components/Introduce.vue'
-import Hitokoto from './theme/components/Hitokoto.vue'
 import ColourPicker from './theme/components/ColourPicker.vue'
-import NavPage from './theme/components/NavPage.vue'
-import NavPageMinecraft from './theme/components/NavPage-Minecraft.vue'
 import AsideOutlineAfter from './theme/components/AsideOutlineAfter.vue'
 import RepoCard from './theme/components/RepoCard.vue'
 import './theme/styles/custom.css'
 import './theme/styles/index.css'
 import './theme/styles/introduce.css'
 
-import ProfileCard from "./theme/components/ProfileCard.vue"
 // import RepoCard from 'vuepress-theme-plume/features/RepoCard.vue'
 // import NpmBadge from 'vuepress-theme-plume/features/NpmBadge.vue'
 // import NpmBadgeGroup from 'vuepress-theme-plume/features/NpmBadgeGroup.vue'
@@ -28,13 +22,8 @@ export default defineClientConfig({
 
 
   enhance({ app }) {
-    app.component('DockBar', DockBar)
-    app.component('Introduce', Introduce)
-    app.component('Hitokoto', Hitokoto)
     app.component('ColourPicker', ColourPicker)
-    app.component('NavPage', NavPage)
     app.component('AsideOutlineAfter', AsideOutlineAfter)
-    app.component('NavPageMinecraft', NavPageMinecraft)
     app.component('RepoCard', RepoCard)
     // built-in components
     // app.component('RepoCard', RepoCard)

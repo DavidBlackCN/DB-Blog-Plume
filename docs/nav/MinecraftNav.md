@@ -7,3 +7,7 @@ sidebar: false
 ---
 
 <NavPageMinecraft />
+
+<script setup>
+import NavPageMinecraft from '/.vuepress/theme/components/NavPageMinecraft.vue'
+</script>

@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import { categories, sites } from '../data/NavData.ts';
+import { categories, sites } from '../data/NavDataMinecraft.ts';
 
 export default {
   name: 'NavPage',

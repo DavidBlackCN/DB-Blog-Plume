@@ -7,3 +7,7 @@ sidebar: false
 ---
 
 <NavPage />
+
+<script setup>
+import NavPage from '/.vuepress/theme/components/NavPage.vue'
+</script>

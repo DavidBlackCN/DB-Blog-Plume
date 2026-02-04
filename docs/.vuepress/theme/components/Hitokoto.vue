@@ -32,7 +32,10 @@ export default {
   color: #6a737d;
 }
 .hitokoto {
-  font-style: italic;
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: var(--vp-c-text-3);
+  margin: 0;
+  font-family: 'STKaiti', 'KaiTi', serif;
+  letter-spacing: 1px;
 }
 </style>
