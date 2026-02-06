@@ -64,145 +64,153 @@
 }
 
 /* --- 微调 --- */
-
-:root {
-    font-optical-sizing: auto;
-    --vp-custom-block-font-size: 17px;
-}
-
-/* --- 恢复原有样式 
-.vp-doc :not(pre) > code {
-    color: var(--vp-c-text-1);
-} --- */
-
-.vp-doc .hint-container.tip code {
-    color: var(--vp-c-text-1);
-}
-
-.vp-doc div[class*="language-"] pre, .vp-doc div[class*="language-"] code {
-    font-weight: 350;
-    font-variant-ligatures: normal;
-}
-
 html {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 450;
     text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
     font-feature-settings: "liga" 1, "dlig" 1;
+}
+:root {
+    font-optical-sizing: auto;
+    --vp-custom-block-font-size: 16px;
+    --vp-sidebar-width: 260px; /* 稍微加宽侧边栏，更有呼吸感 */
+}
+
+/* 正文段落：增加行高，优化字间距，提升长文阅读舒适度 */
+.vp-doc p, .vp-doc li {
+    line-height: 1.8;
+    margin: 1.2rem 0;
+    letter-spacing: 0.02em;
+}
+/* 标题样式优化：增加层次感 */
+.vp-doc h1 {
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+}
+.vp-doc h2 {
+    margin: 2.5rem 0 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--vp-c-divider);
+    font-weight: 600;
+}
+.vp-doc h3 {
+    margin: 2rem 0 1rem;
+    font-weight: 600;
 }
 
 .vp-doc blockquote > p:not(.katex) {
     font-size: 1em;
-    padding: 10px 0;
+    padding: 4px 0;
 }
-
-/* --- 恢复原有样式
-.hint-container-title {
-    display: none;
-}
-
-blockquote::before {
-    display: none;
-} --- */
-
-.vp-doc h2 {
-    margin: 0 0 18px;
-}
-
-.vp-doc table {
-    place-items: center;
-}
-
+/* 图片优化：自动居中、圆角、阴影 */
 .vp-doc img {
-    text-align: center;
+    display: block;
+    margin: 2rem auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
 }
-
-.root {
-    --vp-sidebar-width: 245px;
+.vp-doc img:hover {
+    transform: scale(1.01);
 }
-
-@media (min-width: 1280px) {
-    .content[data-v-d64b92aa] {
-        padding: 0 28px 128px;
-    }
+/* 表格优化：居中并增加现代感 */
+.vp-doc table {
+    display: table;
+    margin: 2rem auto;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--vp-c-divider);
 }
-
-:root {
-    --tk-radius: 12px;
-    --tk-second-radius: 6px;
-    --tk-card-border-width: 1px;
-    --tk-border-color: #e3e8f7;
-    --tk-action-bg: #fff;
-    --tk-card-border: #e3e8f7;
-    --tk-owo-body-bg-color: rgba(255, 255, 255, 0.7);
-    --style-border-always: 1px solid var(--tk-card-border);
-    --tk-comment-border: 0.5px solid var(--tk-card-border);
+.vp-doc thead {
+    background-color: var(--vp-c-bg-soft);
 }
-
-html.dark {
-    --tk-border-color: #42444a;
-    --tk-action-bg: #2c2c2c;
-    --tk-card-border: #42444a;
-    --tk-owo-body-bg-color: rgba(0, 0, 0, 0.7);
-    --tk-text: #ccb !important;
-    --style-border-always: 1px solid var(--tk-card-border);
-    --tk-comment-border: 0.5px solid var(--tk-card-border);
+.vp-doc th, .vp-doc td {
+    padding: 12px 16px;
+    border: 0.5px solid var(--vp-c-divider);
 }
-
-@keyframes modal_effect {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
+/* 列表间距微调 */
+.vp-doc ul, .vp-doc ol {
+    padding-left: 1.5rem;
+}
+/* 行内代码块 */
+.vp-doc :not(pre) > code {
+    color: var(--vp-c-brand-1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: var(--vp-font-family-mono);
+}
+/* 代码块细节优化 */
+.vp-doc div[class*="language-"] {
+    border-radius: 10px;
+    margin: 1.5rem 0;
+}
+.vp-doc div[class*="language-"] pre, 
+.vp-doc div[class*="language-"] code {
+    font-weight: 400;
+    font-variant-ligatures: common-ligatures;
 }
 
 .vp-navbar-title .vp-link.no-icon.link.title {
-    font-size: 15pt !important;
-    font-weight: 400;
+    font-size: 1.25rem !important;
+    font-weight: 600;
 }
-
-.vp-link.link.navbar-menu-link {
-    font-size: 13pt !important;
-}
-
+.vp-link.link.navbar-menu-link,
 .vp-flyout.vp-navbar-menu-group .button.button span.text {
-    font-size: 13pt !important;
+    font-size: 18px !important;
+    font-weight: 500;
 }
-
+.vp-nav.fixed .vp-navbar {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
+}
+/* 翻页器 (Pager) 优化 */
+.pager {
+    display: flex;
+    gap: 16px;
+    margin-top: 3rem;
+}
+.pager-link {
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    transition: all 0.3s ease !important;
+}
+.pager-link:hover {
+    border-color: var(--vp-c-brand-1) !important;
+    background-color: var(--vp-c-brand-soft) !important;
+}
+/* --- 响应式适配 --- */
+@media (min-width: 1280px) {
+    .content[data-v-d64b92aa] {
+        padding: 0 40px 128px;
+        max-width: 860px; /* 控制正文最大宽度，更有利于阅读 */
+        margin: 0 auto;
+    }
+}
+@media (max-width: 768px) {
+    .vp-doc h1 { font-size: 1.8rem; }
+    .vp-doc { padding: 0 16px; }
+}
+/* --- 其他组件兼容 --- */
 .katex {
     color: var(--vp-c-text-1) !important;
+    font-size: 1.05em;
 }
-
-.vp-repo-card {
-    background-color: var(--vp-code-block-bg);
-}
-
 .search-input {
     font-feature-settings: "liga" 1, "dlig" 1;
     background-color: var(--vp-c-bg);
+    border-radius: 8px;
 }
-
-.vp-nav.fixed .vp-navbar {
-    box-shadow: var(--vp-shadow-1);
+.vp-repo-card {
+    background-color: var(--vp-code-block-bg);
+    border-radius: 12px;
+    border: 1px solid var(--vp-c-divider);
 }
-
-.pager {
-    background-color: var(--vp-c-bg);
-}
-
-.pager:empty {
-    background-color: transparent;
-}
-
-/* --- 恢复原有样式
-.vp-navbar .vp-social-link.no-icon {
-    display: none;
-} --- */
 
 /* --- Twikoo 相关 --- */
 /* --- 评论系统优化样式 --- */
