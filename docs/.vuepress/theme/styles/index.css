@@ -4,98 +4,90 @@
   src: url('/fonts/MapleMono-CN-SemiBold.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
-  font-display: swap; /* 优化加载体验 */
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'LogoFont'; /* 站名 字体 */
+    font-family: 'LogoFont';
     src: url('/fonts/Segoesc.woff2') format('woff2'); 
     font-weight: normal;
     font-style: normal;
-    font-display: swap; /* 优化加载体验 */
+    font-display: swap;
 }
 
 @font-face {
-    font-family: 'MapleMono-CN-LightItalic'; /* 一言 字体 */
+    font-family: 'MapleMono-CN-LightItalic';
     src: url('/fonts/MapleMono-CN-LightItalic.woff2') format('woff2'); 
     font-weight: normal;
     font-style: normal;
-    font-display: swap; /* 优化加载体验 */
+    font-display: swap;
 }
 
-/* 应用字体 */
+:root {
+    /* 这里的 0.04 - 0.05 是非常浅的颜色，不会干扰阅读 */
+    --vp-doc-blog-bg: rgba(100, 190, 190, 0.05); 
+    --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.5);
+    --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.2);
+    /* 确保背景色是实色，遮挡底层可能存在的网格 */
+    --vp-nav-bg-color: var(--vp-c-bg); 
+    --vp-sidebar-bg-color: var(--vp-c-bg);
+}
+
+[data-theme="dark"] {
+    --vp-doc-blog-bg: rgba(100, 190, 190, 0.03); /* 深色模式下更淡一点 */
+}
+
+/* --- 全局背景网格 --- */
+.vp-navbar {
+    background-color: var(--vp-nav-bg-color) !important;
+    z-index: 20; /* 确保在最上层 */
+}
+.vp-sidebar {
+    background-color: var(--vp-sidebar-bg-color) !important;
+    z-index: 10;
+}
+
 body {
   font-family: 'MapleMono-CN-SemiBold', sans-serif;
+  background-image:
+    /* 横线 */
+    linear-gradient(
+      to bottom,
+      transparent calc(1.2rem - 1px),
+      var(--vp-doc-blog-bg) calc(1.2rem - 1px),
+      var(--vp-doc-blog-bg) 1.2rem
+    ),
+    /* 竖线 */
+    linear-gradient(
+      to right,
+      transparent calc(1.2rem - 1px),
+      var(--vp-doc-blog-bg) calc(1.2rem - 1px),
+      var(--vp-doc-blog-bg) 1.2rem
+    );
+  background-size: 1.2rem 1.2rem;
+  background-attachment: fixed; 
 }
 
-/* 导航 */
+/* 导航栏 */
 .vp-navbar {
   .navbar-menu-link {
     font-size: 18px;
   }
 }
 
-/*左上角logo*/
+/* 左上角logo */
 .vp-navbar-title span{
     font-family: LogoFont, serif;
     font-weight: bolder;
     font-size: 1.4rem;
 }
 
-/*文章背景*/
-.vp-doc-container {
-    >.container{
-        >.content{
-            background-image:
-            /* 横线 */
-            linear-gradient(
-              to bottom,
-              transparent 0,
-              transparent calc(1.5em - 1px),
-              var(--vp-doc-blog-bg, rgba(0,0,0,0.08)) calc(1.25em - 1px),
-              var(--vp-doc-blog-bg, rgba(0,0,0,0.08)) 1.25em
-            ),
-            /* 竖线 */
-            linear-gradient(
-              to right,
-              transparent 0,
-              transparent calc(1.5em - 1px),
-              var(--vp-doc-blog-bg, rgba(0,0,0,0.08)) calc(1.25em - 1px),
-              var(--vp-doc-blog-bg, rgba(0,0,0,0.08)) 1.25em
-            );
-          background-size: 1.5em 1.5em; /* 正方形格子！ */
-          background-position: 0 0;
-        }
-    }
-}
-
-/*颜色*/
-:root {
-
-    /*文章背景线条颜色*/
-    --vp-doc-blog-bg: rgba(100, 190, 190, 0.08);
-    /*博客单项hover border 颜色*/
-    --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.5);
-    /*博客单项hover shadow*/
-    --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.2);
-}
-
-[data-theme="dark"] {
-    --vp-doc-blog-bg: rgba(30, 120, 120, 0.103);
-    --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.4);
-    --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.15);
-}
-
-/*博客页面 单个卡片效果*/
-.vp-blog-post-item{
-    @media screen and (max-width: 770px) {
-        margin: 0 0!important;
-        border-radius: 6px;
-    }
-    transition: box-shadow 0.2s ease-out,border-color 0.2s ease-out!important;
-    border: 1px rgba(255, 0, 0, 0) solid;
-    &:hover{
-        box-shadow: 0 0 7px 2px var(--vp-blog-post-item-hover-shadow)!important;
+/* 博客页面 单个卡片效果 */
+.vp-blog-post-item {
+    background-color: var(--vp-c-bg); /* 卡片设为实色，防止背景线穿过文字 */
+    transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out !important;
+    &:hover {
+        box-shadow: 0 0 7px 2px var(--vp-blog-post-item-hover-shadow) !important;
         border: 1px var(--vp-blog-post-item-hover-border) solid;
     }
 }

@@ -45,7 +45,7 @@
             有些事你不要太当真。——《售梦者》
           </div>
 
-          <!-- 新增：技术栈传送带卡片 -->
+          <!-- 技术栈传送带卡片 -->
           <div class="tech-stack-card">
             <div class="tech-stack-header">
               <Icon icon="ph:stack-bold" class="stack-icon" />
@@ -53,7 +53,6 @@
             </div>
             <div class="tech-carousel">
               <div class="tech-track">
-                <!-- 渲染两遍以实现无缝滚动 -->
                 <div v-for="n in 2" :key="n" class="tech-group">
                   <div v-for="tech in techStack" :key="tech.name" class="tech-item" :title="tech.name">
                     <Icon :icon="tech.icon" />
@@ -88,7 +87,7 @@
       </div>
     </div>
 
-    <!-- 优化：一言放在页面底部居中 -->
+    <!-- 底部一言 -->
     <div class="hitokoto-footer">
       <p class="hitokoto-text">{{ hitokoto }}</p>
     </div>
@@ -102,7 +101,6 @@ import { Icon } from '@iconify/vue'
 const hitokoto = ref('加载一言中...')
 const pixelCanvas = ref(null)
 
-// 技术栈数据
 const techStack = [
   { name: 'Vue', icon: 'logos:vue' },
   { name: 'TypeScript', icon: 'logos:typescript-icon' },
@@ -122,7 +120,6 @@ const techStack = [
   { name: 'PyCharm', icon: 'logos:pycharm' },
 ]
 
-// --- 动画逻辑控制 ---
 const fullCommand = 'whoami'
 const fullResponseName = 'DavidBlackCN'
 const displayedCommand = ref('')
@@ -175,10 +172,22 @@ const initPixelBackground = () => {
   const canvas = pixelCanvas.value
   const ctx = canvas.getContext('2d')
   let particles = []
+
+  // 动态获取当前主题色调
+  const getThemeConfig = () => {
+    const isDark = document.documentElement.classList.contains('dark')
+    return {
+      rgb: isDark ? '100, 160, 255' : '0, 100, 250',
+      pOpacity: isDark ? 0.4 : 0.3,
+      lOpacity: isDark ? 0.4 : 0.25
+    }
+  }
+
   const resize = () => {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
   }
+
   class Particle {
     constructor() { this.reset() }
     reset() {
@@ -199,29 +208,34 @@ const initPixelBackground = () => {
       }
     }
     draw() {
-      ctx.fillStyle = 'rgba(100, 160, 255, 0.4)'
+      const config = getThemeConfig()
+      ctx.fillStyle = `rgba(${config.rgb}, ${config.pOpacity})`
       ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill()
     }
   }
+
   const drawLines = () => {
+    const config = getThemeConfig()
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         let dx = particles[i].x - particles[j].x
         let dy = particles[i].y - particles[j].y
         let distance = Math.sqrt(dx * dx + dy * dy)
         if (distance < 150) {
-          ctx.strokeStyle = `rgba(100, 160, 255, ${0.4 - distance / 150})`
+          ctx.strokeStyle = `rgba(${config.rgb}, ${config.lOpacity - distance / 150})`
           ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke()
         }
       }
     }
   }
+
   const animate = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     particles.forEach(p => { p.update(); p.draw() })
     drawLines()
     animationFrame = requestAnimationFrame(animate)
   }
+
   window.addEventListener('resize', resize)
   window.addEventListener('mousemove', handleMouseMove)
   resize()
@@ -280,7 +294,13 @@ onUnmounted(() => {
   pointer-events: none;
   background: radial-gradient(circle at center, transparent 0%, var(--vp-c-bg) 100%);
 }
-.pixel-canvas { opacity: 0.6; }
+.pixel-canvas { 
+  opacity: 0.8; 
+  transition: opacity 0.3s ease;
+}
+:dark .pixel-canvas {
+  opacity: 0.6;
+}
 
 /* 头像 */
 .avatar-wrapper {
@@ -315,9 +335,9 @@ onUnmounted(() => {
   background: #1e1e1e;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
   margin-bottom: 1.5rem;
-  border: 1px solid #333;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   width: fit-content;
   min-width: 450px;
 }
@@ -352,7 +372,7 @@ onUnmounted(() => {
   font-style: italic;
 }
 
-/* 技术栈卡片优化 */
+/* 技术栈卡片 */
 .tech-stack-card {
   background: var(--vp-c-bg-soft);
   backdrop-filter: blur(10px);
@@ -361,6 +381,7 @@ onUnmounted(() => {
   padding: 1.2rem;
   margin-bottom: 2rem;
   max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 .tech-stack-header {
   display: flex;
@@ -377,7 +398,6 @@ onUnmounted(() => {
   height: 24px;
 }
  
-/* 传送带动画 */
 .tech-carousel {
   overflow: hidden;
   width: 100%;
@@ -428,7 +448,7 @@ onUnmounted(() => {
   color: #fff;
 }
 
-/* 底部一言优化 */
+/* 底部一言 */
 .hitokoto-footer {
   position: absolute;
   bottom: 2rem;
@@ -440,10 +460,11 @@ onUnmounted(() => {
 }
 .hitokoto-text {
   font-size: 1rem;
-  color: var(--vp-c-text-3);
+  color: var(--vp-c-text-2);
   margin: 0;
   font-family: 'STKaiti', 'KaiTi', serif;
   letter-spacing: 1px;
+  text-shadow: 0 0 8px var(--vp-c-bg);
 }
 
 /* 动画 */
