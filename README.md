@@ -40,10 +40,10 @@ import Introduce from './theme/components/ColourPicker.vue'
   
 
 1. `Introduce.vue` 为[介绍页](/more/index)卡片组件, 以下组件的使用说明可查看原仓库的README，此处主要进行细微修改并修改手机浏览兼容性.
-> `AboutMeCharacter.vue`, `AboutMeFriendLink.vue`, `AboutMeName.vue`, `AboutMeProject.vue`, `AboutMeSkill.vue`, `AboutMeText.vue` 以及 `Introduce.vue` 均修改自[该博客](https://github.com/zhenghaoyang24/hoey-blog-plume)
-2. `AsideOutlineAfter.vue` 为右边侧边栏目录下方显示的额外跳转链接，可按需求修改或新增更多链接.
-3. `ColourPicker.vue` 为导航栏的颜色选择器，可修改主题颜色，修改自[该博客](https://github.com/physnya/blog).
-4. `NavPage.vue` 为导航页面专用组件，在此处修改引入的外部数据文件：
+> `AboutMeCharacter.vue`, `AboutMeFriendLink.vue`, `AboutMeName.vue`, `AboutMeAbilities.vue`, `AboutMeText.vue` 以及 `Introduce.vue` 均修改自[该博客](https://github.com/zhenghaoyang24/hoey-blog-plume)
+1. `AsideOutlineAfter.vue` 为右边侧边栏目录下方显示的额外跳转链接，可按需求修改或新增更多链接.
+2. `ColourPicker.vue` 为导航栏的颜色选择器，可修改主题颜色，修改自[该博客](https://github.com/physnya/blog).
+3. `NavPage.vue` 为导航页面专用组件，在此处修改引入的外部数据文件：
 ```
 <script>
 import { categories, sites } from '../data/NavData.ts';

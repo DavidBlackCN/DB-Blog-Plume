@@ -297,8 +297,31 @@ export default {
   flex-shrink: 0;
 }
 
-.site-logo { width: 32px; height: 32px; }
-.site-logo img { width: 100%; height: 100%; object-fit: contain; }
+.site-logo { 
+  width: 40px;
+  height: 40px;
+  display: flex;           
+  align-items: center;     
+  justify-content: center; 
+  overflow: hidden;        
+}
+.site-logo img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain;
+  display: block;          
+}
+.site-initial {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--vp-c-brand);
+  line-height: 1;          
+}
 
 /* 描述文字截断 */
 .site-desc {

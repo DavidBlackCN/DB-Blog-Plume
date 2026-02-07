@@ -1,9 +1,10 @@
 ---
 title: DemoNav
 createTime: 2025/08/14 22:50:45
-permalink: /nav/w41jlrnm/
+permalink: /nav/demo-nav/
 pageLayout: page
 sidebar: false
+photoSwipe: false
 ---
 
 <NavPage />
