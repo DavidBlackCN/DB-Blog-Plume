@@ -27,6 +27,12 @@ export const blog = defineCollection({
   title: '博客',
 })
 
+export const record = defineCollection({
+  type: 'post',
+  dir: 'record',
+  title: '流水帐',
+});
+
 export const demo = defineCollection({
   type: 'doc',
   dir: 'demo',
@@ -64,6 +70,7 @@ export const mcProject = defineCollection({
 
 export const collections = defineCollections([
   blog,
+  record,
   demo,
   more,
   nav,
