@@ -10,7 +10,7 @@ tags:
 
 <!-- more -->
 ## 主页项目
-- [DavidBlackCN](https://github.com/DavidBlackCN/DavidBlackCN)
+<GitHubCard url="https://github.com/DavidBlackCN/DavidBlackCN" />
 
 ## 参考
 - [Github 首页美化教程（一）：打造个性化的GitHub首页](https://zhuanlan.zhihu.com/p/454597068)

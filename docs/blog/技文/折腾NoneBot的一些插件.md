@@ -17,9 +17,9 @@ tags:
 
 ## 仓库
 
-<RepoCard repo="DavidBlackCN/nonebot-plugin-repository " />
+<GitHubCard url="https://github.com/DavidBlackCN/nonebot-plugin-repository" />
 
-<RepoCard repo="LiteyukiStudio/LiteyukiBot " />
+<GitHubCard url="https://github.com/LiteyukiStudio/LiteyukiBot" />
 
 
 ## 简介

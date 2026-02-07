@@ -315,7 +315,7 @@ onUnmounted(() => {
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   object-fit: cover;
   box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  border: 8px solid var(--vp-c-brand-soft);
+  border: 8px solid var(--vp-c-brand-2);
   animation: morphing 8s infinite alternate ease-in-out;
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
