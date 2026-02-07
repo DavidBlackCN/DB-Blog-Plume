@@ -438,7 +438,7 @@ onUnmounted(() => {
   background: var(--vp-c-bg-soft);
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.4rem; color: var(--vp-c-text-2);
+  font-size: 1.8rem; color: var(--vp-c-text-2);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 1px solid var(--vp-c-divider);
 }
