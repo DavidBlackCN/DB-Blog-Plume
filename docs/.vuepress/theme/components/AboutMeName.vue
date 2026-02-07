@@ -4,13 +4,21 @@
 
 <template>
   <div class="about-me-name">
-    <p>𝓗𝓮𝓵𝓵𝓸 𝓦𝓸𝓻𝓵𝓭！𝓦𝓮𝓵𝓬𝓸𝓶𝓮 𝓽𝓸 𝓶𝔂 𝔀𝓮𝓫𝓼𝓲𝓽𝓮！</p>
+    <p class="about-me-hello-text"> 𝓗𝓮𝓵𝓵𝓸 𝓦𝓸𝓻𝓵𝓭！𝓦𝓮𝓵𝓬𝓸𝓶𝓮 𝓽𝓸 𝓶𝔂 𝔀𝓮𝓫𝓼𝓲𝓽𝓮！</p>
     <p class="about-me-card-text-big">你可以叫我 黑姐姐w .</p>
-    <p>虽然并不是真的姐姐(划掉)，但是真的是一位Minecraft开发者(逃)</p>
+    <p class="about-me-text">虽然并不是真的姐姐(划掉)，但是真的是一位Minecraft开发者(逃)</p>
   </div>
 </template>
 
 <style scoped>
+.about-me-hello-text {
+  font-size: 1.2rem;
+  line-height: 0.4;
+}
+.about-me-text {
+  font-size: 1rem;
+  line-height: 0.4;
+}
 .about-me-name {
   border-radius: 12px;
   justify-content: center;

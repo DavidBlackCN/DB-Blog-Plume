@@ -1,102 +1,184 @@
-<script setup>
-import FRIENDS from '../data/friends.json'
-</script>
-
 <template>
   <div class="about-me-card-bg vp-blog-post-item about-me-friends">
-    <p class="about-me-card-title-normal">𝓕𝓻𝓲𝓮𝓷𝓭 𝓛𝓲𝓷𝓴𝓼</p>
-    <div class="about-me-friends-title">
-      <p class="about-me-card-text-big about-me-card-text-color">部分友链w</p>
-      <router-link to="/more/friends/">
-        <icon name="game-icons:three-friends"/>
-        所有好友
+    <!-- 顶部标题区 -->
+    <div class="friends-header">
+      <div class="title-group">
+        <p class="about-me-card-title-normal">𝓕𝓻𝓲𝓮𝓷𝓭 𝓛𝓲𝓷𝓴𝓼</p>
+        <p class="subtitle">部分友链w</p>
+      </div>
+      <router-link to="/more/friends/" class="all-friends-button">
+        <icon name="game-icons:three-friends" />
+        <span>所有好友</span>
       </router-link>
     </div>
-    <div class="about-me-friends-content">
-      <a :href="item.link" target="_blank" class="about-me-friends-item" v-for="(item, index) in FRIENDS" :key="index"
-         :title="item.name+':'+item.link">
-        <img :src="item.avatar" alt="头像">
+
+    <!-- 友链网格 -->
+    <div class="friends-grid">
+      <a 
+        v-for="(item, index) in displayFriends" 
+        :key="index"
+        :href="item.link" 
+        target="_blank" 
+        class="friend-card"
+        :title="`${item.name}: ${item.descr || item.link}`"
+      >
+        <div class="avatar-wrapper">
+          <img :src="item.avatar" :alt="item.name" loading="lazy" @error="handleImgError">
+          <div class="avatar-overlay">
+            <span class="friend-name">{{ item.name }}</span>
+          </div>
+        </div>
       </a>
     </div>
   </div>
 </template>
 
+<script setup>
+import { computed } from 'vue';
+import FRIENDS from '../data/friends.json';
+
+// 仅展示前 8 个友链，避免卡片过长
+const displayFriends = computed(() => FRIENDS.slice(0, 8));
+
+// 图片加载失败处理
+const handleImgError = (e) => {
+  e.target.src = 'https://www.davidblackcn.cc/avatar/davidblack-round.png'; // 替换为你的默认头像
+};
+</script>
+
 <style scoped>
-.about-me-friends-item {
-  user-select: none;
-  cursor: pointer;
-  position: relative;
-  border-radius: 20%;
-  width: 80px;
-  height: 80px;
-  overflow: hidden;
-  margin: 10px;
-
-  &:hover > img {
-    transform: scale(1.2);
-  }
-
-  @media screen and (max-width: 770px) {
-    margin: 5px;
-    width: 60px;
-    height: 60px;
-  }
-
-  > img {
-    width: 100%;
-    height: 100%;
-    transition: transform 0.3s ease;
-  }
-}
-
-.about-me-friends-content {
-  margin-top: 0px;
-  display: flex;
-  flex-wrap: wrap;
-  max-height: 300px;
-  line-height: 45px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  @media screen and (max-width: 770px) {
-    max-height: 200px;
-  }
-}
-
 .about-me-friends {
-  padding: 10px;
-  overflow: inherit;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.about-me-friends-title {
+/* 头部样式 */
+.friends-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+}
 
-  > a {
-    font-size: 16px;
-    color: var(--vp-c-text-1);
-    display: inline-flex;
-    align-items: center;
-    font-weight: 600;
-    border-radius: 10px;
-    padding: 10px;
-    height: 40px;
-    transition: background-color 0.2s;
-    background: var(--vp-c-brand-2);
+.title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-    &:hover {
-      background: var(--vp-c-brand-1);
-    }
+.about-me-card-title-normal {
+  font-size: 1.2rem;
+  line-height: 0.4;
+}
 
-    @media screen and (max-width: 770px) {
-      padding: 7px;
-      font-size: 14px;
-      height: 30px;
-      border-radius: 5px;
-    }
-  }
+.subtitle {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 1rem;
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: fit-content;
+}
 
-  > p {
-    display: inline-flex;
+/* 按钮样式优化 */
+.all-friends-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background-color: var(--vp-c-bg-soft);
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 14px;
+  font-size: 1.4rem;
+  color: var(--vp-c-text-1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.all-friends-button:hover {
+  background-color: var(--vp-c-brand-1);
+  color: white;
+  border-color: var(--vp-c-brand-1);
+}
+
+/* 网格布局优化 */
+.friends-grid {
+  display: grid;
+  /* 自动填充网格，最小宽度 70px */
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 16px;
+}
+
+.friend-card {
+  text-decoration: none;
+  position: relative;
+}
+
+.avatar-wrapper {
+  aspect-ratio: 1 / 1; /* 强制正方形 */
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--vp-c-bg-soft);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid transparent;
+}
+
+.avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+/* 悬浮效果 */
+.friend-card:hover .avatar-wrapper {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--vp-c-brand-1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.friend-card:hover img {
+  transform: scale(1.1);
+}
+
+/* 悬浮时显示名字的微型遮罩（可选） */
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.friend-card:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.friend-name {
+  color: white;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+/* 移动端适配 */
+@media (max-width: 640px) {
+  .friends-grid {
+    grid-template-columns: repeat(4, 1fr); /* 移动端固定 4 列 */
+    gap: 12px;
   }
 }
 </style>

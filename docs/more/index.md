@@ -5,6 +5,7 @@ permalink: /more/index/
 pageLayout: page
 sidebar: false
 externalLinkIcon: false
+photoSwipe: false
 ---
 
 <ImageCard
