@@ -2,6 +2,7 @@
 title: README
 createTime: 2025/08/30 18:04:30
 permalink: /more/gh-readme/
+sidebar: false
 ---
 ## DB-Blog-Plume
 

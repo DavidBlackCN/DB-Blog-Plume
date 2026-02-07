@@ -1,7 +1,7 @@
 ---
 title: MinecraftNav
 createTime: 2025/08/14 22:44:18
-permalink: /nav/nav-minecraft/
+permalink: /nav/minecraft-nav/
 pageLayout: page
 sidebar: false
 photoSwipe: false
