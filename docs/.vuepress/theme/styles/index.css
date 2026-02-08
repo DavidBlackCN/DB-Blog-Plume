@@ -1,7 +1,15 @@
 /* --- 1. 字体定义 --- */
 @font-face {
-  font-family: 'MapleMono-CN-SemiBold';
+  font-family: 'MapleMono-SemiBold';
   src: url('/fonts/MapleMono-CN-SemiBold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MapleMono-Medium';
+  src: url('/fonts/MapleMono-Medium.ttf.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -52,10 +60,22 @@ body {
     backdrop-filter: blur(10px);
 }
 
+/* 搜索框样式 */
+.vp-search-box {
+  background-color: var(--vp-c-bg) !important;
+  border: 4px solid var(--vp-c-divider) !important;
+  border-radius: 12px !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  font-family: "MapleMono-SemiBold";
+}
+
 .vp-link.link.navbar-menu-link,
 .vp-flyout.vp-navbar-menu-group .button.button span.text {
     font-size: 18px !important;
     font-weight: 500;
+    font-family: "MapleMono-SemiBold";
 }
 
 /* Logo 样式：使用渐变主题色 */
@@ -76,6 +96,7 @@ body {
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
   transition: all 0.3s ease !important;
+  font-family: "MapleMono-SemiBold";
 }
 
 .vp-blog-post-item:hover {

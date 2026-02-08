@@ -268,6 +268,7 @@ onUnmounted(() => {
   padding: 40px 24px;
   box-sizing: border-box;
   overflow: hidden;
+  font-family: "MapleMono-SemiBold";
 }
 
 .home-content {

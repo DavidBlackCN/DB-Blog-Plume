@@ -37,6 +37,8 @@ import Introduce from './theme/components/ColourPicker.vue'
 - `Introduce.vue` -> 介绍页卡片
 - `NavPage.vue` -> 导航页面
 - `ColourPicker.vue` -> 导航栏颜色选择器
+- `GitHubCard.vue` -> GitHub卡片
+- `GiteeCard.vue` -> 码云卡片
   
 
 1. `Introduce.vue` 为[介绍页](/more/index)卡片组件, 以下组件的使用说明可查看原仓库的README，此处主要进行细微修改并修改手机浏览兼容性.

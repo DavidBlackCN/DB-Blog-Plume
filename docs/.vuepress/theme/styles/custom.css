@@ -4,9 +4,8 @@
 
 :root {
   /* --- 字体定义 --- */
-  /* 强制全局使用 MapleMono-CN-SemiBold */
-  --vp-font-family-base: "MapleMono-CN-SemiBold", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --vp-font-family-mono: "MapleMono-CN-SemiBold", monospace;
+  --vp-font-family-base: "MapleMono-Medium", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --vp-font-family-mono: "MapleMono-Medium", monospace;
   
   /* 响应式字号定义 (最小值, 首选值, 最大值) */
   --font-size-h1: clamp(1.8rem, 5vw, 2.5rem);
@@ -89,15 +88,21 @@ html {
 /* 正文段落：增加行高，优化字间距 */
 .vp-doc p, 
 .vp-doc li {
-  line-height: 1.8;
-  margin: 1.2rem 0;
+  line-height: 2;
+  margin: 1rem 0;
+}
+
+/* 高亮样式：使用主题色 */
+.vp-doc strong {
+  color: var(--vp-c-brand-1); /* 使用主题色 */
+  padding: 0 2px;
 }
 
 /* 分割线样式 */
 .vp-doc hr {
   border: none;
   border-top: 2px solid var(--vp-c-brand-soft);
-  margin: 2rem 0;
+  margin: 1.2rem 0;
 }
 
 /* ==========================================================================
@@ -111,6 +116,7 @@ html {
   color: var(--vp-c-brand-1);
   margin-bottom: 2rem;
   line-height: 1.2;
+  font-family: "MapleMono-SemiBold";
 }
 
 /* H2 样式 */
@@ -120,6 +126,7 @@ html {
   padding-bottom: 0.6rem;
   border-bottom: 2px solid var(--vp-c-brand-soft);
   position: relative;
+  font-family: "MapleMono-SemiBold";
 }
 
 /* H2 装饰下划线 */
@@ -134,11 +141,32 @@ html {
 }
 
 /* H3 样式 */
-.vp-doc h3 {
+.vp-doc h3:not(.gh-title):not(.gt-title) {
   font-size: var(--font-size-h3);
   margin: 2rem 0 1rem;
   font-weight: 700;
   color: var(--vp-c-text-1);
+  font-family: "MapleMono-SemiBold";
+  padding: 0 18px;
+}
+
+/* H3 左侧线 */
+.vp-doc h3:not(.gh-title):not(.gt-title):before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -2px;
+  width: 4px;
+  height: 100%;
+  background: var(--vp-c-brand-1);
+}
+
+/* H4 样式 */
+.vp-doc h4 {
+  margin: 1.5rem 0 1rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  font-family: "MapleMono-SemiBold";
 }
 
 /* 引用块 (Blockquote) */
@@ -147,6 +175,7 @@ html {
   padding: 0.8rem 2.2rem;
   border-radius: 0 8px 8px 0;
   margin: 1.5rem 0;
+  font-family: "MapleMono-SemiBold";
 }
 
 /* 图片优化：居中、圆角、阴影 */
@@ -202,6 +231,7 @@ html {
   border-radius: 4px;
   font-family: var(--vp-font-family-mono);
   font-size: 0.9em;
+  font-family: "MapleMono-SemiBold";
 }
 
 /* 代码块细节优化 */
@@ -225,6 +255,7 @@ html {
   display: flex;
   gap: 16px;
   margin-top: 3rem;
+  font-family: "MapleMono-SemiBold";
 }
 
 .pager-link {
@@ -243,6 +274,7 @@ html {
   font-feature-settings: "liga" 1, "dlig" 1;
   background-color: var(--vp-c-bg);
   border-radius: 8px;
+  font-family: "MapleMono-SemiBold";
 }
 
 /* 仓库卡片 */
@@ -275,6 +307,7 @@ html {
   border-radius: var(--tk-radius);
   border: 1px solid var(--vp-c-divider);
   margin-bottom: 2rem;
+  font-family: "MapleMono-SemiBold";
 }
 
 .tk-submit .tk-avatar {
