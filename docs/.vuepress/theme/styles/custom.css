@@ -141,7 +141,7 @@ html {
 }
 
 /* H3 样式 */
-.vp-doc h3:not(.gh-title):not(.gt-title) {
+.vp-doc h3:not(.gh-title):not(.gt-title):not(.site-name) {  /* 排除其他组件的 H3 */
   font-size: var(--font-size-h3);
   margin: 2rem 0 1rem;
   font-weight: 700;
@@ -151,7 +151,7 @@ html {
 }
 
 /* H3 左侧线 */
-.vp-doc h3:not(.gh-title):not(.gt-title):before {
+.vp-doc h3:not(.gh-title):not(.gt-title):not(.site-name):before { /* 排除其他组件的 H3 */
   content: "";
   position: absolute;
   top: 0;

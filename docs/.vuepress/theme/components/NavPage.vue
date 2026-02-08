@@ -164,6 +164,7 @@ export default {
   max-width: 1880px;
   margin: 0 auto;
   padding: 2rem 1.5rem;
+  font-family: "MapleMono-SemiBold";
 }
 
 .subtitle {
@@ -353,7 +354,7 @@ export default {
 }
 .site-card:hover { transform: translateY(-3px); border-color: var(--vp-c-brand); }
 .site-header { display: flex; align-items: center; }
-.site-name { font-size: 1.05rem; font-weight: 600; color: var(--vp-c-text-1); margin: 0; }
+.site-name { font-size: 1.2rem; font-weight: 600; color: var(--vp-c-text-1); margin: 0; }
 .site-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }
 .site-tag { background: var(--vp-c-bg-alt); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; }
 
