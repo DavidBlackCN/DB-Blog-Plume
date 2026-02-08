@@ -1,219 +1,266 @@
-/* --- 配色 --- */
+/* ==========================================================================
+   1. 基础变量定义 (Root Variables)
+   ========================================================================== */
 
 :root {
+  /* --- 字体定义 --- */
+  /* 强制全局使用 MapleMono-CN-SemiBold */
+  --vp-font-family-base: "MapleMono-CN-SemiBold", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --vp-font-family-mono: "MapleMono-CN-SemiBold", monospace;
+  
+  /* 响应式字号定义 (最小值, 首选值, 最大值) */
+  --font-size-h1: clamp(1.8rem, 5vw, 2.5rem);
+  --font-size-h2: clamp(1.5rem, 4vw, 2rem);
+  --font-size-h3: clamp(1.25rem, 3vw, 1.5rem);
+  --font-size-body: 16px;
+  --vp-custom-block-font-size: 16px;
 
-  /**
-   * 主题色
-   * -------------------------------------------------------------------------- */
+  /* --- 布局定义 --- */
+  --vp-sidebar-width: 260px; /* 侧边栏宽度 */
+
+  /* --- 主题色 (浅色模式) --- */
   --theme-hue: #8cccd5;
-  --vp-c-brand-1: hsl(var(--theme-hue) 55% 55%);      /* 链接颜色、强调色 */
-  --vp-c-brand-2: hsl(var(--theme-hue) 50% 65%);      /* 链接、按钮 hover 颜色 */
+  --vp-c-brand-1: hsl(var(--theme-hue) 55% 55%);            /* 链接颜色、强调色 */
+  --vp-c-brand-2: hsl(var(--theme-hue) 50% 65%);            /* 链接、按钮 hover 颜色 */
   --vp-c-brand-3: hsl(var(--theme-hue) 50% 80% / 75%);      /* 背景色、边框色 */
-  --vp-c-brand-soft: hsla(var(--theme-hue) 50% 70% / 40%);   /* 辅助色 */
+  --vp-c-brand-soft: hsla(var(--theme-hue) 50% 70% / 20%);  /* 辅助色 */
 
-  /**
-   * 文本颜色
-   * -------------------------------------------------------------------------- */
+  /* --- 文本颜色 (浅色模式) --- */
+  --vp-c-text-1: rgba(60, 60, 67);                          /* 主要文本 */
+  --vp-c-text-2: rgba(60, 60, 67, 0.78);                    /* 次要文本 */
+  --vp-c-text-3: rgba(60, 60, 67, 0.78);                    /* 辅助文本 */
 
-  --vp-c-text-1: rgba(60, 60, 67);                    /* 主要文本 */
-  --vp-c-text-2: rgba(60, 60, 67, 0.78);              /* 次要文本 */
-  --vp-c-text-3: rgba(60, 60, 67, 0.78);              /* 辅助文本 */
-
-  /**
-   * 背景色
-   * -------------------------------------------------------------------------- */
-
-  --vp-c-bg: #fff;                                    /* 主体背景 */
-  --vp-nav-bg-color: #fff;                            /* 导航栏背景 */
-  --vp-nav-screen-bg-color: #fff;                     /* 移动端导航栏 */
-  --vp-local-nav-bg-color: #fff;                      /* 页面内导航栏 */
-  --vp-sidebar-bg-color: #f6f6f7;                     /* 侧边栏背景 */
-  --vp-code-block-bg: #f6f8fa;                        /* 代码块背景 */
+  /* --- 背景色 (浅色模式) --- */
+  --vp-c-bg: #fff;                                          /* 主体背景 */
+  --vp-nav-bg-color: #fff;                                  /* 导航栏背景 */
+  --vp-nav-screen-bg-color: #fff;                           /* 移动端导航栏 */
+  --vp-local-nav-bg-color: #fff;                            /* 页面内导航栏 */
+  --vp-sidebar-bg-color: #f6f6f7;                           /* 侧边栏背景 */
+  --vp-code-block-bg: #f6f8fa;                              /* 代码块背景 */
 }
+
+/* ==========================================================================
+   2. 暗色模式变量 (Dark Mode)
+   ========================================================================== */
 
 [data-theme="dark"] {
-
-  /**
-   * 主题色
-   * -------------------------------------------------------------------------- */
-
+  /* --- 主题色 (暗色模式) --- */
   --theme-hue: #8cccd5;
-    --vp-c-brand-1: hsl(var(--theme-hue) 80% 80%);      /* 链接颜色、强调色 */
-  --vp-c-brand-2: hsl(var(--theme-hue) 50% 65%);      /* 链接、按钮 hover 颜色 */
+  --vp-c-brand-1: hsl(var(--theme-hue) 80% 80%);            /* 链接颜色、强调色 */
+  --vp-c-brand-2: hsl(var(--theme-hue) 50% 65%);            /* 链接、按钮 hover 颜色 */
   --vp-c-brand-3: hsl(var(--theme-hue) 50% 80% / 75%);      /* 背景色、边框色 */
-  --vp-c-brand-soft: hsla(var(--theme-hue) 50% 70% / 40%);   /* 辅助色 */
+  --vp-c-brand-soft: hsla(var(--theme-hue) 50% 70% / 40%);  /* 辅助色 */
 
-  /**
-   * 文本颜色
-   * -------------------------------------------------------------------------- */
+  /* --- 文本颜色 (暗色模式) --- */
+  --vp-c-text-1: rgba(255, 255, 245, 0.86);                 /* 主要文本 */
+  --vp-c-text-2: rgba(235, 235, 245, 0.6);                  /* 次要文本 */
+  --vp-c-text-3: rgba(235, 235, 245, 0.6);                  /* 辅助文本 */
 
-  --vp-c-text-1: rgba(255, 255, 245, 0.86);           /* 主要文本 */
-  --vp-c-text-2: rgba(235, 235, 245, 0.6);            /* 次要文本 */
-  --vp-c-text-3: rgba(235, 235, 245, 0.6);            /* 辅助文本 */
-
-  /**
-   * 背景色
-   * -------------------------------------------------------------------------- */
-
-  --vp-c-bg: #1b1b1f;                                 /* 主体背景 */
-  --vp-nav-bg-color: #1b1b1f;                         /* 导航栏背景 */
-  --vp-nav-screen-bg-color: #1b1b1f;                  /* 移动端导航栏 */
-  --vp-local-nav-bg-color: #1b1b1f;                   /* 页面内导航栏 */
-  --vp-sidebar-bg-color: #161618;                     /* 侧边栏背景 */
-  --vp-code-block-bg: #202127;                        /* 代码块背景 */
+  /* --- 背景色 (暗色模式) --- */
+  --vp-c-bg: #1b1b1f;                                       /* 主体背景 */
+  --vp-nav-bg-color: #1b1b1f;                               /* 导航栏背景 */
+  --vp-nav-screen-bg-color: #1b1b1f;                        /* 移动端导航栏 */
+  --vp-local-nav-bg-color: #1b1b1f;                         /* 页面内导航栏 */
+  --vp-sidebar-bg-color: #161618;                           /* 侧边栏背景 */
+  --vp-code-block-bg: #202127;                              /* 代码块背景 */
 }
 
-/* --- 微调 --- */
+/* ==========================================================================
+   3. 全局基础排版 (Typography & Global)
+   ========================================================================== */
+
 html {
-    font-size: 16px;
-    font-weight: 450;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    font-feature-settings: "liga" 1, "dlig" 1;
+  font-size: 16px;
+  font-weight: 450;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "liga" 1, "dlig" 1;
 }
+
 :root {
-    font-optical-sizing: auto;
-    --vp-custom-block-font-size: 16px;
-    --vp-sidebar-width: 260px; /* 稍微加宽侧边栏，更有呼吸感 */
+  font-optical-sizing: auto;
 }
 
-/* 正文段落：增加行高，优化字间距，提升长文阅读舒适度 */
-.vp-doc p, .vp-doc li {
-    line-height: 1.8;
-    margin: 1.2rem 0;
-    letter-spacing: 0.02em;
+.vp-doc {
+  font-family: var(--vp-font-family-base);
+  letter-spacing: 0.01em;
 }
-/* 标题样式优化：增加层次感 */
+
+/* 正文段落：增加行高，优化字间距 */
+.vp-doc p, 
+.vp-doc li {
+  line-height: 1.8;
+  margin: 1.2rem 0;
+}
+
+/* 分割线样式 */
+.vp-doc hr {
+  border: none;
+  border-top: 2px solid var(--vp-c-brand-soft);
+  margin: 2rem 0;
+}
+
+/* ==========================================================================
+   4. Markdown 内容样式优化 (Headers, Quotes, Images, etc.)
+   ========================================================================== */
+
+/* H1 样式 */
 .vp-doc h1 {
-    font-weight: 700;
-    margin-bottom: 2rem;
-    letter-spacing: -0.02em;
-}
-.vp-doc h2 {
-    margin: 2.5rem 0 1.2rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--vp-c-divider);
-    font-weight: 600;
-}
-.vp-doc h3 {
-    margin: 2rem 0 1rem;
-    font-weight: 600;
+  font-size: var(--font-size-h1);
+  font-weight: 800;
+  color: var(--vp-c-brand-1);
+  margin-bottom: 2rem;
+  line-height: 1.2;
 }
 
-.vp-doc blockquote > p:not(.katex) {
-    font-size: 1em;
-    padding: 4px 0;
+/* H2 样式 */
+.vp-doc h2 {
+  font-size: var(--font-size-h2);
+  margin: 3rem 0 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--vp-c-brand-soft);
+  position: relative;
 }
-/* 图片优化：自动居中、圆角、阴影 */
+
+/* H2 装饰下划线 */
+.vp-doc h2::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--vp-c-brand-1);
+}
+
+/* H3 样式 */
+.vp-doc h3 {
+  font-size: var(--font-size-h3);
+  margin: 2rem 0 1rem;
+  font-weight: 700;
+  color: var(--vp-c-text-1);
+}
+
+/* 引用块 (Blockquote) */
+.vp-doc blockquote {
+  border-left: 4px solid var(--vp-c-brand-1);
+  padding: 0.8rem 2.2rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+}
+
+/* 图片优化：居中、圆角、阴影 */
 .vp-doc img {
-    display: block;
-    margin: 2rem auto;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease;
+  display: block;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
 }
+
 .vp-doc img:hover {
-    transform: scale(1.01);
+  transform: scale(1.01);
 }
-/* 表格优化：居中并增加现代感 */
+
+/* 表格样式 */
 .vp-doc table {
-    display: table;
-    margin: 2rem auto;
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--vp-c-divider);
+  display: table;
+  margin: 2rem auto;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid var(--vp-c-divider);
 }
+
 .vp-doc thead {
-    background-color: var(--vp-c-bg-soft);
+  background-color: var(--vp-c-bg-soft);
 }
-.vp-doc th, .vp-doc td {
-    padding: 12px 16px;
-    border: 0.5px solid var(--vp-c-divider);
+
+.vp-doc th {
+  background-color: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-hard);
+  font-weight: 600;
+  padding: 10px 14px;
 }
-/* 列表间距微调 */
-.vp-doc ul, .vp-doc ol {
-    padding-left: 1.5rem;
+
+.vp-doc td {
+  padding: 10px 14px;
 }
-/* 行内代码块 */
+
+/* 列表间距 */
+.vp-doc ul, 
+.vp-doc ol {
+  padding-left: 1.5rem;
+}
+
+/* 行内代码 */
 .vp-doc :not(pre) > code {
-    color: var(--vp-c-brand-1);
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.9em;
-    font-family: var(--vp-font-family-mono);
+  color: var(--vp-c-brand-1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.9em;
 }
+
 /* 代码块细节优化 */
 .vp-doc div[class*="language-"] {
-    border-radius: 10px;
-    margin: 1.5rem 0;
+  border-radius: 10px;
+  margin: 1.5rem 0;
 }
+
 .vp-doc div[class*="language-"] pre, 
 .vp-doc div[class*="language-"] code {
-    font-weight: 400;
-    font-variant-ligatures: common-ligatures;
+  font-weight: 400;
+  font-variant-ligatures: common-ligatures;
 }
 
-.vp-navbar-title .vp-link.no-icon.link.title {
-    font-size: 1.25rem !important;
-    font-weight: 600;
-}
-.vp-link.link.navbar-menu-link,
-.vp-flyout.vp-navbar-menu-group .button.button span.text {
-    font-size: 18px !important;
-    font-weight: 500;
-}
-.vp-nav.fixed .vp-navbar {
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    backdrop-filter: blur(10px);
-}
-/* 翻页器 (Pager) 优化 */
+/* ==========================================================================
+   5. 组件样式优化 (Components)
+   ========================================================================== */
+
+/* 翻页器 (Pager) */
 .pager {
-    display: flex;
-    gap: 16px;
-    margin-top: 3rem;
-}
-.pager-link {
-    border-radius: 12px !important;
-    padding: 1rem !important;
-    transition: all 0.3s ease !important;
-}
-.pager-link:hover {
-    border-color: var(--vp-c-brand-1) !important;
-    background-color: var(--vp-c-brand-soft) !important;
-}
-/* --- 响应式适配 --- */
-@media (min-width: 1280px) {
-    .content[data-v-d64b92aa] {
-        padding: 0 40px 128px;
-        max-width: 860px; /* 控制正文最大宽度，更有利于阅读 */
-        margin: 0 auto;
-    }
-}
-@media (max-width: 768px) {
-    .vp-doc h1 { font-size: 1.8rem; }
-    .vp-doc { padding: 0 16px; }
-}
-/* --- 其他组件兼容 --- */
-.katex {
-    color: var(--vp-c-text-1) !important;
-    font-size: 1.05em;
-}
-.search-input {
-    font-feature-settings: "liga" 1, "dlig" 1;
-    background-color: var(--vp-c-bg);
-    border-radius: 8px;
-}
-.vp-repo-card {
-    background-color: var(--vp-code-block-bg);
-    border-radius: 12px;
-    border: 1px solid var(--vp-c-divider);
+  display: flex;
+  gap: 16px;
+  margin-top: 3rem;
 }
 
-/* --- Twikoo 相关 --- */
-/* --- 评论系统优化样式 --- */
+.pager-link {
+  border-radius: 12px !important;
+  padding: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.pager-link:hover {
+  border-color: var(--vp-c-brand-1) !important;
+  background-color: var(--vp-c-brand-soft) !important;
+}
+
+/* 搜索框 */
+.search-input {
+  font-feature-settings: "liga" 1, "dlig" 1;
+  background-color: var(--vp-c-bg);
+  border-radius: 8px;
+}
+
+/* 仓库卡片 */
+.vp-repo-card {
+  background-color: var(--vp-code-block-bg);
+  border-radius: 12px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+/* 数学公式 (Katex) */
+.katex {
+  color: var(--vp-c-text-1) !important;
+  font-size: 1.05em;
+}
+
+/* ==========================================================================
+   6. Twikoo 评论系统优化
+   ========================================================================== */
 
 :root {
   --tk-radius: 12px;
@@ -221,7 +268,7 @@ html {
   --tk-shadow-hover: 0 8px 20px -4px rgba(0, 0, 0, 0.1);
 }
 
-/* 1. 提交区域 (输入框) */
+/* 提交区域 (输入框) */
 .tk-submit {
   padding: 20px;
   background-color: var(--vp-c-bg-soft);
@@ -285,12 +332,12 @@ html {
 
 /* 底部操作按钮 */
 .tk-row.actions {
-    display: flex !important;
-    justify-content: space-between !important; 
-    align-items: center !important;
-    width: 100% !important;
-    margin-left: 0 !important;
-    padding: 0 4px !important;
+  display: flex !important;
+  justify-content: space-between !important; 
+  align-items: center !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  padding: 0 4px !important;
 }
 
 .tk-row.actions button.el-button {
@@ -312,7 +359,7 @@ html {
   box-shadow: 0 4px 8px var(--vp-c-brand-soft);
 }
 
-/* 2. 评论列表区域 */
+/* 评论列表区域 */
 .tk-comments-title {
   margin-bottom: 1.5rem;
 }
@@ -338,11 +385,11 @@ html {
   box-shadow: var(--tk-shadow-hover);
 }
 
-/* 头像 */
+/* 头像样式 */
 .tk-avatar.tk-has-avatar {
   width: 42px !important;
   height: 42px !important;
-  border-radius: 10px !important; /* 稍微圆角比纯圆更现代 */
+  border-radius: 10px !important;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
@@ -370,7 +417,7 @@ html {
   color: var(--vp-c-text-1);
 }
 
-/* 3. 回复样式 (嵌套评论) */
+/* 回复样式 (嵌套评论) */
 .tk-replies {
   margin-top: 1rem;
   border-left: 2px solid var(--vp-c-divider);
@@ -384,7 +431,7 @@ html {
   margin-top: 0.5rem !important;
 }
 
-/* 4. 标签与勋章 (如博主标识) */
+/* 标签与勋章 */
 .tk-tag {
   font-size: 10px !important;
   padding: 1px 6px !important;
@@ -398,7 +445,7 @@ html {
 .tk-tag-red { background: #f56c6c !important; } /* 管理员 */
 .tk-tag-green { background: var(--vp-c-brand-1) !important; } /* 作者 */
 
-/* 5. 操作按钮 (回复、点赞) */
+/* 操作按钮 (回复、点赞) */
 .tk-action-icon {
   color: var(--vp-c-text-3);
   cursor: pointer;
@@ -415,7 +462,7 @@ html {
   font-size: 12px;
 }
 
-/* 6. 表情包面板优化 */
+/* 表情包面板优化 */
 .tk-owo {
   border: 1px solid var(--vp-c-divider) !important;
   border-radius: 8px !important;
@@ -433,7 +480,7 @@ html {
   transform: scale(1.2);
 }
 
-/* 7. 暗色模式细节修正 */
+/* Twikoo 暗色模式修正 */
 html.dark .tk-comment {
   background-color: #1e1e20;
 }
@@ -451,11 +498,38 @@ html.dark .tk-replies .tk-comment {
   display: none !important;
 }
 
-/* 移动端适配微调 */
+/* ==========================================================================
+   7. 响应式适配 (Responsive Design)
+   ========================================================================== */
+
+/* 宽屏适配：控制正文最大宽度，提升阅读体验 */
+@media (min-width: 1280px) {
+  .content[data-v-d64b92aa] {
+    padding: 0 40px 128px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+}
+
+/* 移动端适配 */
 @media (max-width: 768px) {
-  .tk-submit { padding: 15px; }
-  .tk-meta-input { flex-direction: column; }
-  .tk-comment { padding: 1rem !important; }
+  .vp-doc h1 { 
+    font-size: 1.8rem; 
+  }
+  .vp-doc { 
+    padding: 0 16px; 
+  }
+
+  /* Twikoo 移动端微调 */
+  .tk-submit { 
+    padding: 15px; 
+  }
+  .tk-meta-input { 
+    flex-direction: column; 
+  }
+  .tk-comment { 
+    padding: 1rem !important; 
+  }
   .tk-avatar.tk-has-avatar {
     width: 32px !important;
     height: 32px !important;

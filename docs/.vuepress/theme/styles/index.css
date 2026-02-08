@@ -1,4 +1,4 @@
-/* 定义字体 */
+/* --- 1. 字体定义 --- */
 @font-face {
   font-family: 'MapleMono-CN-SemiBold';
   src: url('/fonts/MapleMono-CN-SemiBold.woff2') format('woff2');
@@ -8,86 +8,78 @@
 }
 
 @font-face {
-    font-family: 'LogoFont';
-    src: url('/fonts/Segoesc.woff2') format('woff2'); 
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'LogoFont';
+  src: url('/fonts/Segoesc.woff2') format('woff2'); 
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-@font-face {
-    font-family: 'MapleMono-CN-LightItalic';
-    src: url('/fonts/MapleMono-CN-LightItalic.woff2') format('woff2'); 
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
+/* --- 2. 全局变量与背景 --- */
 :root {
-    /* 这里的 0.04 - 0.05 是非常浅的颜色，不会干扰阅读 */
-    --vp-doc-blog-bg: rgba(100, 190, 190, 0.05); 
-    --vp-blog-post-item-hover-border: rgba(80, 134, 161, 0.5);
-    --vp-blog-post-item-hover-shadow: rgba(80, 134, 161, 0.2);
-    /* 确保背景色是实色，遮挡底层可能存在的网格 */
-    --vp-nav-bg-color: var(--vp-c-bg); 
-    --vp-sidebar-bg-color: var(--vp-c-bg);
+  /* 背景网格颜色：非常淡的主题色 */
+  --vp-doc-blog-bg: rgba(140, 204, 213, 0.06); 
+  --vp-blog-post-item-hover-border: rgba(140, 204, 213, 0.5);
+  --vp-blog-post-item-hover-shadow: rgba(140, 204, 213, 0.15);
+  
+  /* 确保导航与侧边栏背景是不透明的 */
+  --vp-nav-bg-color: var(--vp-c-bg); 
+  --vp-sidebar-bg-color: var(--vp-c-bg);
 }
 
 [data-theme="dark"] {
-    --vp-doc-blog-bg: rgba(100, 190, 190, 0.03); /* 深色模式下更淡一点 */
-}
-
-/* --- 全局背景网格 --- */
-.vp-navbar {
-    background-color: var(--vp-nav-bg-color) !important;
-    z-index: 20; /* 确保在最上层 */
-}
-.vp-sidebar {
-    background-color: var(--vp-sidebar-bg-color) !important;
-    z-index: 10;
+  --vp-doc-blog-bg: rgba(140, 204, 213, 0.04);
 }
 
 body {
-  font-family: 'MapleMono-CN-SemiBold', sans-serif;
+  font-family: 'MapleMono-CN-SemiBold', var(--vp-font-family-base);
+  /* 优化后的网格背景 */
   background-image:
-    /* 横线 */
-    linear-gradient(
-      to bottom,
-      transparent calc(1.2rem - 1px),
-      var(--vp-doc-blog-bg) calc(1.2rem - 1px),
-      var(--vp-doc-blog-bg) 1.2rem
-    ),
-    /* 竖线 */
-    linear-gradient(
-      to right,
-      transparent calc(1.2rem - 1px),
-      var(--vp-doc-blog-bg) calc(1.2rem - 1px),
-      var(--vp-doc-blog-bg) 1.2rem
-    );
-  background-size: 1.2rem 1.2rem;
+    linear-gradient(to bottom, transparent calc(1.5rem - 1px), var(--vp-doc-blog-bg) calc(1.5rem - 1px), var(--vp-doc-blog-bg) 1.5rem),
+    linear-gradient(to right, transparent calc(1.5rem - 1px), var(--vp-doc-blog-bg) calc(1.5rem - 1px), var(--vp-doc-blog-bg) 1.5rem);
+  background-size: 1.5rem 1.5rem;
   background-attachment: fixed; 
 }
 
-/* 导航栏 */
+/* --- 3. 导航栏与 Logo --- */
 .vp-navbar {
-  .navbar-menu-link {
-    font-size: 18px;
-  }
+  background-color: var(--vp-nav-bg-color) !important;
+  z-index: 20;
 }
 
-/* 左上角logo */
-.vp-navbar-title span{
-    font-family: LogoFont, serif;
-    font-weight: bolder;
-    font-size: 1.4rem;
+.vp-nav.fixed .vp-navbar {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
 }
 
-/* 博客页面 单个卡片效果 */
+.vp-link.link.navbar-menu-link,
+.vp-flyout.vp-navbar-menu-group .button.button span.text {
+    font-size: 18px !important;
+    font-weight: 500;
+}
+
+/* Logo 样式：使用渐变主题色 */
+.vp-navbar-title span {
+  font-family: 'LogoFont', serif;
+  font-weight: bolder;
+  font-size: 1.6rem;
+}
+
+.navbar-menu-link {
+  font-size: 1.5rem !important;
+  font-weight: 500;
+}
+
+/* --- 4. 博客列表卡片 --- */
 .vp-blog-post-item {
-    background-color: var(--vp-c-bg); /* 卡片设为实色，防止背景线穿过文字 */
-    transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out !important;
-    &:hover {
-        box-shadow: 0 0 7px 2px var(--vp-blog-post-item-hover-shadow) !important;
-        border: 1px var(--vp-blog-post-item-hover-border) solid;
-    }
+  background-color: var(--vp-c-bg) !important;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  transition: all 0.3s ease !important;
+}
+
+.vp-blog-post-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--vp-c-brand-1) !important;
+  box-shadow: 0 8px 20px var(--vp-blog-post-item-hover-shadow) !important;
 }
