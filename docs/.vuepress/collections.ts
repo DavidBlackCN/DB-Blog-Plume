@@ -30,7 +30,7 @@ export const blog = defineCollection({
 export const record = defineCollection({
   type: 'post',
   dir: 'record',
-  title: '流水帐',
+  title: '随笔',
 });
 
 export const demo = defineCollection({
