@@ -88,7 +88,7 @@ html {
 /* 正文段落：增加行高，优化字间距 */
 .vp-doc p, 
 .vp-doc li {
-  line-height: 2;
+  line-height: 1.8;
   margin: 1rem 0;
 }
 

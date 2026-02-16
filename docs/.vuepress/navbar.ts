@@ -20,7 +20,7 @@ export default defineNavbarConfig([
     icon: 'ant-design:project-outlined',
     items: [
       { text: 'Github项目', link: '/ghProject/github', icon: 'mdi:github'},
-      { text: 'Minecraft项目', link: '/mcProject/1.整合包/AlsaceDesign', icon: 'material-symbols:other-admission-outline'}
+      { text: 'Minecraft项目', link: '/mcProject/1.Minecraft项目/目录', icon: 'material-symbols:other-admission-outline'}
     ]
   },
   {

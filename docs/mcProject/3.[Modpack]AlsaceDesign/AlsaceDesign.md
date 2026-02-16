@@ -1,7 +1,7 @@
 ---
-title: AlsaceDesign
+title: 简介
 createTime: 2025/08/24 23:15:23
-permalink: /mcProject/2m0pqzcx/
+permalink: /mcProject/modpack-alsace-design/jian-jie/
 ---
 
 ## 简介

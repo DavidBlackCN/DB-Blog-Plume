@@ -12,7 +12,6 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defineUserConfig } from 'vuepress'
 import { plumeTheme } from 'vuepress-theme-plume'
-import { oml2dPlugin } from 'vuepress-plugin-oh-my-live2d'
 import { collections } from './collections'
 
 export default defineUserConfig({
@@ -28,35 +27,6 @@ export default defineUserConfig({
 
   bundler: viteBundler(),
   shouldPrefetch: false, // 站点较大，页面数量较多时，不建议启用
-
-  plugins: [
-    oml2dPlugin({
-        mobileDisplay: false,
-        menus: {
-          disable: true
-        },
-      // 配置L2D
-        tips: {
-          idleTips: {
-            wordTheDay: (wordTheDayData) => {
-              return wordTheDayData.hitokoto;
-            }
-          }
-        },
-      dockedPosition: "left",
-      models: [
-        {
-          path: 'https://model.hacxy.cn/HK416-2-normal/model.json',
-          scale: 0.08,
-          position: [-40, 40],
-          stageStyle: {
-            width: 350
-          }
-        },
-      ]
-    })
-
-  ],
 
   theme: plumeTheme({
     collections,
