@@ -138,6 +138,7 @@ export default defineUserConfig({
        },
        include: false,      // 在 Markdown 文件中导入其他 markdown 文件内容
        imageSize: 'local', // 启用 自动填充 图片宽高属性，避免页面抖动
+       timeline: true,      // 启用时间轴
      },
 
     /**

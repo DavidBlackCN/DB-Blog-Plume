@@ -1,7 +1,8 @@
 ---
 title: '[Modpack]LinsCraft2026'
 createTime: 2026/02/17 01:51:42
-permalink: /mcProject/yi-liu-dang/modpack-lins-craft-2026/
+permalink: /mcProject/gui-dang/modpack-lins-craft-2026/
+badge: Archive
 ---
 
 为**林氏创艺2026马年元旦跨年晚会**定制的整合包&客户端项目，仅晚会游玩使用，不再分发。
