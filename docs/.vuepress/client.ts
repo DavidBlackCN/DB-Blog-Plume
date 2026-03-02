@@ -6,6 +6,7 @@ import AsideOutlineAfter from './theme/components/AsideOutlineAfter.vue'
 import RepoCard from './theme/components/RepoCard.vue'
 import GitHubCard from './theme/components/GitHubCard.vue'
 import GiteeCard from './theme/components/GiteeCard.vue'
+import NeteaseMusicCard from './theme/components/NeteaseMusicCard.vue'
 import './theme/styles/custom.css'
 import './theme/styles/index.css'
 import './theme/styles/introduce.css'
@@ -27,6 +28,7 @@ export default defineClientConfig({
     app.component('RepoCard', RepoCard)
     app.component('GitHubCard', GitHubCard)
     app.component('GiteeCard', GiteeCard)
+    app.component('NeteaseMusicCard', NeteaseMusicCard)
     // built-in components
     // app.component('RepoCard', RepoCard)
     // app.component('NpmBadge', NpmBadge)

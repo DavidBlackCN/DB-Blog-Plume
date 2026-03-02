@@ -85,10 +85,13 @@ html {
   letter-spacing: 0.01em;
 }
 
-/* 正文段落：增加行高，优化字间距 */
-.vp-doc p, 
-.vp-doc li {
+/* 正文段落：增加行高，优化字间距，减小行间距 */
+.vp-doc p {
   line-height: 1.8;
+  margin: 1rem 0;
+}
+.vp-doc li { 
+  line-height: 1.4;
   margin: 1rem 0;
 }
 
@@ -141,24 +144,12 @@ html {
 }
 
 /* H3 样式 */
-.vp-doc h3:not(.gh-title):not(.gt-title):not(.site-name) {  /* 排除其他组件的 H3 */
+.vp-doc h3 {  
   font-size: var(--font-size-h3);
   margin: 2rem 0 1rem;
   font-weight: 700;
   color: var(--vp-c-text-1);
   font-family: "MapleMono-SemiBold";
-  padding: 0 18px;
-}
-
-/* H3 左侧线 */
-.vp-doc h3:not(.gh-title):not(.gt-title):not(.site-name):before { /* 排除其他组件的 H3 */
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -2px;
-  width: 4px;
-  height: 100%;
-  background: var(--vp-c-brand-1);
 }
 
 /* H4 样式 */
