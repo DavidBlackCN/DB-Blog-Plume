@@ -13,7 +13,12 @@ export default defineNavbarConfig([
   {
     text: '笔记',
     icon: 'hugeicons:note-edit',
-    items: [{ text: '示例', link: '/notes/2.嵌入式开发/README.md' }]
+    items: [
+      { text: 'Demo示例', link: '/notes/1.Demo/README.md', icon: 'material-symbols:note-add-outline' },
+      { text: '嵌入式开发', link: '/notes/2.嵌入式开发/README.md', icon: 'mdi:chip' },
+    
+    
+    ]
   },
   {
     text: '项目',

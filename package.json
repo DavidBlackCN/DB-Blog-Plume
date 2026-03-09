@@ -15,11 +15,12 @@
     "node": "^20.6.0 || >=22.0.0"
   },
   "scripts": {
-    "docs:dev": "vuepress dev docs",
+    "docs:dev": "pnpm run wordcount && vuepress dev docs",
     "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
-    "docs:build": "vuepress build docs --clean-cache --clean-temp",
+    "docs:build": "pnpm run wordcount && vuepress build docs --clean-cache --clean-temp",
     "docs:preview": "http-server docs/.vuepress/dist",
-    "vp-update": "pnpm dlx vp-update"
+    "vp-update": "pnpm dlx vp-update",
+    "wordcount": "node scripts/wordcount.cjs"
   },
   "devDependencies": {
     "@iconify/vue": "^5.0.0",

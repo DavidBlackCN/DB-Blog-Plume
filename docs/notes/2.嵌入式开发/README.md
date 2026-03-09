@@ -7,4 +7,4 @@ permalink: /notes/qian-ru-shi-kai-fa/readme/
 这里记录了我的一些==嵌入式开发==的笔记，**不保证准确性和严谨性**，仅个人记录使用。  
 一些完整的版块内容在**确认无误**后，可能会在 [Blog](/blog/) 上发布。
 
-总字数：
+<WordCount label="当前笔记字数：" />
