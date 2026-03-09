@@ -21,7 +21,7 @@ photoSwipe: false
 欢迎来到<a href='https://www.davidblackcn.cc/'>『黑姐姐の驿站w』</a>！这里是 <a href='https://www.davidblackcn.cc/'>@𝓓𝓪𝓿𝓲𝓭_𝓑𝓵𝓪𝓬𝓴_</a> 的个人 Blog，同时存放了一些笔记.
 
 ### 『 查找·𝓢𝓮𝓪𝓻𝓬𝓱 』
-您可以点击顶栏左侧的搜索栏或者使用快捷键 `ctrl + K` 进行内容搜索；如果没什么想法，可以点击<a href='/random/'>『这里』</a>随机跳转到一个页面w~
+您可以点击顶栏左侧的搜索栏或者使用快捷键 `ctrl + K` 进行内容搜索；如果没什么想法，可以点击<a href='/more/random/'>『这里』</a>随机跳转到一个页面w~
 
 ### 『 导航·𝓝𝓪𝓿 』
 您可以从顶部导航栏找到导航，或者点击<a href='/nav/demo-nav/'>『这里』</a>进入导航，找到许多实用网站~

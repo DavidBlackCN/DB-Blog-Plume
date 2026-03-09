@@ -33,24 +33,24 @@ export const record = defineCollection({
   title: '随笔',
 });
 
-export const demo = defineCollection({
+export const notes = defineCollection({
   type: 'doc',
-  dir: 'demo',
-  title: 'demo',
+  dir: 'notes',
+  title: '笔记',
   sidebar: 'auto'
 });
 
 export const more = defineCollection({
   type: 'doc',
   dir: 'more',
-  title: "more",
+  title: "更多",
   sidebar: "auto",
 });
 
 export const nav = defineCollection({
   type: 'doc',
   dir: 'nav',
-  title: 'nav',
+  title: '导航页',
   sidebar: 'auto',
 });
 
@@ -71,7 +71,7 @@ export const mcProject = defineCollection({
 export const collections = defineCollections([
   blog,
   record,
-  demo,
+  notes,
   more,
   nav,
   ghProject,

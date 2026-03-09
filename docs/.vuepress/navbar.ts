@@ -13,14 +13,14 @@ export default defineNavbarConfig([
   {
     text: '笔记',
     icon: 'hugeicons:note-edit',
-    items: [{ text: '示例', link: '/demo/foo' }]
+    items: [{ text: '示例', link: '/notes/2.嵌入式开发/README.md' }]
   },
   {
     text: '项目',
     icon: 'ant-design:project-outlined',
     items: [
-      { text: 'Github项目', link: '/ghProject/github', icon: 'mdi:github'},
-      { text: 'Minecraft项目', link: '/mcProject/1.Minecraft项目/目录', icon: 'material-symbols:other-admission-outline'}
+      { text: 'Github项目', link: '/ghProject/README.md', icon: 'mdi:github'},
+      { text: 'Minecraft项目', link: '/mcProject/README.md', icon: 'material-symbols:other-admission-outline'}
     ]
   },
   {
@@ -37,7 +37,8 @@ export default defineNavbarConfig([
     items: [
       { text: 'README', link: '/more/gh-readme', icon: 'gg:readme' },
       { text: '关于我', link: '/more/index', icon: 'mdi:account-circle' },
-      { text: '主题预览', link: '/more/主题预览', icon: 'mdi:colour-lens' }
+      { text: '主题预览', link: '/more/主题预览', icon: 'mdi:colour-lens' },
+      { text: '随机跳转', link: '/more/随机跳转', icon: 'mdi:shuffle' }
     ]
   },
 ])
