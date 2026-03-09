@@ -48,4 +48,13 @@ permalink: /mcProject/gui-dang/modpack-dawn-land-rpg-pack/
   - 修复拼写错误
   - 同步SVC版本
 
+- **Version 0.3.0**
+  time=2026-03-09 type=success
+
+  - 应要求移除Tweakeroo mod
+  - 移除AsyncParticles mod
+  - 新增Obscure Tooltips mod
+  - 新增Packed Packs mod
+  - 新增Raise Sound Limit Simplified mod
+  - 更新所有mod到最新版本
 :::
