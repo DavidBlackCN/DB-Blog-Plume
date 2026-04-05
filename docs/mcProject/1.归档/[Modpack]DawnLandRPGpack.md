@@ -57,4 +57,14 @@ permalink: /mcProject/gui-dang/modpack-dawn-land-rpg-pack/
   - 新增Packed Packs mod
   - 新增Raise Sound Limit Simplified mod
   - 更新所有mod到最新版本
+
+- **Version 0.3.1**
+  time=2026-03-15 type=success
+
+  - 优化细节
+  - 新增 Fast IP Ping mod
+  - 新增Scoreboard Overhaul模组汉化
+  - 应定制需求，新增音效包
+  - 应定制需求，修改部分模组配置
+  - 应定制需求，修改部分按键绑定
 :::

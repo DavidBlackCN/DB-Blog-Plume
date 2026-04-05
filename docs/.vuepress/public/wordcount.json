@@ -1,9 +1,9 @@
 {
-  "total": 11712,
-  "fileCount": 33,
-  "lastUpdated": "2026-03-13T08:31:32.325Z",
+  "total": 11974,
+  "fileCount": 34,
+  "lastUpdated": "2026-03-14T13:10:59.732Z",
   "groups": {
-    "/": 11712,
+    "/": 11974,
     "/record/": 3067,
     "/record/sui-bi-3/": 464,
     "/record/sui-bi-2/": 819,
@@ -36,7 +36,7 @@
     "/ghProject/a5xjsf6c/": 1,
     "/article/": 1439,
     "/article/8da3soyk/": 177,
-    "/blog/": 4609,
+    "/blog/": 4871,
     "/blog/za-wen/": 3183,
     "/blog/za-wen/ti-wen-de-zhi-hui-zhong-guo-ban/": 3183,
     "/blog/ji-wen/": 1426,
@@ -46,6 +46,8 @@
     "/blog/ji-wen/yi-xie-wei-xin-liao-tian-ji-lu-bei-fen-fen-xi-gong-ju/": 1044,
     "/article/w5w03ppj/": 300,
     "/article/wg5das5g/": 661,
-    "/article/k35r07t6/": 57
+    "/article/k35r07t6/": 57,
+    "/blog/xue-wen/": 262,
+    "/blog/xue-wen/claude-code-for-vs-code-cha-jian-pei-zhi/": 262
   }
 }
