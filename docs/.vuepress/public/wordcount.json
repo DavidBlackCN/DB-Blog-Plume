@@ -1,11 +1,12 @@
 {
-  "total": 12582,
-  "fileCount": 35,
-  "lastUpdated": "2026-04-06T06:23:53.598Z",
+  "total": 12604,
+  "fileCount": 36,
+  "lastUpdated": "2026-04-18T15:31:49.765Z",
   "groups": {
-    "/": 12582,
-    "/record/": 3067,
-    "/record/sui-bi-3/": 464,
+    "/": 12604,
+    "/record/": 3089,
+    "/record/sui-bi-4/": 28,
+    "/record/sui-bi-3/": 458,
     "/record/sui-bi-2/": 819,
     "/record/sui-bi-1/": 1784,
     "/notes/": 774,
