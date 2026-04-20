@@ -21,7 +21,7 @@
     "docs:preview": "http-server docs/.vuepress/dist",
     "vp-update": "pnpm dlx vp-update",
     "prebuild": "git fetch --unshallow || true",
-    "wordcount": "node scripts/wordcount.cjs"
+    "wordcount": "node scripts/wordcount.cjs" 
   },
   "devDependencies": {
     "@iconify/vue": "^5.0.0",
