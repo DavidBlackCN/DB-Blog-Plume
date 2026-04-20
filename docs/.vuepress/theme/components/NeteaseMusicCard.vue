@@ -88,7 +88,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 
 const props = defineProps({
   id: { type: String, required: true },
-  baseUrl: { type: String, default: 'https://api.voicehub.lao-shui.top' } 
+  baseUrl: { type: String, default: 'https://api.neteasemusic.davidblackcn.online/' } 
 });
 
 const songData = ref(null);
