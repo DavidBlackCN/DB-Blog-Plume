@@ -27,11 +27,15 @@ fatal: unpack-objects failed
 
 在`源码管理` -> `Additional Behaviours` -> 点击`新增` -> `高级的克隆行为` -> `克隆和拉取操作的超时时间（分钟）` -> 填写时长 -> `保存配置并重新构建`
 
+![](/assets/202604/20-1.png)
+
 ## 浅克隆
 
 如果仓库历史记录很大，可以启用**浅克隆（Shallow Clone）**，它只拉取最近的提交历史，能极大减少下载量和时间
 
 在`源码管理` -> `Additional Behaviours` -> 点击`新增` -> `高级的克隆行为` -> 勾选`浅克隆`
+
+![](/assets/202604/20-1.png)
 
 ## 扩大Git缓冲区
 
@@ -77,3 +81,21 @@ rm -rf "$TARGET_DIR"/*
 cp -R docs/.vuepress/dist/* "$TARGET_DIR"/
 ```
 :::
+
+### 使用第三方开发部署平台
+
+::: info
+举例：**腾讯云EdgeOne**，其他平台类似  
+**EdgeOne Pages**在构建时默认使用 `git clone --depth=1`，所以很需要此优化
+:::
+
+在 `构建部署配置` 中修改 `编译命令`，示例：
+``` bash
+git config core.quotepath false && git fetch --unshallow && pnpm docs:build
+```
+> `git config core.quotepath false` 用于解决可能的中文路径乱码问题
+
+![](/assets/202604/20-2.png)
+## 参考链接
+
+[腾讯云 EdgeOne Pages 默认浅克隆无法获取全部项目 Git 记录](https://www.cyfor.cn/%E8%85%BE%E8%AE%AF%E4%BA%91edgeone-pages%E9%BB%98%E8%AE%A4%E6%B5%85%E5%85%8B%E9%9A%86%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E5%85%A8%E9%83%A8%E9%A1%B9%E7%9B%AEgit%E8%AE%B0%E5%BD%95/#page)
