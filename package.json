@@ -20,6 +20,7 @@
     "docs:build": "pnpm run wordcount && vuepress build docs --clean-cache --clean-temp",
     "docs:preview": "http-server docs/.vuepress/dist",
     "vp-update": "pnpm dlx vp-update",
+    "prebuild": "git fetch --unshallow || true",
     "wordcount": "node scripts/wordcount.cjs"
   },
   "devDependencies": {
