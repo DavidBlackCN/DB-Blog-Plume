@@ -169,10 +169,8 @@ html {
   font-family: "MapleMono-SemiBold";
 }
 
-/* 图片优化：居中、圆角、阴影 */
+/* 图片优化 */
 .vp-doc img {
-  display: block;
-  margin: 2rem auto;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
   transition: transform 0.3s ease;
@@ -218,7 +216,7 @@ html {
 /* 行内代码 */
 .vp-doc :not(pre) > code {
   color: var(--vp-c-brand-1);
-  padding: 0.2rem 0.4rem;
+  padding: 0.2rem 0.4rem; 
   border-radius: 4px;
   font-family: var(--vp-font-family-mono);
   font-size: 0.9em;
