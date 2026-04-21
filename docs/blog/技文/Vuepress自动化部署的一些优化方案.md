@@ -13,7 +13,7 @@ tags:
 <!-- more -->
 
 在**Jenkins**上部署Vuepress时，受限于云服务器网络环境，经常出现在拉取GitHub仓库时超时的问题：
-``` log
+``` bash
 fetch-pack: unexpected disconnect while reading sideband packet
 fatal: early EOF
 fatal: unpack-objects failed
