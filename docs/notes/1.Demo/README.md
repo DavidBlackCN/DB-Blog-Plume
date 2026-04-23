@@ -9,4 +9,4 @@ permalink: /notes/demo/readme/
 ### 目录
 
 [-> 本博客的一些语法示例 <-](/notes/demo/yu-fa-shi-li/) 
-<WordCount label="当前笔记字数：" />
+<WordCount label="当前笔记字数：" path="/notes/demo/"/>
