@@ -269,11 +269,14 @@ Get-ChildItem -Filter "*.jar" | ForEach-Object {
 - [Glitchfiend/SereneSeasons](https://github.com/Glitchfiend/SereneSeasons)
 - [PneumonoIsNotAvailable/Gravestones](https://github.com/PneumonoIsNotAvailable/Gravestones)
 
-<GitHubCard url="https://github.com/Glitchfiend/SereneSeasons" />
-<GitHubCard url="https://github.com/PneumonoIsNotAvailable/Gravestones" />
+~~我已经在最小环境下分别复现了两个Mod带来的问题，并提交了issue：~~
 
-我已经在最小环境下分别复现了两个Mod带来的问题，并提交了issue：
-- [SereneSeasons](https://github.com/Glitchfiend/SereneSeasons/issues/588)
-- [Gravestones](https://github.com/PneumonoIsNotAvailable/Gravestones/issues/97)
+## 解决方案
 
+由于是Mod使用了自定义参数类型导致的问题，故可在服务端安装 [CrossStitch](https://github.com/PaperMC/CrossStitch) 以允许使用自定义参数类型。
 
+> Previously, this would have not been possible, or we would have had to write an argument serializer to cover every mod ever, which is not sustainable. CrossStitch implements a generic approach that will work with every mod and in theory every proxy as well.
+
+不过截至本文更新时，该Mod最高仅支持**MC 1.21.8**版本，但好在移植更高版本并未涉及过多修改，故已将其Fork到我使用的**MC 1.21.11**版本，当在服务端安装**CrossStitch**后，玩家即可正常进入子服。
+<GitHubCard url="https://github.com/PaperMC/CrossStitch" />
+<GitHubCard url="https://github.com/DavidBlackCN/CrossStitch" />
