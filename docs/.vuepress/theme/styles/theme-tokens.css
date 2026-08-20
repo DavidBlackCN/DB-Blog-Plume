@@ -1,0 +1,173 @@
+/* ===========================================================================
+    基础变量定义 (Root Variables)
+   ========================================================================== */
+
+:root {
+  /* --- 字体定义 --- */
+  --font-ui: "MapleMono-Regular", "MiSans-Regular", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-heading-primary: "MapleMono-Bold", "MiSans-Regular", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "MapleMono-SemiBold", "MiSans-Regular", ui-sans-serif, system-ui, sans-serif;
+  --font-code: "MapleMono-Regular", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --vp-font-family-base: var(--font-ui);
+  --vp-font-family-mono: var(--font-code);
+  
+  /* 响应式字号定义 (最小值, 首选值, 最大值) */
+  --font-size-h1: clamp(1.8rem, 5vw, 2.5rem);
+  --font-size-h2: clamp(1.5rem, 4vw, 2rem);
+  --font-size-h3: clamp(1.25rem, 3vw, 1.5rem);
+  --font-size-body: 16px;
+  --vp-custom-block-font-size: 16px;
+
+  /* --- 布局定义 --- */
+  --vp-sidebar-width: 260px; /* 侧边栏宽度 */
+
+  /* --- 主题色 (浅色模式) --- */
+  --vp-c-brand-1: #5086a1;                                 /* 链接颜色、强调色 */
+  --vp-c-brand-2: #3d6f87;                                 /* 链接、按钮 hover 颜色 */
+  --vp-c-brand-3: #c6e0e6;                                 /* 背景色、边框色 */
+  --vp-c-brand-soft: #d9eaee;                              /* 辅助色 */
+  --vp-c-brand-hard: #285a70;                              /* 强调文字 */
+  --vp-c-brand: var(--vp-c-brand-1);
+
+  /* --- 文本颜色 (浅色模式) --- */
+  --vp-c-text-1: #34363b;                                  /* 主要文本 */
+  --vp-c-text-2: #62656c;                                  /* 次要文本 */
+  --vp-c-text-3: #8a8e95;                                  /* 辅助文本 */
+
+  /* --- 背景色 (浅色模式) --- */
+  --vp-c-bg: #fffcf5;                                      /* 主体背景 */
+  --vp-c-bg-alt: #f5f1e8;
+  --vp-c-bg-elv: #fffefb;
+  --vp-c-bg-soft: #f5f1e8;
+  --vp-c-bg-safe: #fffdfa;
+  --vp-c-border: #d8d5ce;
+  --vp-c-divider: #e9e5dc;
+  --vp-c-gutter: #e9e5dc;
+  --vp-nav-bg-color: #fffcf5;                               /* 导航栏背景 */
+  --vp-nav-screen-bg-color: #fffcf5;                        /* 移动端导航栏 */
+  --vp-local-nav-bg-color: #fffdfa;                         /* 页面内导航栏 */
+  --vp-sidebar-bg-color: #f5f1e8;                           /* 侧边栏背景 */
+  --vp-code-block-bg: #f5f1e8;                              /* 代码块背景 */
+
+  /* --- 语义状态 (浅色模式) --- */
+  --vp-c-success-1: #2f7d5a;
+  --vp-c-success-2: #236448;
+  --vp-c-success-3: #b9ddca;
+  --vp-c-success-soft: #e0f1e7;
+  --vp-c-warning-1: #9a6a12;
+  --vp-c-warning-2: #79510a;
+  --vp-c-warning-3: #e9cf92;
+  --vp-c-warning-soft: #f8efd8;
+  --vp-c-danger-1: #b24b4b;
+  --vp-c-danger-2: #8f3939;
+  --vp-c-danger-3: #edc1c1;
+  --vp-c-danger-soft: #fae4e4;
+  --vp-c-info-1: #39799a;
+  --vp-c-info-2: #2d607b;
+  --vp-c-info-3: #b9d9e7;
+  --vp-c-info-soft: #e1f0f5;
+}
+
+/* ===========================================================================
+    暗色模式变量 (Dark Mode)
+   ========================================================================== */
+
+html.dark,
+[data-theme="dark"] {
+  /* --- 主题色 (暗色模式) --- */
+  --vp-c-brand-1: #76a9bc;                                 /* 链接颜色、强调色 */
+  --vp-c-brand-2: #8db9c9;                                 /* 链接、按钮 hover 颜色 */
+  --vp-c-brand-3: #315d72;                                 /* 背景色、边框色 */
+  --vp-c-brand-soft: rgba(118, 169, 188, 0.2);              /* 辅助色 */
+  --vp-c-brand-hard: #9cc6d3;                              /* 强调文字 */
+
+  /* --- 文本颜色 (暗色模式) --- */
+  --vp-c-text-1: #e6e8e9;                                  /* 主要文本 */
+  --vp-c-text-2: #b5b8bd;                                  /* 次要文本 */
+  --vp-c-text-3: #868b92;                                  /* 辅助文本 */
+
+  /* --- 背景色 (暗色模式) --- */
+  --vp-c-bg: #1b1c1f;                                      /* 主体背景 */
+  --vp-c-bg-alt: #17181a;
+  --vp-c-bg-elv: #27292e;
+  --vp-c-bg-soft: #202226;
+  --vp-c-bg-safe: #202226;
+  --vp-c-border: #3c4046;
+  --vp-c-divider: #303338;
+  --vp-c-gutter: #303338;
+  --vp-nav-bg-color: #1b1c1f;                               /* 导航栏背景 */
+  --vp-nav-screen-bg-color: #1b1c1f;                        /* 移动端导航栏 */
+  --vp-local-nav-bg-color: #202226;                         /* 页面内导航栏 */
+  --vp-sidebar-bg-color: #17181a;                           /* 侧边栏背景 */
+  --vp-code-block-bg: #202226;                              /* 代码块背景 */
+
+  /* --- 语义状态 (暗色模式) --- */
+  --vp-c-success-1: #7ec49b;
+  --vp-c-success-2: #9bd7b1;
+  --vp-c-success-3: #315b43;
+  --vp-c-success-soft: rgba(126, 196, 155, 0.18);
+  --vp-c-warning-1: #dfbd65;
+  --vp-c-warning-2: #ebcf84;
+  --vp-c-warning-3: #66501e;
+  --vp-c-warning-soft: rgba(223, 189, 101, 0.18);
+  --vp-c-danger-1: #e28a8a;
+  --vp-c-danger-2: #efaaaa;
+  --vp-c-danger-3: #683b3b;
+  --vp-c-danger-soft: rgba(226, 138, 138, 0.18);
+  --vp-c-info-1: #83bad0;
+  --vp-c-info-2: #a1ccdc;
+  --vp-c-info-3: #315767;
+  --vp-c-info-soft: rgba(131, 186, 208, 0.18);
+}
+
+/* --- 配色风格覆盖 (Color Style Variants) --- */
+:root[data-color-style="taozhu"] {
+  --vp-c-brand-1: #ad4506;
+  --vp-c-brand-2: #913600;
+  --vp-c-brand-3: #eec3a8;
+  --vp-c-brand-soft: #f8e3d4;
+  --vp-c-brand-hard: #7b2e00;
+}
+
+:root[data-color-style="ouhe"] {
+  --vp-c-brand-1: #b06d88;
+  --vp-c-brand-2: #93536d;
+  --vp-c-brand-3: #e1bdcb;
+  --vp-c-brand-soft: #f3e2e8;
+  --vp-c-brand-hard: #773a3a;
+}
+
+:root[data-color-style="maijin"] {
+  --vp-c-brand-1: #b59a2a;
+  --vp-c-brand-2: #927b18;
+  --vp-c-brand-3: #ded091;
+  --vp-c-brand-soft: #f3edcf;
+  --vp-c-brand-hard: #6e5b00;
+}
+
+html.dark[data-color-style="taozhu"],
+:root[data-theme="dark"][data-color-style="taozhu"] {
+  --vp-c-brand-1: #df8454;
+  --vp-c-brand-2: #ed9c72;
+  --vp-c-brand-3: #743915;
+  --vp-c-brand-soft: rgba(223, 132, 84, 0.2);
+  --vp-c-brand-hard: #f3b18b;
+}
+
+html.dark[data-color-style="ouhe"],
+:root[data-theme="dark"][data-color-style="ouhe"] {
+  --vp-c-brand-1: #d49ab0;
+  --vp-c-brand-2: #e2b3c4;
+  --vp-c-brand-3: #6c3d50;
+  --vp-c-brand-soft: rgba(212, 154, 176, 0.2);
+  --vp-c-brand-hard: #ebc1d0;
+}
+
+html.dark[data-color-style="maijin"],
+:root[data-theme="dark"][data-color-style="maijin"] {
+  --vp-c-brand-1: #d5bb5d;
+  --vp-c-brand-2: #e1cb7c;
+  --vp-c-brand-3: #695b22;
+  --vp-c-brand-soft: rgba(213, 187, 93, 0.2);
+  --vp-c-brand-hard: #ead98e;
+}

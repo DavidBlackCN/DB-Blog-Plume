@@ -1,7 +1,8 @@
 import { defineClientConfig } from 'vuepress/client'
 import { Layout } from 'vuepress-theme-plume/client'
 import { h } from 'vue'
-import ColourPicker from './theme/components/ColourPicker.vue'
+import ColorStylePicker from './theme/components/ColorStylePicker.vue'
+import ThemeAppearanceSwitch from './theme/components/ThemeAppearanceSwitch.vue'
 import AsideOutlineAfter from './theme/components/AsideOutlineAfter.vue'
 import RepoCard from './theme/components/RepoCard.vue'
 import GitHubCard from './theme/components/GitHubCard.vue'
@@ -24,7 +25,8 @@ import './theme/styles/introduce.css'
 export default defineClientConfig({
 
   enhance({ app }) {
-    app.component('ColourPicker', ColourPicker)
+    app.component('ColorStylePicker', ColorStylePicker)
+    app.component('ThemeAppearanceSwitch', ThemeAppearanceSwitch)
     app.component('AsideOutlineAfter', AsideOutlineAfter)
     app.component('RepoCard', RepoCard)
     app.component('GitHubCard', GitHubCard)
@@ -45,9 +47,11 @@ export default defineClientConfig({
     Layout: () => h(Layout, null, {
       //https://github.com/physnya/blog/blob/main/docs/.vuepress/components/AsideOutlineAfter.vue
       'aside-outline-after': () => h(AsideOutlineAfter),
-      'nav-bar-content-after': () => h(ColourPicker),      
+      'nav-bar-content-after': () => h('div', { class: 'navbar-custom-controls' }, [
+        h(ThemeAppearanceSwitch),
+        h(ColorStylePicker),
+      ]),
     }
   ),
   },
 })
-

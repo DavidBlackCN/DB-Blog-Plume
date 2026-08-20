@@ -1,0 +1,203 @@
+/* ===========================================================================
+    全局基础排版 (Typography & Global)
+   ========================================================================== */
+
+html {
+  font-size: 16px;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "liga" 1, "dlig" 1;
+}
+
+:root {
+  font-optical-sizing: auto;
+}
+
+.vp-doc {
+  font-family: var(--vp-font-family-base);
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  font-synthesis: none;
+  font-variant-ligatures: common-ligatures contextual;
+  font-feature-settings: "liga" 1, "clig" 1, "calt" 1;
+}
+
+/* 正文段落：增加行高，优化字间距，减小行间距 */
+.vp-doc p {
+  line-height: 1.85;
+  margin: 0 0 1.25rem;
+}
+.vp-doc li { 
+  line-height: 1.75;
+  margin: 0.5rem 0;
+}
+
+/* 高亮样式：使用主题色 */
+.vp-doc strong {
+  color: var(--vp-c-brand-1); /* 使用主题色 */
+  padding: 0 2px;
+  font-family: var(--font-heading);
+  font-weight: 400;
+}
+
+/* 分割线样式 */
+.vp-doc hr {
+  border: none;
+  border-top: 2px solid var(--vp-c-brand-soft);
+  margin: 1.2rem 0;
+}
+
+/* ===========================================================================
+    Markdown 内容样式优化 (Headers, Quotes, Images, etc.)
+   ========================================================================== */
+
+/* H1 样式 */
+.vp-doc h1 {
+  font-size: var(--font-size-h1);
+  font-weight: 400;
+  color: var(--vp-c-brand-1);
+  margin-bottom: 2rem;
+  line-height: 1.3;
+  letter-spacing: 0.015em;
+  font-family: var(--font-heading-primary);
+}
+
+/* H2 样式 */
+.vp-doc h2 {
+  font-size: var(--font-size-h2);
+  margin: 3rem 0 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--vp-c-brand-soft);
+  position: relative;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+/* H2 装饰下划线 */
+.vp-doc h2::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--vp-c-brand-1);
+}
+
+/* H3 样式 */
+.vp-doc h3 {  
+  font-size: var(--font-size-h3);
+  margin: 2rem 0 1rem;
+  font-weight: 400;
+  color: var(--vp-c-text-1);
+  font-family: var(--font-heading);
+  line-height: 1.5;
+  letter-spacing: 0.008em;
+}
+
+/* H4 样式 */
+.vp-doc h4 {
+  font-size: 1.2rem;
+  margin: 1.5rem 0 1rem;
+  font-weight: 400;
+  color: var(--vp-c-text-1);
+  font-family: var(--font-heading);
+  line-height: 1.55;
+  letter-spacing: 0.006em;
+}
+
+/* 引用块 (Blockquote) */
+.vp-doc blockquote {
+  border-left: 4px solid var(--vp-c-brand-1);
+  padding: 0.8rem 2.2rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+  font-family: var(--vp-font-family-base);
+  line-height: 1.85;
+}
+
+/* 链接与强调文字 */
+.vp-doc a {
+  font-family: var(--font-heading);
+  font-weight: 400;
+}
+
+/* 图片优化 */
+.vp-doc img {
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+}
+
+.vp-doc img:hover {
+  transform: scale(1.01);
+}
+
+/* 表格样式 */
+.vp-doc table {
+  display: table;
+  margin: 2rem auto;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc thead {
+  background-color: var(--vp-c-bg-soft);
+}
+
+.vp-doc th {
+  background-color: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-hard);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  padding: 10px 14px;
+}
+
+.vp-doc td {
+  padding: 10px 14px;
+  line-height: 1.7;
+}
+
+/* 列表间距 */
+.vp-doc ul, 
+.vp-doc ol {
+  padding-left: 1.5rem;
+}
+
+/* 行内代码 */
+.vp-doc :not(pre) > code {
+  color: var(--vp-c-brand-1);
+  padding: 0.2rem 0.4rem; 
+  border-radius: 4px;
+  font-family: var(--font-code);
+  font-size: 0.92em;
+  font-weight: 400;
+}
+
+/* 键盘按键 */
+.vp-doc kbd {
+  font-family: var(--font-code);
+  font-weight: 400;
+}
+
+/* 代码块细节优化 */
+.vp-doc div[class*="language-"] {
+  border-radius: 10px;
+  margin: 1.5rem 0;
+}
+
+.vp-doc div[class*="language-"] pre, 
+.vp-doc div[class*="language-"] code {
+  font-family: var(--font-code);
+  font-weight: 400;
+  font-variant-ligatures: common-ligatures;
+  line-height: 1.75;
+}

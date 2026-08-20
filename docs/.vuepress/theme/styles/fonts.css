@@ -1,0 +1,66 @@
+/* ===========================================================================
+    字体定义 (Font Variables)
+   ========================================================================== */
+
+/* --- 大标题、一级标题字体 --- */
+   @font-face {
+  font-family: 'MapleMono-Bold';
+  src: url('/fonts/MapleMono-CN-Bold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- 首页终端/技术区域、导航菜单、标题字体 --- */
+@font-face {
+  font-family: 'MapleMono-SemiBold';
+  src: url('/fonts/MapleMono-CN-SemiBold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- 站点 Logo 标题字体 --- */
+@font-face {
+  font-family: 'LogoFont';
+  src: url('/fonts/Segoesc.woff2') format('woff2'); 
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- 正文中文字体 --- */
+@font-face {
+  font-family: 'MiSans-Regular';
+  src: url('/fonts/MiSans-Regular.woff2') format('woff2'); 
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- 正文非中文字体 --- */
+@font-face {
+  font-family: 'MapleMono-Regular';
+  src: url('/fonts/MapleMono-Regular.ttf.woff2') format('woff2'); 
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* --- 暂时没有用到的字体 --- */
+@font-face {
+  font-family: 'MapleMono-LightItalic';
+  src: url('/fonts/MapleMono-CN-LightItalic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MapleMono-Medium';
+  src: url('/fonts/MapleMono-CN-Medium.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

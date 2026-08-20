@@ -16,7 +16,7 @@
   },
   "scripts": {
     "commit": "cz",
-    "docs:dev": "vuepress dev docs",
+    "docs:dev": "pnpm run wordcount && vuepress dev docs",
     "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
     "docs:build": "pnpm run wordcount && vuepress build docs --clean-cache --clean-temp",
     "docs:preview": "http-server docs/.vuepress/dist",

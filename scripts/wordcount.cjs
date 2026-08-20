@@ -1,17 +1,91 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
-const { globSync } = require('glob');
-const matter = require('gray-matter');
 
 const config = {
   contentDir: path.join(__dirname, '../docs'),
-  outputFile: path.join(__dirname, '../docs/.vuepress/public/wordcount.json'),
-  excludePatterns: [
-    '**/node_modules/**',
-    '**/.vuepress/**'
-  ]
+  outputFile: path.join(__dirname, '../docs/.vuepress/public/wordcount.json')
 };
+
+/**
+ * 收集需要统计的 Markdown 文件
+ *
+ * 仅使用 Node 内置模块，避免依赖被 pnpm 间接提升的第三方包。
+ */
+function getMarkdownFiles(dirPath) {
+  const files = [];
+  const ignoredDirs = new Set(['node_modules', '.vuepress']);
+
+  function walk(currentPath) {
+    for (const entry of fs.readdirSync(currentPath, { withFileTypes: true })) {
+      const fullPath = path.join(currentPath, entry.name);
+
+      if (entry.isDirectory()) {
+        if (!ignoredDirs.has(entry.name)) {
+          walk(fullPath);
+        }
+      } else if (entry.isFile() && entry.name.endsWith('.md')) {
+        files.push(fullPath);
+      }
+    }
+  }
+
+  walk(dirPath);
+  return files.sort();
+}
+
+/**
+ * 读取本脚本实际需要的 frontmatter 字段
+ *
+ * wordcount 只使用 permalink 和 wordCount，因此不需要依赖完整的 YAML 解析器。
+ */
+function parseFrontmatter(raw) {
+  const source = raw.replace(/^\uFEFF/, '');
+  const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+
+  if (!match) {
+    return { data: {}, content: source };
+  }
+
+  const data = {};
+
+  const lines = match[1].split(/\r?\n/);
+
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index];
+    const field = line.match(/^\s*([A-Za-z][\w-]*)\s*:\s*(.*?)\s*(?:#.*)?$/);
+    if (!field) continue;
+
+    const [, key, rawValue] = field;
+    let value = rawValue.replace(/^(['"])(.*)\1$/, '$2');
+
+    // 兼容 YAML 的折叠式 / 字面量块标量，例如 permalink: >-
+    if (/^[>|][+-]?$/.test(value)) {
+      const values = [];
+
+      while (index + 1 < lines.length && /^\s+/.test(lines[index + 1])) {
+        index++;
+        const nextValue = lines[index].trim();
+        if (nextValue) values.push(nextValue);
+      }
+
+      value = value.startsWith('>') ? values.join(' ') : values.join('\n');
+    }
+
+    if (key === 'permalink') {
+      data.permalink = value;
+    }
+
+    if (key === 'wordCount') {
+      data.wordCount = value.toLowerCase() === 'false' ? false : value;
+    }
+  }
+
+  return {
+    data,
+    content: source.slice(match[0].length)
+  };
+}
 
 /**
  * 规范化路由路径
@@ -141,10 +215,7 @@ function getAncestorGroups(routePath) {
 }
 
 function buildWordCount() {
-  const files = globSync(`${config.contentDir}/**/*.md`, {
-    ignore: config.excludePatterns,
-    nodir: true
-  });
+  const files = getMarkdownFiles(config.contentDir);
 
   const groups = { '/': 0 };
   let fileCount = 0;
@@ -152,7 +223,7 @@ function buildWordCount() {
   for (const file of files) {
     try {
       const raw = fs.readFileSync(file, 'utf-8');
-      const { data: frontmatter, content } = matter(raw);
+      const { data: frontmatter, content } = parseFrontmatter(raw);
 
       // 可选：在 frontmatter 中设置 wordCount: false 跳过统计
       if (frontmatter.wordCount === false) {

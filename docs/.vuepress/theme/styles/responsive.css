@@ -1,0 +1,37 @@
+/* ===========================================================================
+    响应式适配 (Responsive Design)
+   ========================================================================== */
+
+/* 宽屏适配：控制正文最大宽度，提升阅读体验 */
+@media (min-width: 1280px) {
+  .content[data-v-d64b92aa] {
+    padding: 0 40px 128px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .vp-doc h1 { 
+    font-size: 1.8rem; 
+  }
+  .vp-doc { 
+    padding: 0 16px; 
+  }
+
+  /* Twikoo 移动端微调 */
+  .tk-submit { 
+    padding: 15px; 
+  }
+  .tk-meta-input { 
+    flex-direction: column; 
+  }
+  .tk-comment { 
+    padding: 1rem !important; 
+  }
+  .tk-avatar.tk-has-avatar {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}

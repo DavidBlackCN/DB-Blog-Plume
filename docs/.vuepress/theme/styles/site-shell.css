@@ -1,0 +1,96 @@
+/* --- 全局变量与背景 --- */
+:root {
+  /* 背景网格颜色：非常淡的主题色 */
+  --vp-doc-blog-bg: rgba(140, 204, 213, 0.06); 
+  --vp-blog-post-item-hover-border: rgba(140, 204, 213, 0.5);
+  --vp-blog-post-item-hover-shadow: rgba(140, 204, 213, 0.15);
+  
+  /* 确保导航与侧边栏背景是不透明的 */
+  --vp-nav-bg-color: var(--vp-c-bg); 
+  --vp-sidebar-bg-color: var(--vp-c-bg);
+}
+
+html.dark,
+[data-theme="dark"] {
+  --vp-doc-blog-bg: rgba(140, 204, 213, 0.04);
+}
+
+body {
+  font-family: var(--vp-font-family-base);
+  /* 优化后的网格背景 */
+  background-image:
+    linear-gradient(to bottom, transparent calc(1.5rem - 1px), var(--vp-doc-blog-bg) calc(1.5rem - 1px), var(--vp-doc-blog-bg) 1.5rem),
+    linear-gradient(to right, transparent calc(1.5rem - 1px), var(--vp-doc-blog-bg) calc(1.5rem - 1px), var(--vp-doc-blog-bg) 1.5rem);
+  background-size: 1.5rem 1.5rem;
+  background-attachment: fixed; 
+}
+
+/* --- 导航栏与 Logo --- */
+.vp-navbar {
+  background-color: var(--vp-nav-bg-color) !important;
+  z-index: 20;
+}
+
+.vp-nav.fixed .vp-navbar {
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    backdrop-filter: blur(10px);
+}
+
+/* 搜索框样式 */
+.vp-search-box {
+  background-color: var(--vp-c-bg) !important;
+  border: 4px solid var(--vp-c-divider) !important;
+  border-radius: 12px !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+  font-family: "MapleMono-SemiBold";
+}
+
+.vp-link.link.navbar-menu-link,
+.vp-flyout.vp-navbar-menu-group .button.button span.text {
+    font-size: 18px !important;
+    font-weight: 500;
+    font-family: "MapleMono-SemiBold";
+}
+
+/* Logo 样式：使用渐变主题色 */
+.vp-navbar-title span {
+  font-family: 'LogoFont', serif;
+  font-weight: bolder;
+  font-size: 1.6rem;
+}
+
+.navbar-menu-link {
+  font-size: 1.5rem !important;
+  font-weight: 500;
+  font-family: "MapleMono-SemiBold";
+}
+
+/* 自定义导航控制：替换主题默认的深浅色开关与 GitHub 链接 */
+.vp-navbar .appearance,
+.vp-navbar .social-links {
+  display: none !important;
+}
+
+.navbar-custom-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+/* --- 博客列表卡片 --- */
+.vp-blog-post-item {
+  background-color: var(--vp-c-bg) !important;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  transition: all 0.3s ease !important;
+  font-family: var(--vp-font-family-base);
+}
+
+.vp-blog-post-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--vp-c-brand-1) !important;
+  box-shadow: 0 8px 20px var(--vp-blog-post-item-hover-shadow) !important;
+}
