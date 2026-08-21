@@ -1,0 +1,91 @@
+name: Deploy Blog
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-blog-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 拉取 GitHub 仓库
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # 2. 安装 pnpm 10.13.1
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+          run_install: false
+
+      # 3. 安装 Node.js 22
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # 4. 安装项目依赖
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 5. 构建 VuePress
+      - name: Build VuePress
+        run: pnpm docs:build
+
+      # 6. 检查构建产物
+      - name: Check build output
+        run: |
+          test -d docs/.vuepress/dist
+          echo "Build output:"
+          du -sh docs/.vuepress/dist
+          find docs/.vuepress/dist -maxdepth 1 -type f | head -20
+
+      # 7. 配置 SSH 私钥
+      - name: Setup SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          ssh-keyscan -p "$DEPLOY_PORT" "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      # 8. 上传到 1Panel / OpenResty 网站目录
+      - name: Deploy to server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $DEPLOY_PORT" \
+            docs/.vuepress/dist/ \
+            "$DEPLOY_USER@$DEPLOY_HOST:/opt/1panel/www/sites/davidblackcn.cc/index/"
+
+      # 9. 输出完成信息
+      - name: Deployment complete
+        run: |
+          echo "Deployment completed."
+          echo "Website: https://davidblackcn.cc"
