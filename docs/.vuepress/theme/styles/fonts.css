@@ -6,7 +6,7 @@
    @font-face {
   font-family: 'MapleMono-Bold';
   src: url('/fonts/MapleMono-CN-Bold.woff2') format('woff2');
-  font-weight: normal;
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -15,7 +15,7 @@
 @font-face {
   font-family: 'MapleMono-SemiBold';
   src: url('/fonts/MapleMono-CN-SemiBold.woff2') format('woff2');
-  font-weight: normal;
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
