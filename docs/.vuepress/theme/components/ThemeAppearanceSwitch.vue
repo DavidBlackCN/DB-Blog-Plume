@@ -10,14 +10,14 @@
   >
     <span class="theme-switch__decor theme-switch__stars" aria-hidden="true"><i></i><i></i><i></i></span>
     <span class="theme-switch__decor theme-switch__clouds" aria-hidden="true"><i></i><i></i><i></i></span>
-    <svg class="theme-switch__icon theme-switch__sun" viewBox="0 0 24 24" aria-hidden="true">
+    <svg ref="sunRef" class="theme-switch__icon theme-switch__sun" viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="12" cy="12" r="4" />
       <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
     </svg>
-    <svg class="theme-switch__icon theme-switch__moon" viewBox="0 0 24 24" aria-hidden="true">
+    <svg ref="moonRef" class="theme-switch__icon theme-switch__moon" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M20.4 15.4A8.5 8.5 0 0 1 8.6 3.6A8.5 8.5 0 1 0 20.4 15.4Z" />
     </svg>
-    <span class="theme-switch__thumb" aria-hidden="true"></span>
+    <span ref="thumbRef" class="theme-switch__thumb" aria-hidden="true"></span>
   </button>
 </template>
 
@@ -27,6 +27,9 @@ import { useData } from 'vuepress-theme-plume/client'
 
 const { theme, isDark } = useData()
 const switchIsDark = ref(false)
+const thumbRef = ref(null)
+const sunRef = ref(null)
+const moonRef = ref(null)
 
 const switchTitle = computed(() => switchIsDark.value
   ? theme.value.lightModeSwitchTitle || '切换为浅色主题'
@@ -42,6 +45,64 @@ watch(isDark, (value) => {
 
 function toggleAppearance() {
   const nextIsDark = !switchIsDark.value
+  const thumb = thumbRef.value
+  const departingIcon = nextIsDark ? sunRef.value : moonRef.value
+  const arrivingIcon = nextIsDark ? moonRef.value : sunRef.value
+
+  if (thumb && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const currentTransform = getComputedStyle(thumb).transform
+    const targetTransform = `translateX(${nextIsDark ? 50 : 0}px)`
+
+    thumb.getAnimations().forEach((animation) => animation.cancel())
+    thumb.animate(
+      [
+        { transform: currentTransform === 'none' ? 'translateX(0)' : currentTransform },
+        { transform: targetTransform },
+      ],
+      {
+        duration: 280,
+        easing: 'cubic-bezier(0.77, 0, 0.175, 1)',
+      },
+    )
+
+    const departingStart = departingIcon && {
+      transform: getComputedStyle(departingIcon).transform,
+      opacity: getComputedStyle(departingIcon).opacity,
+    }
+    const arrivingStart = arrivingIcon && {
+      transform: getComputedStyle(arrivingIcon).transform,
+      opacity: getComputedStyle(arrivingIcon).opacity,
+    }
+
+    departingIcon?.getAnimations().forEach((animation) => animation.cancel())
+    arrivingIcon?.getAnimations().forEach((animation) => animation.cancel())
+
+    departingIcon?.animate(
+      [
+        departingStart,
+        nextIsDark
+          ? { transform: 'translateX(50px) rotate(-36deg) scale(.82)', opacity: .18 }
+          : { transform: 'translateX(-50px) rotate(-12deg) scale(.84)', opacity: .18 },
+      ],
+      {
+        duration: 280,
+        easing: 'cubic-bezier(0.77, 0, 0.175, 1)',
+      },
+    )
+
+    arrivingIcon?.animate(
+      [
+        arrivingStart,
+        nextIsDark
+          ? { transform: 'rotate(12deg) scale(1.05)', opacity: 1 }
+          : { transform: 'translateX(0) rotate(0) scale(1)', opacity: 1 },
+      ],
+      {
+        duration: 280,
+        easing: 'cubic-bezier(0.77, 0, 0.175, 1)',
+      },
+    )
+  }
 
   switchIsDark.value = nextIsDark
   isDark.value = nextIsDark
