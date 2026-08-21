@@ -79,8 +79,11 @@ jobs:
           DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
         run: |
-          rsync -az --delete \
-            -e "ssh -i ~/.ssh/id_ed25519 -p $DEPLOY_PORT" \
+          rsync -azv --delete \
+            --info=progress2 \
+            --human-readable \
+            --stats \
+            -e "ssh -i ~/.ssh/id_ed25519 -p $DEPLOY_PORT -o ConnectTimeout=15 -o ServerAliveInterval=30 -o ServerAliveCountMax=3" \
             docs/.vuepress/dist/ \
             "$DEPLOY_USER@$DEPLOY_HOST:/opt/1panel/www/sites/davidblackcn.cc/index/"
 
