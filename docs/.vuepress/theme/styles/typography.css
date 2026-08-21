@@ -42,6 +42,12 @@ html {
   font-weight: 400;
 }
 
+/* 斜体强调：仅在此处启用浏览器合成字形 */
+.vp-doc em {
+  font-style: italic;
+  font-synthesis: style;
+}
+
 /* 分割线样式 */
 .vp-doc hr {
   border: none;
