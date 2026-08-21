@@ -20,6 +20,7 @@
     "docs:dev-clean": "vuepress dev docs --clean-cache --clean-temp",
     "docs:build": "pnpm run wordcount && vuepress build docs --clean-cache --clean-temp",
     "docs:preview": "http-server docs/.vuepress/dist",
+    "nav:add": "node scripts/add-navigation-entry.cjs",
     "vp-update": "pnpm dlx vp-update",
     "prebuild": "git fetch --unshallow || true",
     "wordcount": "node scripts/wordcount.cjs"
