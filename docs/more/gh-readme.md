@@ -41,7 +41,8 @@ import Introduce from './theme/components/ColourPicker.vue'
 - `Hitokoto.vue` -> 一言
 - `BlogHero.vue` -> 主页核心组件
 - `Introduce.vue` -> 介绍页卡片
-- `NavPage.vue` -> 导航页面
+- `NavPage.vue` / `NavPageMinecraft.vue` -> 导航页面入口
+- `NavigationDirectory.vue` -> 共用导航页面组件
 - `ColourPicker.vue` -> 导航栏颜色选择器
 - `GitHubCard.vue` -> GitHub卡片
 - `GiteeCard.vue` -> 码云卡片
@@ -52,15 +53,18 @@ import Introduce from './theme/components/ColourPicker.vue'
 > `AboutMeCharacter.vue`, `AboutMeFriendLink.vue`, `AboutMeName.vue`, `AboutMeAbilities.vue`, `AboutMeText.vue` 以及 `Introduce.vue` 均修改自[该博客](https://github.com/zhenghaoyang24/hoey-blog-plume)
 1. `AsideOutlineAfter.vue` 为右边侧边栏目录下方显示的额外跳转链接，可按需求修改或新增更多链接.
 2. `ColourPicker.vue` 为导航栏的颜色选择器，可修改主题颜色，修改自[该博客](https://github.com/physnya/blog).
-3. `NavPage.vue` 为导航页面专用组件，在此处修改引入的外部数据文件：
+3. 导航页数据使用 JSON 维护：将包含 `categories` 与 `sites` 数组的 JSON 放入 `docs/.vuepress/theme/data/` 后，交互脚本会自动发现它。每个资源均包含 `id`、`name`、`url`、`desc`、`category` 与 `tags` 字段；分类图标使用 emoji。
+4. 可使用交互式脚手架命令逐项新增资源：
+```bash
+pnpm nav:add
 ```
-<script>
-import { categories, sites } from '../data/NavData.ts';
+也可使用完整参数直接新增资源：
+```bash
+pnpm nav:add -- --id=vuepress --name=VuePress --url=https://v2.vuepress.vuejs.org/ --desc="静态站点生成器" --category=frontend --tags=Vue,文档 --data=docs/.vuepress/theme/data/navigation.json
 ```
-并在 `docs/.vuepress/theme/data/NavData.ts` 中修改导航内容.
+交互模式第一步可选择数据文件，分类可输入编号或分类 ID；每次添加成功后可选择继续录入或退出。批量模式须通过 `--data` 指定目标文件。命令会校验分类、链接格式和资源 ID 是否重复。
 
 ### 主页
 
 - 主页布局请看 [BlogHero.vue](https://github.com/DavidBlackCN/DB-Blog-Plume/blob/main/docs/.vuepress/theme/components/BlogHero.vue)
 - 参考[该博客](https://blog.jursin.top/)
-

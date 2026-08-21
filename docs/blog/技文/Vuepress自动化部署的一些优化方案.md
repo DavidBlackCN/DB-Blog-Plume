@@ -8,7 +8,10 @@ tags:
   - jenkins
 ---
 
-> 查看本文前推荐先阅读[【Linux】云服务器自动化部署VuePress博客（Jenkins）](/article/w5w03ppj/)
+::: note
+查看本文前推荐先阅读[【Linux】云服务器自动化部署VuePress博客（Jenkins）](/article/w5w03ppj/)  
+查看本文后推荐再阅读[Vuepress自动化部署的细节补充](/blog/ji-wen/vuepress-zi-dong-hua-bu-shu-de-xi-jie-bu-chong/)
+:::
 
 <!-- more -->
 
