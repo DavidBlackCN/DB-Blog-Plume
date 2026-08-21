@@ -18,6 +18,12 @@
   --font-size-body: 16px;
   --vp-custom-block-font-size: 16px;
 
+  /* --- 动效定义 --- */
+  --motion-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --motion-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --motion-duration-fast: 160ms;
+  --motion-duration-normal: 220ms;
+
   /* --- 布局定义 --- */
   --vp-sidebar-width: 260px; /* 侧边栏宽度 */
 

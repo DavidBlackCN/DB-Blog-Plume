@@ -1,7 +1,12 @@
 <template>
-  <div class="github-card" :class="{ 'is-loading': loading, 'is-error': error }">
-    <!-- 1. 加载状态：骨架屏 -->
-    <div v-if="loading" class="gh-skeleton">
+  <article
+    class="github-card"
+    :class="{ 'is-loading': loading, 'is-error': error }"
+    :aria-busy="loading"
+  >
+    <!-- 加载状态：保留稳定尺寸，避免内容跳动 -->
+    <div v-if="loading" class="gh-skeleton" role="status">
+      <span class="sr-only">正在加载 GitHub 仓库信息</span>
       <div class="gh-skeleton-header">
         <div class="gh-skeleton-avatar"></div>
         <div class="gh-skeleton-info">
@@ -9,271 +14,487 @@
           <div class="gh-skeleton-text"></div>
         </div>
       </div>
-      <div class="gh-skeleton-stats"></div>
+      <div class="gh-skeleton-stats">
+        <span></span><span></span><span></span>
+      </div>
     </div>
 
-    <!-- 2. 错误状态 -->
-    <div v-else-if="error" class="gh-error-message">
-      <Icon name="octicon:alert-16" color="var(--vp-c-red-1)" />
+    <!-- 错误状态 -->
+    <div v-else-if="error" class="gh-error-message" role="alert">
+      <Icon class="gh-error-icon" icon="octicon:alert-16" aria-hidden="true" />
       <span>{{ error }}</span>
     </div>
 
-    <!-- 3. 正常内容 -->
+    <!-- 正常内容 -->
     <div v-else-if="repoData" class="gh-card-content">
       <!-- 头部：头像与标题 -->
-      <div class="gh-header">
-        <img :src="repoData.owner.avatar_url" class="gh-avatar" alt="avatar" loading="lazy">
+      <header class="gh-header">
+        <img
+          :src="repoData.owner.avatar_url"
+          class="gh-avatar"
+          :alt="`${repoData.owner.login} 的头像`"
+          loading="lazy"
+        >
         <div class="gh-repo-info">
           <h3 class="gh-title">
-            <a :href="repoData.html_url" target="_blank" rel="noopener">
+            <a :href="repoData.html_url" target="_blank" rel="noopener noreferrer">
               {{ repoData.full_name }}
+              <Icon class="gh-external-icon" icon="mdi:arrow-top-right" aria-hidden="true" />
             </a>
           </h3>
-          <p class="gh-description">{{ repoData.description || 'No description provided.' }}</p>
+          <p class="gh-description">{{ repoData.description || '暂无项目描述' }}</p>
         </div>
-      </div>
-      
-      <!-- 中间：统计指标 -->
-      <div class="gh-stats">
-        <a :href="`${repoData.html_url}/stargazers`" target="_blank" class="gh-stat-item">
-          <Icon name="octicon:star-fill-16" color="#e3b341" size="14" />
+      </header>
+
+      <!-- 统计指标 -->
+      <div class="gh-stats" aria-label="仓库统计">
+        <a
+          :href="`${repoData.html_url}/stargazers`"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gh-stat-item"
+          aria-label="查看 Star 数"
+        >
+          <Icon class="gh-stat-icon gh-stat-icon-star" icon="octicon:star-fill-16" aria-hidden="true" />
           <span class="gh-label">Stars</span>
           <span class="gh-value">{{ formatNumber(repoData.stargazers_count) }}</span>
         </a>
-        
-        <a :href="`${repoData.html_url}/issues`" target="_blank" class="gh-stat-item">
-          <Icon name="octicon:issue-opened-16" color="#3fb950" size="14" />
+
+        <a
+          :href="`${repoData.html_url}/issues`"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gh-stat-item"
+          aria-label="查看 Issues"
+        >
+          <Icon class="gh-stat-icon gh-stat-icon-issue" icon="octicon:issue-opened-16" aria-hidden="true" />
           <span class="gh-label">Issues</span>
           <span class="gh-value">{{ formatNumber(repoData.open_issues_count) }}</span>
         </a>
-        
-        <a :href="`${repoData.html_url}/network/members`" target="_blank" class="gh-stat-item">
-          <Icon name="octicon:repo-forked-16" color="#58a6ff" size="14" />
+
+        <a
+          :href="`${repoData.html_url}/network/members`"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gh-stat-item"
+          aria-label="查看 Fork 数"
+        >
+          <Icon class="gh-stat-icon gh-stat-icon-fork" icon="octicon:repo-forked-16" aria-hidden="true" />
           <span class="gh-label">Forks</span>
           <span class="gh-value">{{ formatNumber(repoData.forks_count) }}</span>
         </a>
 
-        <div v-if="repoData.license" class="gh-stat-item" @click="viewLicense">
-          <Icon name="octicon:law-16" color="#bc8cff" size="14" />
-          <span class="gh-value">{{ repoData.license.spdx_id }}</span>
-        </div>
+        <a
+          v-if="licenseLabel"
+          :href="licenseUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gh-stat-item gh-license"
+          :aria-label="`查看 ${licenseLabel} 许可证`"
+        >
+          <Icon class="gh-stat-icon gh-stat-icon-license" icon="octicon:law-16" aria-hidden="true" />
+          <span class="gh-value">{{ licenseLabel }}</span>
+        </a>
       </div>
-      
+
       <!-- 底部：语言与更新时间 -->
-      <div class="gh-footer">
-        <div class="gh-footer-left">
-          <span v-if="repoData.language" class="gh-language">
-            <span class="gh-language-color" :style="{ backgroundColor: getLanguageColor(repoData.language) }"></span>
-            {{ repoData.language }}
-          </span>
-        </div>
-        <div class="gh-dates">
-          <span>
-            <Icon name="octicon:history-16" size="12" />
-            Updated: {{ formatDate(repoData.updated_at) }}
-          </span>
-        </div>
-      </div>
+      <footer class="gh-footer">
+        <span v-if="repoData.language" class="gh-language">
+          <span class="gh-language-color" :style="{ backgroundColor: getLanguageColor(repoData.language) }"></span>
+          {{ repoData.language }}
+        </span>
+        <time class="gh-date" :datetime="repoData.updated_at">
+          <Icon icon="octicon:history-16" aria-hidden="true" />
+          更新于 {{ formatDate(repoData.updated_at) }}
+        </time>
+      </footer>
     </div>
-  </div>
+  </article>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps({
   url: { type: String, required: true }
-});
+})
 
-const repoData = ref(null);
-const loading = ref(true);
-const error = ref(null);
+const repoData = ref(null)
+const loading = ref(true)
+const error = ref(null)
 
-let cachedColors = null;
+let cachedColors = null
 
 const parseRepoUrl = (url) => {
-  if (!url) return null;
-  const cleanUrl = url.replace(/\/$/, ""); 
-  const match = cleanUrl.match(/github\.com\/([^/]+)\/([^/]+)/) || cleanUrl.match(/^([^/]+)\/([^/]+)$/);
-  return match ? { owner: match[1], repo: match[2] } : null;
-};
+  if (!url) return null
+  const cleanUrl = url.replace(/\/$/, '')
+  const match = cleanUrl.match(/github\.com\/([^/]+)\/([^/]+)/) || cleanUrl.match(/^([^/]+)\/([^/]+)$/)
+  return match ? { owner: match[1], repo: match[2] } : null
+}
+
+const licenseLabel = computed(() => {
+  const license = repoData.value?.license
+  if (!license) return ''
+  return typeof license === 'string' ? license : license.spdx_id || license.name || ''
+})
+
+const licenseUrl = computed(() => {
+  if (!repoData.value) return '#'
+  return `${repoData.value.html_url}/blob/${repoData.value.default_branch}/LICENSE`
+})
 
 const fetchRepoData = async () => {
-  const info = parseRepoUrl(props.url);
+  const info = parseRepoUrl(props.url)
   if (!info) {
-    error.value = "Invalid GitHub URL";
-    loading.value = false;
-    return;
+    error.value = '无效的 GitHub 地址'
+    loading.value = false
+    return
   }
-  loading.value = true;
-  error.value = null;
+
+  loading.value = true
+  error.value = null
+
   try {
     const [repoRes, colorRes] = await Promise.all([
       fetch(`https://api.github.com/repos/${info.owner}/${info.repo}`),
-      cachedColors 
-        ? Promise.resolve(cachedColors) 
-        : fetch('https://gh.llkk.cc/https://raw.githubusercontent.com/ozh/github-colors/master/colors.json').then(r => r.json())
-    ]);
-    if (!repoRes.ok) throw new Error(`Repo not found (${repoRes.status})`);
-    cachedColors = colorRes;
-    const data = await repoRes.json();
-    data._colors = colorRes;
-    repoData.value = data;
+      cachedColors
+        ? Promise.resolve(cachedColors)
+        : fetch('https://gh.llkk.cc/https://raw.githubusercontent.com/ozh/github-colors/master/colors.json').then((response) => response.json())
+    ])
+
+    if (!repoRes.ok) throw new Error(`项目未找到（${repoRes.status}）`)
+
+    cachedColors = colorRes
+    const data = await repoRes.json()
+    data._colors = colorRes
+    repoData.value = data
   } catch (err) {
-    error.value = err.message;
+    error.value = err.message
   } finally {
-    loading.value = false;
+    loading.value = false
   }
-};
+}
 
-const getLanguageColor = (lang) => repoData.value?._colors?.[lang]?.color || '#ccc';
-const formatNumber = (num) => num >= 1000 ? (num / 1000).toFixed(1) + 'k' : num;
-const formatDate = (date) => new Date(date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+const getLanguageColor = (lang) => repoData.value?._colors?.[lang]?.color || 'var(--vp-c-text-3)'
+const formatNumber = (num) => num >= 1000 ? `${(num / 1000).toFixed(1)}k` : num
+const formatDate = (date) => new Date(date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })
 
-const viewLicense = () => {
-  if (repoData.value) {
-    window.open(`${repoData.value.html_url}/blob/${repoData.value.default_branch}/LICENSE`, '_blank');
-  }
-};
-
-onMounted(fetchRepoData);
-watch(() => props.url, fetchRepoData);
+onMounted(fetchRepoData)
+watch(() => props.url, fetchRepoData)
 </script>
 
 <style scoped>
+/* ===========================================================================
+   GitHub 仓库卡片
+   ========================================================================== */
+
 .github-card {
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
-  padding: 12px 16px 12px; 
-  background-color: var(--vp-c-bg-soft);
-  transition: all 0.25s ease;
-  margin: 1rem 0;
-  overflow: hidden;
-  /* 强制左对齐，防止被主题居中样式影响 */
-  text-align: left !important;
+  --repo-accent: var(--vp-c-brand-1);
+  --repo-accent-hover: var(--vp-c-brand-2);
+  --repo-accent-soft: var(--vp-c-brand-soft);
+  --repo-accent-border: var(--vp-c-brand-3);
+  position: relative;
   box-sizing: border-box;
-  font-family: "MapleMono-SemiBold";
+  margin: 1.25rem 0;
+  overflow: hidden;
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-elv);
+  color: var(--vp-c-text-1);
+  text-align: left;
+  font-family: var(--font-ui);
+  overflow-wrap: anywhere;
+  transition: border-color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease,
+    transform var(--motion-duration-normal) var(--motion-ease-out);
 }
 
-.github-card:hover {
-  border-color: var(--vp-c-brand-1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
+.gh-card-content,
+.gh-skeleton,
+.gh-error-message {
+  padding: 16px;
 }
 
 .gh-header {
-  display: flex !important; /* 强制使用 flex */
-  align-items: center !important; 
-  justify-content: flex-start !important; /* 强制靠左 */
-  gap: 16px;
-  margin-bottom: 8px; 
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .gh-avatar {
-  width: 56px !important; 
-  height: 56px !important;
-  border-radius: 10px !important;
-  background: var(--vp-c-bg-alt);
-  border: 1px solid var(--vp-c-divider);
-  flex-shrink: 0;
-  /* 解决某些主题给 img 标签默认加 margin: 0 auto 的问题 */
-  margin: 0 !important; 
   display: block;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-alt);
+  box-shadow: none;
+  object-fit: cover;
+}
+
+.github-card .gh-avatar:hover {
+  transform: none;
 }
 
 .gh-repo-info {
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left !important;
 }
 
 .gh-title {
-  margin: 0 !important; /* 覆盖主题可能给 h3 加的 margin */
-  font-size: 1.1rem !important;
+  margin: 0;
+  color: var(--repo-accent);
+  font-family: var(--font-heading);
+  font-size: 1rem;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.4;
 }
 
 .gh-title a {
-  color: var(--vp-c-brand-1) !important;
+  display: inline;
+  color: inherit;
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--motion-duration-fast) ease,
+    text-decoration-color var(--motion-duration-fast) ease;
+}
+
+.gh-external-icon {
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 0.9em;
+  vertical-align: -0.08em;
 }
 
 .gh-description {
-  margin: 4px 0 0 !important;
-  font-size: 0.92rem !important;
-  color: var(--vp-c-text-2);
-  line-height: 1.5;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  margin: 4px 0 0;
   overflow: hidden;
+  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 /* 统计区域 */
 .gh-stats {
-  display: flex !important;
+  display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 12px 0;
-  justify-content: flex-start !important;
+  margin: 16px 0;
 }
 
 .gh-stat-item {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 6px;
-  background: var(--vp-c-bg-alt);
-  font-size: 12px;
-  text-decoration: none;
+  min-height: 30px;
+  gap: 5px;
+  padding: 4px 9px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 7px;
+  background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-2);
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    transform var(--motion-duration-fast) var(--motion-ease-out);
 }
 
-.gh-stat-item:hover {
-  background: var(--vp-c-default-soft);
+.gh-stat-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.gh-stat-icon-star { color: #a56a00; }
+.gh-stat-icon-issue { color: var(--vp-c-success-1); }
+.gh-stat-icon-fork { color: var(--vp-c-info-1); }
+.gh-stat-icon-license { color: var(--vp-c-warning-1); }
+
+.gh-label {
+  color: var(--vp-c-text-2);
+}
+
+.gh-value {
   color: var(--vp-c-text-1);
+  font-family: var(--font-code);
+  font-variant-numeric: tabular-nums;
 }
 
 /* 底部 */
 .gh-footer {
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
   border-top: 1px solid var(--vp-c-divider);
-  padding-top: 10px;
-  margin-top: 4px;
-  font-size: 11px;
   color: var(--vp-c-text-3);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
+.gh-language,
+.gh-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .gh-language {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: var(--vp-c-text-2);
 }
 
+.gh-date {
+  text-align: right;
+}
+
 .gh-language-color {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
 }
 
-.gh-dates span {
+/* 加载与错误状态 */
+.gh-skeleton-header {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 14px;
 }
 
-/* 骨架屏 */
-.gh-skeleton-header { display: flex; align-items: center; gap: 16px; }
-.gh-skeleton-avatar { width: 64px; height: 64px; background: var(--vp-c-divider); border-radius: 10px; }
-.gh-skeleton-title { width: 140px; height: 20px; background: var(--vp-c-divider); border-radius: 4px; margin-bottom: 8px; }
-.gh-skeleton-text { width: 85%; height: 16px; background: var(--vp-c-divider); border-radius: 4px; }
+.gh-skeleton-info {
+  display: grid;
+  flex: 1;
+  gap: 8px;
+}
+
+.gh-skeleton-avatar,
+.gh-skeleton-title,
+.gh-skeleton-text,
+.gh-skeleton-stats span {
+  border-radius: 6px;
+  background: var(--vp-c-divider);
+  animation: gh-skeleton-pulse 1.1s ease-in-out infinite alternate;
+}
+
+.gh-skeleton-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+}
+
+.gh-skeleton-title { width: min(42%, 180px); height: 16px; }
+.gh-skeleton-text { width: min(88%, 320px); height: 12px; }
+
+.gh-skeleton-stats {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.gh-skeleton-stats span {
+  width: 68px;
+  height: 28px;
+}
+
+.gh-error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 84px;
+  color: var(--vp-c-danger-1);
+  font-size: 0.875rem;
+}
+
+.gh-error-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .github-card:hover {
+    border-color: var(--repo-accent-border);
+    background: var(--vp-c-bg-safe);
+    transform: translateY(-2px);
+  }
+
+  .github-card:hover .gh-title a {
+    color: var(--repo-accent-hover);
+    text-decoration: underline;
+  }
+
+  .gh-stat-item:hover {
+    border-color: var(--repo-accent-border);
+    background: var(--repo-accent-soft);
+    color: var(--vp-c-text-1);
+    transform: translateY(-1px);
+  }
+}
+
+.gh-title a:focus-visible,
+.gh-stat-item:focus-visible {
+  outline: 2px solid var(--repo-accent);
+  outline-offset: 2px;
+}
+
+.gh-stat-item:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 480px) {
+  .gh-card-content,
+  .gh-skeleton,
+  .gh-error-message {
+    padding: 14px;
+  }
+
+  .gh-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .gh-date {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .github-card,
+  .gh-stat-item,
+  .gh-title a {
+    transition: color var(--motion-duration-fast) ease,
+      background-color var(--motion-duration-fast) ease,
+      border-color var(--motion-duration-fast) ease;
+  }
+
+  .gh-skeleton-avatar,
+  .gh-skeleton-title,
+  .gh-skeleton-text,
+  .gh-skeleton-stats span {
+    animation: none;
+  }
+}
+
+@keyframes gh-skeleton-pulse {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
 </style>

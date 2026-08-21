@@ -1,15 +1,23 @@
 <template>
-  <span class="word-count-display" :class="{ loading, error }">
+  <span
+    class="word-count-display"
+    :class="{ 'is-loading': loading, 'is-error': error }"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
     <span v-if="loading" class="word-count-loading">
+      <Icon class="word-count-status-icon" icon="octicon:graph-16" aria-hidden="true" />
       {{ loadingText }}
     </span>
 
     <span v-else-if="error" class="word-count-error">
+      <Icon class="word-count-status-icon" icon="octicon:alert-16" aria-hidden="true" />
       {{ errorText }}
     </span>
 
     <span v-else class="word-count-value">
-      <span v-if="showIcon" class="word-count-icon">{{ icon }}</span>
+      <Icon v-if="showIcon" class="word-count-icon" :icon="icon" aria-hidden="true" />
       <span v-if="label" class="word-count-label">{{ label }}</span>
       <span class="word-count-text">{{ displayText }}</span>
     </span>
@@ -19,6 +27,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { Icon } from '@iconify/vue'
 
 let cachedData = null
 let cachedPromise = null
@@ -109,7 +118,7 @@ const props = defineProps({
 
   icon: {
     type: String,
-    default: '📝'
+    default: 'octicon:book-16'
   },
 
   showIcon: {
@@ -124,12 +133,12 @@ const props = defineProps({
 
   loadingText: {
     type: String,
-    default: '📊 统计加载中...'
+    default: '统计加载中…'
   },
 
   errorText: {
     type: String,
-    default: '❌ 统计加载失败'
+    default: '统计加载失败'
   },
 
   fallback: {
@@ -179,22 +188,58 @@ onMounted(async () => {
 .word-count-display {
   display: inline-flex;
   align-items: center;
-  gap: 0.2rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  min-height: 32px;
+  padding: 4px 9px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 999px;
+  background: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
-  font-family: "MapleMono-SemiBold";
-  font-size: 18px;
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  transition: border-color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease,
+    color var(--motion-duration-fast) ease;
 }
 
-.word-count-display.loading,
-.word-count-display.error {
+.word-count-display.is-loading,
+.word-count-display.is-error {
   color: var(--vp-c-text-2);
 }
 
-.word-count-icon {
+.word-count-display.is-error {
+  border-color: var(--vp-c-danger-3);
+  background: var(--vp-c-danger-soft);
+}
+
+.word-count-loading,
+.word-count-error,
+.word-count-value {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
+}
+
+.word-count-value {
+  transition: opacity var(--motion-duration-normal) var(--motion-ease-out),
+    transform var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+@starting-style {
+  .word-count-value {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+
+.word-count-status-icon,
+.word-count-icon {
+  flex-shrink: 0;
+  font-size: 1em;
+}
+
+.word-count-icon {
+  color: var(--vp-c-brand-1);
 }
 
 .word-count-label {
@@ -202,11 +247,26 @@ onMounted(async () => {
 }
 
 .word-count-text {
-  font-weight: 500;
-  color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-hard);
+  font-family: var(--font-code);
+  font-variant-numeric: tabular-nums;
+  font-weight: 400;
 }
 
 .word-count-error {
-  color: var(--vp-c-danger-1, #e74c3c);
+  color: var(--vp-c-danger-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-count-value {
+    transition: opacity var(--motion-duration-fast) ease;
+  }
+
+  @starting-style {
+    .word-count-value {
+      opacity: 0;
+      transform: none;
+    }
+  }
 }
 </style>
