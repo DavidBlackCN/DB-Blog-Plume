@@ -155,7 +155,7 @@ export default defineUserConfig({
       provider: 'Waline', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
       comment: true,
 
-      serverURL: 'https://db-blog-plume.netlify.app',
+      serverURL: 'https://db-blog-waline.vercel.app',
 
       // 禁用登录入口
       login: 'disable',
