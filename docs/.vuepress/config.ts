@@ -155,7 +155,7 @@ export default defineUserConfig({
       provider: 'Waline', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
       comment: true,
 
-      serverURL: 'https://api.zcservice.houlang.cloud/comment/4d673057bac22b6da6a22df0041507f9',
+      serverURL: 'https://db-blog-plume.netlify.app',
 
       // 禁用登录入口
       login: 'disable',
