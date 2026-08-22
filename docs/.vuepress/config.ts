@@ -152,16 +152,44 @@ export default defineUserConfig({
      * @see https://theme-plume.vuejs.press/guide/features/comments/
      */
     comment: {
-      provider: 'Twikoo', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
+      provider: 'Waline', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
       comment: true,
-      envId: 'https://dbdev-twikoo.netlify.app/.netlify/functions/twikoo'
-      //repo: '',
-      //repoId: '',
-      //category: '',
-      //categoryId: '',
-      //mapping: 'pathname',
-      //reactionsEnabled: true,
-      //inputPosition: 'top',
+
+      serverURL: 'https://api.zcservice.houlang.cloud/comment/4d673057bac22b6da6a22df0041507f9',
+
+      // 禁用登录入口
+      login: 'disable',
+
+      // 开启表情包 / GIF 搜索
+      search: true,
+      
+      // 评论输入框 Emoji
+      emoji: [
+        'https://unpkg.com/@waline/emojis@1.4.0/bilibili',
+        'https://unpkg.com/@waline/emojis@1.4.0/bmoji'
+      ],
+
+      // 文章反应
+      reaction: [
+        'https://unpkg.com/@waline/emojis@1.4.0/bilibili/bb_heart_eyes.png',
+        'https://unpkg.com/@waline/emojis@1.4.0/bilibili/bb_clap.png',
+        'https://unpkg.com/@waline/emojis@1.4.0/bilibili/bb_think.png',
+        'https://unpkg.com/@waline/emojis@1.4.0/bilibili/bb_doge.png',
+        'https://unpkg.com/@waline/emojis@1.4.0/bilibili/bb_sob.png',
+        'https://unpkg.com/@waline/emojis@1.4.0/bilibili/bb_confused.png',
+      ],
+
+      // 自定义反应文案
+      locale: {
+        reactionTitle: '这篇文章给你的感觉是？',
+        placeholder: '欢迎留言~'
+      },
+
+      // 评论分页
+      pageSize: 10,
+
+      // 评论字数限制
+      wordLimit: 2000,
     },
 
     /**

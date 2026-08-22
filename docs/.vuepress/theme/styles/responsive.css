@@ -20,18 +20,14 @@
     padding: 0 16px; 
   }
 
-  /* Twikoo 移动端微调 */
-  .tk-submit { 
-    padding: 15px; 
+  /* Waline 移动端微调 */
+  [data-waline] .wl-panel {
+    margin-inline: 0;
   }
-  .tk-meta-input { 
-    flex-direction: column; 
+  [data-waline] .wl-card {
+    padding: 0.75rem;
   }
-  .tk-comment { 
-    padding: 1rem !important; 
-  }
-  .tk-avatar.tk-has-avatar {
-    width: 32px !important;
-    height: 32px !important;
+  [data-waline] .wl-cards .wl-user {
+    margin-inline-end: 0.5rem;
   }
 }
