@@ -417,7 +417,7 @@ function scrollToCategory(categoryId) {
   gap: 8px;
   min-height: 52px;
   padding: 0 8px 0 14px;
-  border: 2px solid var(--vp-c-divider);
+  border: 1.5px solid var(--vp-c-divider);
   border-radius: 12px;
   background: var(--vp-c-bg-elv);
   transition: border-color var(--motion-duration-fast) ease,
@@ -496,7 +496,7 @@ function scrollToCategory(categoryId) {
 
 .tags-drawer-surface {
   padding: 14px;
-  border: 2px solid var(--vp-c-divider);
+  border: 1.5px solid var(--vp-c-divider);
   border-radius: 10px;
   background: var(--vp-c-bg-soft);
   opacity: 0;
@@ -616,7 +616,7 @@ function scrollToCategory(categoryId) {
   flex-direction: column;
   min-height: 178px;
   padding: 16px;
-  border: 2px solid var(--vp-c-divider);
+  border: 1.5px solid var(--vp-c-divider);
   border-radius: 12px;
   background: var(--vp-c-bg-elv);
   color: inherit;
