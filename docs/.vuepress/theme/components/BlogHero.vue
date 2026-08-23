@@ -1,105 +1,132 @@
 <template>
-  <div class="blog-home-wrapper">
-    <!-- 背景层 -->
-    <div class="pixel-bg-container">
-      <canvas ref="pixelCanvas" class="pixel-canvas"></canvas>
-    </div>
+  <section class="blog-hero" aria-labelledby="blog-hero-title">
+    <div class="ambient-grid" aria-hidden="true"></div>
 
-    <!-- 主体内容层 -->
-    <div class="home-content">
-      <div class="home-layout">
-        <!-- 左侧：头像 -->
-        <div class="avatar-section">
-          <div class="avatar-wrapper">
-            <img src="/avatar/davidblack-round.png" alt="Avatar" class="avatar-img" />
-            <div class="emoji-badge">🥳</div>
+    <div class="hero-shell">
+      <div class="identity-panel">
+        <div class="avatar-frame">
+          <img
+            src="/avatar/davidblack-round.png"
+            alt="DavidBlackCN 的头像"
+            class="avatar-img"
+            width="280"
+            height="280"
+            fetchpriority="high"
+          />
+          <span class="avatar-status" aria-label="保持热爱">
+            <Icon icon="ph:sparkle-fill" aria-hidden="true" />
+          </span>
+        </div>
+
+        <div class="identity-note" aria-label="个人定位">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Developer · Blogger</span>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="terminal-window" aria-label="终端身份信息：user@davidblackcn 执行 whoami，输出 DavidBlackCN">
+          <div class="terminal-header" aria-hidden="true">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-label">~/profile</span>
+          </div>
+
+          <div class="terminal-body">
+            <div class="command-line" aria-hidden="true">
+              <span class="prompt">user@davidblackcn</span><span class="path">:~$</span>
+              <span class="typing-text">{{ displayedCommand }}</span>
+            </div>
+            <h1
+              id="blog-hero-title"
+              class="main-name"
+              :class="{ 'is-visible': showResponse }"
+              aria-label="DavidBlackCN"
+            >
+              <span aria-hidden="true">
+                <span class="command-arrow">›</span>
+                {{ displayedName }}
+                <span v-if="nameFinished" class="blink-cursor">_</span>
+              </span>
+            </h1>
           </div>
         </div>
 
-        <!-- 右侧：信息区 -->
-        <div class="info-section">
-          <!-- 模拟终端窗口 -->
-          <div class="terminal-window">
-            <div class="terminal-header">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
-            <div class="terminal-body">
-              <div class="command-line">
-                <span class="user-prefix">user@davidblackcn</span>
-                <span class="path-prefix">:~$</span>
-                <span class="typing-text">{{ displayedCommand }}</span>
-              </div>
-              <div class="response-line" v-if="showResponse">
-                <h1 class="main-name">
-                  <span class="arrow">&gt;</span>
-                  {{ displayedName }}<span class="blink-cursor" v-if="nameFinished">_</span>
-                </h1>
-              </div>
-            </div>
+        <div class="motto-strip" aria-label="座右铭">
+          <Icon icon="ph:quotes" aria-hidden="true" />
+          <p>有些事你不要太当真。</p>
+          <span>——《售梦者》</span>
+        </div>
+
+        <div class="tech-stack-card">
+          <div class="section-heading">
+            <Icon icon="ph:stack" aria-hidden="true" />
+            <span>技术栈</span>
+            <span class="section-count">{{ techStack.length }}</span>
           </div>
 
-          <!-- 简介 -->
-          <div class="description-quote">
-            有些事你不要太当真。——《售梦者》
-          </div>
-
-          <!-- 技术栈传送带卡片 -->
-          <div class="tech-stack-card">
-            <div class="tech-stack-header">
-              <Icon icon="ph:stack-bold" class="stack-icon" />
-              <span>技术栈</span>
+          <div
+            class="tech-carousel"
+            tabindex="0"
+            aria-label="技术栈跑马灯，悬停或聚焦时暂停"
+          >
+            <div class="tech-track">
+              <ul class="tech-list">
+                <li v-for="tech in techStack" :key="tech.name" class="tech-item">
+                  <Icon :icon="tech.icon" aria-hidden="true" />
+                  <span>{{ tech.name }}</span>
+                </li>
+              </ul>
+              <ul class="tech-list" aria-hidden="true">
+                <li v-for="tech in techStack" :key="`copy-${tech.name}`" class="tech-item">
+                  <Icon :icon="tech.icon" aria-hidden="true" />
+                  <span>{{ tech.name }}</span>
+                </li>
+              </ul>
             </div>
-            <div class="tech-carousel">
-              <div class="tech-track">
-                <div v-for="n in 2" :key="n" class="tech-group">
-                  <div v-for="tech in techStack" :key="tech.name" class="tech-item" :title="tech.name">
-                    <Icon :icon="tech.icon" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 社交链接 -->
-          <div class="social-links">
-            <a href="/more/index" class="social-box About Me">
-              <Icon icon="mdi:account-circle" />
-            </a>
-            <a href="https://github.com/DavidBlackCN" target="_blank" class="social-box Github">
-              <Icon icon="ri:github-fill" />
-            </a>
-            <a href="https://space.bilibili.com/453841968" target="_blank" class="social-box Bilibili">
-              <Icon icon="ri:bilibili-fill" />
-            </a>
-            <a href="mailto:davidblackcn@outlook.com" class="social-box Email">
-              <Icon icon="ri:mail-send-fill" />
-            </a>
-            <a href="https://qm.qq.com/q/FWDv0T5OYG" class="social-box QQ">
-              <Icon icon="ri:qq-fill" />
-            </a>
-            <a href="https://theme-plume.vuejs.press/" class="social-box Theme-Plume">
-              <Icon icon="ph:feather" />
-            </a>
           </div>
         </div>
+
+        <nav class="social-links" aria-label="个人链接">
+          <a
+            v-for="link in socialLinks"
+            :key="link.label"
+            :href="link.href"
+            class="social-link"
+            :target="link.external ? '_blank' : undefined"
+            :rel="link.external ? 'noopener noreferrer' : undefined"
+            :title="link.label"
+            :aria-label="link.external ? `${link.label}（在新标签页打开）` : link.label"
+          >
+            <Icon :icon="link.icon" aria-hidden="true" />
+            <span class="sr-only">{{ link.label }}</span>
+          </a>
+        </nav>
       </div>
     </div>
 
-    <!-- 底部一言 -->
-    <div class="hitokoto-footer">
-      <p class="hitokoto-text">{{ hitokoto }}</p>
-    </div>
-  </div>
+    <footer class="hitokoto-footer">
+      <Icon icon="ph:quotes" aria-hidden="true" />
+      <p>{{ hitokoto }}</p>
+    </footer>
+  </section>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 
-const hitokoto = ref('加载一言中...')
-const pixelCanvas = ref(null)
+const hitokoto = ref('保持热爱，奔赴山海。')
+let hitokotoController: AbortController | undefined
+const displayedCommand = ref('')
+const displayedName = ref('')
+const showResponse = ref(false)
+const nameFinished = ref(false)
+const typingTimers: number[] = []
+
+const fullCommand = 'whoami'
+const fullResponseName = 'DavidBlackCN'
 
 const techStack = [
   { name: 'Vue', icon: 'logos:vue' },
@@ -112,379 +139,830 @@ const techStack = [
   { name: 'Java', icon: 'logos:java' },
   { name: 'Docker', icon: 'logos:docker-icon' },
   { name: 'MySQL', icon: 'logos:mysql' },
-  { name: 'VSCode', icon: 'logos:visual-studio-code' },
+  { name: 'VS Code', icon: 'logos:visual-studio-code' },
   { name: 'Linux', icon: 'logos:linux-tux' },
   { name: 'Markdown', icon: 'logos:markdown' },
-  { name: 'IJ', icon: 'logos:intellij-idea' },
+  { name: 'IntelliJ IDEA', icon: 'logos:intellij-idea' },
   { name: 'GitHub', icon: 'logos:github-icon' },
   { name: 'PyCharm', icon: 'logos:pycharm' },
 ]
 
-const fullCommand = 'whoami'
-const fullResponseName = 'DavidBlackCN'
-const displayedCommand = ref('')
-const displayedName = ref('')
-const showResponse = ref(false)
-const nameFinished = ref(false)
+const socialLinks = [
+  { label: '关于我', href: '/more/index', icon: 'ph:user-circle' },
+  { label: 'GitHub', href: 'https://github.com/DavidBlackCN', icon: 'ph:github-logo', external: true },
+  { label: '哔哩哔哩', href: 'https://space.bilibili.com/453841968', icon: 'ri:bilibili-line', external: true },
+  { label: '邮件', href: 'mailto:davidblackcn@outlook.com', icon: 'ph:paper-plane-tilt' },
+  { label: 'QQ', href: 'https://qm.qq.com/q/FWDv0T5OYG', icon: 'ri:qq-line', external: true },
+  { label: 'Plume', href: 'https://theme-plume.vuejs.press/', icon: 'ph:feather', external: true },
+]
 
-const startTyping = () => {
-  let i = 0
-  const commandTimer = setInterval(() => {
-    displayedCommand.value += fullCommand[i]
-    i++
-    if (i === fullCommand.length) {
-      clearInterval(commandTimer)
-      setTimeout(() => {
-        showResponse.value = true
-        startTypingName()
-      }, 500)
-    }
-  }, 120)
-}
+async function fetchHitokoto() {
+  hitokotoController = new AbortController()
 
-const startTypingName = () => {
-  let j = 0
-  const nameTimer = setInterval(() => {
-    displayedName.value += fullResponseName[j]
-    j++
-    if (j === fullResponseName.length) {
-      clearInterval(nameTimer)
-      nameFinished.value = true
-    }
-  }, 150)
-}
-
-const fetchHitokoto = async () => {
   try {
-    const res = await fetch('https://v1.hitokoto.cn/?c=d&c=i')
-    const data = await res.json()
-    hitokoto.value = `${data.hitokoto} —— ${data.from}`
-  } catch (e) {
-    hitokoto.value = '保持热爱，奔赴山海。'
+    const response = await fetch('https://v1.hitokoto.cn/?c=d&c=i', {
+      signal: hitokotoController.signal,
+    })
+
+    if (!response.ok) return
+
+    const data = await response.json()
+    if (data?.hitokoto && data?.from) {
+      hitokoto.value = `${data.hitokoto} —— ${data.from}`
+    }
+  } catch (error) {
+    if (!(error instanceof DOMException && error.name === 'AbortError')) {
+      hitokoto.value = '保持热爱，奔赴山海。'
+    }
   }
 }
 
-let animationFrame
-const mouse = { x: null, y: null, radius: 150 }
-const handleMouseMove = (e) => { mouse.x = e.x; mouse.y = e.y }
+function scheduleTyping(callback: () => void, delay: number) {
+  typingTimers.push(window.setTimeout(callback, delay))
+}
 
-const initPixelBackground = () => {
-  const canvas = pixelCanvas.value
-  const ctx = canvas.getContext('2d')
-  let particles = []
-
-  // 动态获取当前主题色调
-  const getThemeConfig = () => {
-    const isDark = document.documentElement.classList.contains('dark')
-    return {
-      rgb: isDark ? '100, 160, 255' : '0, 100, 250',
-      pOpacity: isDark ? 0.4 : 0.3,
-      lOpacity: isDark ? 0.4 : 0.25
-    }
+function startTyping() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    displayedCommand.value = fullCommand
+    displayedName.value = fullResponseName
+    showResponse.value = true
+    nameFinished.value = true
+    return
   }
 
-  const resize = () => {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
-  }
+  let commandIndex = 0
+  const typeCommand = () => {
+    displayedCommand.value += fullCommand[commandIndex]
+    commandIndex += 1
 
-  class Particle {
-    constructor() { this.reset() }
-    reset() {
-      this.x = Math.random() * canvas.width
-      this.y = Math.random() * canvas.height
-      this.size = Math.random() * 3 + 1 
-      this.vx = (Math.random() - 0.5) * 0.5
-      this.vy = (Math.random() - 0.5) * 0.5
+    if (commandIndex < fullCommand.length) {
+      scheduleTyping(typeCommand, 120)
+      return
     }
-    update() {
-      this.x += this.vx; this.y += this.vy
-      if (this.x < 0 || this.x > canvas.width) this.vx *= -1
-      if (this.y < 0 || this.y > canvas.height) this.vy *= -1
-      if (mouse.x != null) {
-        let dx = mouse.x - this.x; let dy = mouse.y - this.y
-        let distance = Math.sqrt(dx * dx + dy * dy)
-        if (distance < mouse.radius) { this.x -= dx * 0.01; this.y -= dy * 0.01 }
-      }
-    }
-    draw() {
-      const config = getThemeConfig()
-      ctx.fillStyle = `rgba(${config.rgb}, ${config.pOpacity})`
-      ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill()
-    }
-  }
 
-  const drawLines = () => {
-    const config = getThemeConfig()
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x
-        let dy = particles[i].y - particles[j].y
-        let distance = Math.sqrt(dx * dx + dy * dy)
-        if (distance < 150) {
-          ctx.strokeStyle = `rgba(${config.rgb}, ${config.lOpacity - distance / 150})`
-          ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke()
+    scheduleTyping(() => {
+      showResponse.value = true
+      let nameIndex = 0
+
+      const typeName = () => {
+        displayedName.value += fullResponseName[nameIndex]
+        nameIndex += 1
+
+        if (nameIndex < fullResponseName.length) {
+          scheduleTyping(typeName, 150)
+        } else {
+          nameFinished.value = true
         }
       }
-    }
+
+      typeName()
+    }, 500)
   }
 
-  const animate = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    particles.forEach(p => { p.update(); p.draw() })
-    drawLines()
-    animationFrame = requestAnimationFrame(animate)
-  }
-
-  window.addEventListener('resize', resize)
-  window.addEventListener('mousemove', handleMouseMove)
-  resize()
-  for (let i = 0; i < 80; i++) particles.push(new Particle())
-  animate()
+  scheduleTyping(typeCommand, 220)
 }
 
 onMounted(() => {
   fetchHitokoto()
-  initPixelBackground()
   startTyping()
 })
 
 onUnmounted(() => {
-  cancelAnimationFrame(animationFrame)
-  window.removeEventListener('resize', () => {})
-  window.removeEventListener('mousemove', handleMouseMove)
+  hitokotoController?.abort()
+  typingTimers.forEach(window.clearTimeout)
 })
 </script>
 
 <style scoped>
-.blog-home-wrapper {
+.blog-hero {
+  --hero-surface: color-mix(in srgb, var(--vp-c-bg-elv) 94%, transparent);
+  --hero-border: var(--vp-c-divider);
+  --terminal-bg: #1e1f22;
+  --terminal-header: #17181b;
+  --terminal-border: #303238;
+  --terminal-text: #f1f1f2;
+  --terminal-muted: #a9abb2;
   position: relative;
-  width: 100%;
-  min-height: calc(100vh - var(--vp-nav-height, 64px));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--vp-c-bg);
-  padding: 40px 24px;
-  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: calc(100dvh - var(--vp-nav-height, 64px));
+  padding: clamp(48px, 7vw, 88px) clamp(20px, 4vw, 48px) 32px;
   overflow: hidden;
-  font-family: "MapleMono-SemiBold";
+  color: var(--vp-c-text-1);
+  background:
+    radial-gradient(circle at 16% 38%, var(--vp-c-brand-soft), transparent 30%),
+    var(--vp-c-bg);
+  box-sizing: border-box;
+  isolation: isolate;
 }
 
-.home-content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  animation: fadeInUp 1s ease-out;
+.blog-hero::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  width: min(58vw, 760px);
+  aspect-ratio: 1;
+  content: '';
+  pointer-events: none;
+  background: radial-gradient(circle, var(--vp-c-brand-soft), transparent 67%);
+  opacity: 0.55;
+  transform: translate(-28%, 18%) scale(0.96);
+  animation: ambient-glow 14s var(--motion-ease-in-out) infinite alternate;
 }
 
-.home-layout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5rem;
-  width: 100%;
-}
-
-.pixel-bg-container {
+.ambient-grid {
   position: absolute;
   inset: 0;
   z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at center, transparent 0%, var(--vp-c-bg) 100%);
-}
-.pixel-canvas { 
-  opacity: 0.8; 
-  transition: opacity 0.3s ease;
-}
-:dark .pixel-canvas {
-  opacity: 0.6;
+  opacity: 0.3;
+  background-image: radial-gradient(var(--vp-c-brand-3) 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
+  mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
+  transform: translate3d(-16px, -10px, 0) scale(1.04);
+  animation: ambient-drift 8s var(--motion-ease-in-out) infinite alternate;
+  will-change: transform, opacity;
 }
 
-/* 头像 */
-.avatar-wrapper {
-  position: relative;
-  width: 340px;
-  height: 340px;
-  flex-shrink: 0;
+.ambient-grid::after {
+  position: absolute;
+  inset: -30%;
+  content: '';
+  background: radial-gradient(circle, var(--vp-c-brand-soft) 0%, transparent 42%);
+  opacity: 0.72;
+  transform: translate3d(-18%, -8%, 0) scale(0.94);
+  animation: ambient-orbit 10s var(--motion-ease-in-out) infinite alternate;
+  will-change: transform, opacity;
 }
+
+.hero-shell,
+.hitokoto-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-shell {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.45fr);
+  align-items: center;
+  gap: clamp(48px, 8vw, 104px);
+  width: min(1120px, 100%);
+  margin: auto;
+}
+
+.identity-panel {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+}
+
+.avatar-frame {
+  position: relative;
+  width: clamp(220px, 25vw, 280px);
+  aspect-ratio: 1;
+  padding: 8px;
+  border: 1px solid var(--hero-border);
+  border-radius: 14px;
+  background: var(--hero-surface);
+  transition:
+    transform var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease;
+}
+
+.avatar-frame::before,
+.avatar-frame::after {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  content: '';
+  pointer-events: none;
+}
+
+.avatar-frame::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--vp-c-brand-1);
+  border-left: 2px solid var(--vp-c-brand-1);
+  border-radius: 6px 0 0;
+}
+
+.avatar-frame::after {
+  right: -1px;
+  bottom: -1px;
+  border-right: 2px solid var(--vp-c-brand-1);
+  border-bottom: 2px solid var(--vp-c-brand-1);
+  border-radius: 0 0 6px;
+}
+
 .avatar-img {
+  display: block;
   width: 100%;
   height: 100%;
-  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-  border: 8px solid var(--vp-c-brand-2);
-  animation: morphing 8s infinite alternate ease-in-out;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: var(--vp-c-bg-soft);
 }
-.avatar-img:hover { transform: scale(1.05) rotate(3deg); }
 
-.emoji-badge {
+.avatar-status {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  font-size: 4rem;
-  filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
-  animation: bounce 2s infinite;
+  right: -14px;
+  bottom: 22px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  color: var(--vp-c-brand-hard);
+  border: 1px solid var(--vp-c-brand-3);
+  border-radius: 10px;
+  background: var(--vp-c-bg-elv);
+  box-shadow: 0 8px 24px rgb(29 37 42 / 10%);
+  transition: transform var(--motion-duration-fast) ease;
 }
 
-/* 终端 */
+.avatar-status svg {
+  width: 21px;
+  height: 21px;
+}
+
+.identity-note {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  color: var(--vp-c-text-2);
+  border: 1px solid var(--hero-border);
+  border-radius: 6px;
+  background: var(--hero-surface);
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  transition:
+    transform var(--motion-duration-fast) ease,
+    color var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vp-c-success-1);
+  box-shadow: 0 0 0 3px var(--vp-c-success-soft);
+}
+
+.hero-content {
+  min-width: 0;
+}
+
 .terminal-window {
-  background: #1e1e1e;
-  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  margin-bottom: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  width: fit-content;
-  min-width: 450px;
+  color: var(--terminal-text);
+  border: 1px solid var(--terminal-border);
+  border-radius: 10px;
+  background: var(--terminal-bg);
+  box-shadow: 0 18px 48px rgb(8 10 12 / 20%);
+  transition:
+    transform var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    box-shadow var(--motion-duration-fast) ease;
 }
-.terminal-header { background: #333; padding: 10px 15px; display: flex; align-items: center; gap: 8px; }
-.dot { width: 12px; height: 12px; border-radius: 50%; }
-.red { background: #ff5f56; }
-.yellow { background: #ffbd2e; }
-.green { background: #27c93f; }
 
-.terminal-body { padding: 24px; }
-.command-line { font-size: 1.1rem; color: #fff; display: flex; align-items: center; min-height: 1.5rem; }
-.user-prefix { color: #50fa7b; font-weight: bold; }
-.path-prefix { color: #8be9fd; margin: 0 8px; }
+.terminal-header {
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 14px;
+  color: var(--terminal-muted);
+  border-bottom: 1px solid var(--terminal-border);
+  background: var(--terminal-header);
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgb(0 0 0 / 18%);
+  border-radius: 50%;
+}
+
+.terminal-dot:first-child {
+  background: #ff5f57;
+}
+
+.terminal-dot:nth-child(2) {
+  background: #febc2e;
+}
+
+.terminal-dot:nth-child(3) {
+  background: #28c840;
+}
+
+.terminal-label {
+  margin-left: 5px;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+}
+
+.terminal-body {
+  min-height: 150px;
+  padding: clamp(22px, 4vw, 32px);
+}
+
+.command-line {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  color: var(--terminal-muted);
+  font-family: var(--font-code);
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  white-space: nowrap;
+}
+
+.prompt {
+  color: #7ed99c;
+  font-weight: 600;
+}
+
+.path {
+  margin-right: 10px;
+  color: #84bfd3;
+}
+
+.typing-text {
+  display: inline-block;
+  width: 6ch;
+  overflow: hidden;
+}
 
 .main-name {
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin: 12px 0 0 0;
-  color: #fff;
+  min-height: 1.08em;
+  margin: 14px 0 0;
+  color: var(--terminal-text);
+  font-family: var(--font-heading-primary);
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+  text-wrap: balance;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--motion-duration-normal) var(--motion-ease-out),
+    transform var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.main-name.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.main-name > span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.command-arrow {
+  margin-right: 14px;
+  color: #84bfd3;
+  font-family: var(--font-code);
+  font-weight: 400;
+}
+
+.blink-cursor {
+  display: inline-block;
+  margin-left: 0.08em;
+  color: #84bfd3;
+  font-family: var(--font-code);
+  font-weight: 600;
+  animation: cursor-blink 1.1s step-end infinite;
+}
+
+.motto-strip {
   display: flex;
-  align-items: flex-end;
+  min-height: 48px;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0;
+  padding: 0 14px;
+  color: var(--vp-c-text-2);
+  border: 1px solid var(--hero-border);
+  border-radius: 6px;
+  background: var(--hero-surface);
+  font-family: var(--font-ui);
+  line-height: 1.7;
+  transition:
+    transform var(--motion-duration-fast) ease,
+    color var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease;
 }
-.arrow { color: #bd93f9; margin-right: 12px; }
-.blink-cursor { color: #fff; animation: blink 1s step-end infinite; }
 
-.description-quote {
-  font-size: 1.1rem;
-  color: var(--vp-c-text-1);
-  border-left: 4px solid var(--vp-c-brand-1);
-  padding-left: 1.2rem;
-  margin: 1.5rem 0;
-  font-style: italic;
+.motto-strip > svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--vp-c-brand-1);
 }
 
-/* 技术栈卡片 */
+.motto-strip p {
+  margin: 0;
+}
+
+.motto-strip span {
+  margin-left: auto;
+  color: var(--vp-c-text-3);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
 .tech-stack-card {
-  background: var(--vp-c-bg-soft);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  border: 1px solid var(--vp-c-divider);
-  padding: 1.2rem;
-  margin-bottom: 2rem;
-  max-width: 500px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  padding: 16px;
+  border: 1px solid var(--hero-border);
+  border-radius: 10px;
+  background: var(--hero-surface);
+  transition:
+    transform var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease;
 }
-.tech-stack-header {
+
+.section-heading {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  margin-bottom: 12px;
   color: var(--vp-c-text-2);
-  margin-bottom: 1rem;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
 }
-.stack-icon { 
-  color: var(--vp-c-brand-1); 
-  width: 24px; 
-  height: 24px;
+
+.section-heading > svg {
+  width: 18px;
+  height: 18px;
+  color: var(--vp-c-brand-1);
 }
- 
+
+.section-count {
+  min-width: 24px;
+  margin-left: auto;
+  padding: 2px 6px;
+  color: var(--vp-c-text-3);
+  border: 1px solid var(--hero-border);
+  border-radius: 6px;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
 .tech-carousel {
-  overflow: hidden;
   width: 100%;
-  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  box-sizing: border-box;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
 }
+
+.tech-carousel:focus-visible {
+  border-color: var(--vp-c-brand-1);
+  outline: none;
+}
+
 .tech-track {
   display: flex;
   width: max-content;
-  animation: scroll 20s linear infinite;
-}
-.tech-group {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  padding-right: 2rem;
-}
-.tech-item {
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  filter: grayscale(0.2) opacity(0.8);
-  transition: all 0.3s ease;
-}
-.tech-item:hover {
-  filter: grayscale(0) opacity(1);
-  transform: scale(1.2);
+  animation: tech-marquee 32s linear infinite;
+  will-change: transform;
 }
 
-@keyframes scroll {
-  from { transform: translateX(0); }
+.tech-carousel:focus .tech-track {
+  animation-play-state: paused;
+}
+
+.tech-list {
+  display: flex;
+  flex: none;
+  gap: 8px;
+  margin: 0;
+  padding: 0 8px 0 0;
+  list-style: none;
+}
+
+.tech-item {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  color: var(--vp-c-text-2);
+  border: 1px solid var(--hero-border);
+  border-radius: 6px;
+  background: var(--vp-c-bg-soft);
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  transition:
+    color var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease,
+    transform var(--motion-duration-fast) ease;
+}
+
+.tech-item svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.social-links {
+  display: grid;
+  grid-template-columns: repeat(6, 56px);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.social-link {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  color: var(--vp-c-text-2);
+  border: 1px solid var(--hero-border);
+  border-radius: 8px;
+  background: var(--hero-surface);
+  box-sizing: border-box;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition:
+    color var(--motion-duration-fast) ease,
+    border-color var(--motion-duration-fast) ease,
+    background-color var(--motion-duration-fast) ease,
+    transform var(--motion-duration-fast) ease;
+}
+
+.social-link > svg:first-child {
+  width: 26px;
+  height: 26px;
+  flex: none;
+}
+
+.social-link:active {
+  transform: scale(0.97);
+}
+
+.social-link:focus-visible {
+  color: var(--vp-c-brand-hard);
+  border: 2px solid var(--vp-c-brand-1);
+  outline: none;
+}
+
+.hitokoto-footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  width: min(720px, 100%);
+  margin: clamp(40px, 6vw, 64px) auto 0;
+  color: var(--vp-c-text-2);
+  font-family: 'STKaiti', 'KaiTi', serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  line-height: 1.65;
+  text-align: center;
+  transition:
+    color var(--motion-duration-fast) ease,
+    opacity var(--motion-duration-fast) ease;
+}
+
+.hitokoto-footer svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  margin-top: 3px;
+  color: var(--vp-c-brand-1);
+}
+
+.hitokoto-footer p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes ambient-drift {
+  to { transform: translate3d(16px, 10px, 0) scale(1.045); opacity: 0.5; }
+}
+
+@keyframes ambient-glow {
+  to { transform: translate(-22%, 12%) scale(1.04); opacity: 0.72; }
+}
+
+@keyframes ambient-orbit {
+  to { transform: translate3d(18%, 8%, 0) scale(1.06); opacity: 0.9; }
+}
+
+@keyframes tech-marquee {
   to { transform: translateX(-50%); }
 }
 
-/* 社交链接 */
-.social-links { display: flex; gap: 1rem; }
-.social-box {
-  width: 54px; height: 54px;
-  background: var(--vp-c-bg-soft);
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.8rem; color: var(--vp-c-text-2);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 1px solid var(--vp-c-divider);
-}
-.social-box:hover {
-  transform: translateY(-5px) rotate(5deg);
-  background: var(--vp-c-brand-1);
-  color: #fff;
+@keyframes cursor-blink {
+  50% { opacity: 0; }
 }
 
-/* 底部一言 */
-.hitokoto-footer {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  text-align: center;
-  width: 80%;
-}
-.hitokoto-text {
-  font-size: 1rem;
-  color: var(--vp-c-text-2);
-  margin: 0;
-  font-family: 'STKaiti', 'KaiTi', serif;
-  letter-spacing: 1px;
-  text-shadow: 0 0 8px var(--vp-c-bg);
+@media (hover: hover) and (pointer: fine) {
+  .avatar-frame:hover {
+    transform: translateY(-4px);
+  }
+
+  .avatar-frame:hover .avatar-status {
+    transform: rotate(6deg) scale(1.04);
+  }
+
+  .identity-note:hover,
+  .tech-stack-card:hover {
+    color: var(--vp-c-text-1);
+    border-color: var(--vp-c-brand-3);
+    background: var(--vp-c-brand-soft);
+    transform: translateY(-2px);
+  }
+
+  .terminal-window:hover {
+    border-color: #4b7d91;
+    box-shadow: 0 22px 56px rgb(8 10 12 / 28%);
+    transform: translateY(-3px);
+  }
+
+  .motto-strip:hover {
+    color: var(--vp-c-text-1);
+    border-color: var(--vp-c-brand-3);
+    background: var(--vp-c-brand-soft);
+    transform: translateX(4px);
+  }
+
+  .tech-item:hover {
+    color: var(--vp-c-text-1);
+    border-color: var(--vp-c-brand-3);
+    background: var(--vp-c-brand-soft);
+    transform: translateY(-2px) scale(1.03);
+  }
+
+  .tech-carousel:hover .tech-track,
+  .tech-carousel:focus-within .tech-track {
+    animation-play-state: paused;
+  }
+
+  .social-link:hover {
+    color: var(--vp-c-brand-hard);
+    border-color: var(--vp-c-brand-1);
+    background: var(--vp-c-brand-soft);
+    transform: translateY(-3px) scale(1.03);
+  }
+
+  .hitokoto-footer:hover {
+    color: var(--vp-c-text-1);
+    opacity: 1;
+  }
 }
 
-/* 动画 */
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-@keyframes morphing {
-  0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-  50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
-  100% { border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%; }
+@media (prefers-reduced-motion: reduce) {
+  .blog-hero::before,
+  .ambient-grid,
+  .ambient-grid::after,
+  .tech-track,
+  .blink-cursor {
+    animation: none;
+  }
+
+  .main-name {
+    transform: none;
+  }
+
+  .tech-carousel {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+    scrollbar-width: thin;
+  }
+
+  .tech-list[aria-hidden='true'] {
+    display: none;
+  }
+
+  .avatar-frame,
+  .identity-note,
+  .terminal-window,
+  .motto-strip,
+  .tech-stack-card,
+  .tech-item,
+  .social-link {
+    transition-property: color, border-color, background-color, opacity;
+  }
 }
 
-@media (max-width: 1024px) {
-  .home-layout { flex-direction: column; text-align: center; gap: 2rem; }
-  .terminal-window { min-width: unset; width: 100%; max-width: 450px; margin: 0 auto 1.5rem auto; }
-  .main-name { justify-content: center; }
-  .description-quote { border-left: none; border-top: 3px solid var(--vp-c-brand-1); padding: 1rem 0; }
-  .avatar-wrapper { width: 240px; height: 240px; }
-  .social-links { justify-content: center; }
-  .tech-stack-card { margin: 0 auto 2rem auto; }
+@media (max-width: 900px) {
+  .blog-hero {
+    padding-top: 48px;
+  }
+
+  .hero-shell {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    max-width: 680px;
+  }
+
+  .avatar-frame {
+    width: 200px;
+  }
+
+  .identity-panel {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .blog-hero {
+    min-height: auto;
+    padding: 32px 16px 24px;
+  }
+
+  .hero-shell {
+    gap: 32px;
+  }
+
+  .avatar-frame {
+    width: 168px;
+    padding: 6px;
+  }
+
+  .avatar-status {
+    right: -12px;
+    bottom: 14px;
+  }
+
+  .terminal-body {
+    min-height: 128px;
+    padding: 22px 18px;
+  }
+
+  .main-name {
+    font-size: clamp(1.78rem, 9vw, 2.45rem);
+  }
+
+  .command-arrow {
+    margin-right: 9px;
+  }
+
+  .tech-item {
+    flex: none;
+  }
+
+  .social-link {
+    width: 56px;
+    height: 56px;
+  }
+
+  .social-links {
+    grid-template-columns: repeat(3, 56px);
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .hitokoto-footer {
+    margin-top: 40px;
+    text-align: center;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 901px) {
+  .blog-hero {
+    min-height: auto;
+    padding-block: 40px 24px;
+  }
+
+  .hero-shell {
+    gap: 56px;
+  }
+
+  .avatar-frame {
+    width: 220px;
+  }
+
+  .hitokoto-footer {
+    margin-top: 32px;
+  }
 }
 </style>
