@@ -3,12 +3,13 @@ import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter, useRoutes } from 'vuepress/client'
 
 import LoadingBars from './LoadingBars.vue'
+import SpaceBackground from './SpaceBackground.vue'
 
 const RANDOM_PAGE_PATHS = new Set([
   '/more/random/',
   '/more/随机跳转/',
 ])
-const MIN_LOADING_TIME = 500
+const MIN_LOADING_TIME = 1000
 
 const router = useRouter()
 const route = useRoute()
@@ -69,6 +70,8 @@ onMounted(() => {
 
 <template>
   <div class="random-jump" :aria-busy="loading && !failed">
+    <SpaceBackground />
+
     <section class="random-jump__panel" aria-labelledby="random-jump-title">
       <p class="random-jump__eyebrow">DISCOVERY ROUTE</p>
       <h2 id="random-jump-title" class="random-jump__title">随机跳转</h2>
@@ -103,13 +106,20 @@ onMounted(() => {
 
 <style scoped>
 .random-jump {
+  position: relative;
   display: grid;
-  min-height: min(60dvh, 34rem);
+  min-height: calc(100dvh - var(--vp-nav-height, 64px) - var(--vp-footer-height, 0px));
   padding: clamp(2.5rem, 8vw, 5.5rem) 1rem;
+  overflow: hidden;
   place-items: center;
+  background: var(--vp-c-bg);
+  box-sizing: border-box;
+  isolation: isolate;
 }
 
 .random-jump__panel {
+  position: relative;
+  z-index: 1;
   width: min(100%, 36rem);
   padding: clamp(2rem, 5vw, 3.5rem);
   border: 1px solid var(--vp-c-border);
@@ -211,7 +221,6 @@ onMounted(() => {
 
 @media (max-width: 480px) {
   .random-jump {
-    min-height: 22rem;
     padding-inline: 0;
   }
 
