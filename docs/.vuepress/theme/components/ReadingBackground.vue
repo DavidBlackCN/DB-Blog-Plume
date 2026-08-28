@@ -11,7 +11,7 @@ import SpaceBackground from './SpaceBackground.vue'
 const route = useRoute()
 const frontmatter = usePageFrontmatter()
 
-const excludedPageLayouts: ReadonlySet<unknown> = new Set([false, 'home', 'page', 'custom', 'friends'])
+const excludedPageLayouts: ReadonlySet<unknown> = new Set([false, 'home', 'custom', 'friends'])
 
 const isReadingPage = computed(() => {
   const pageLayout = frontmatter.value.pageLayout
@@ -23,6 +23,7 @@ const isReadingPage = computed(() => {
   // 博客聚合页与文章页也属于阅读场景，继续使用低动态背景。
   return pageLayout === undefined
     || pageLayout === 'doc'
+    || pageLayout === 'page'
     || pageLayout === 'posts'
     || route.path.startsWith('/blog/')
     || route.path.startsWith('/article/')
