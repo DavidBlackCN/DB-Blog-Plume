@@ -10,6 +10,7 @@ import GiteeCard from './theme/components/GiteeCard.vue'
 import NeteaseMusicCard from './theme/components/NeteaseMusicCard.vue'
 import WordCount from './theme/components/WordCount.vue'
 import LoadingBars from './theme/components/LoadingBars.vue'
+import ReadingBackground from './theme/components/ReadingBackground.vue'
 import './theme/styles/custom.css'
 import './theme/styles/index.css'
 import './theme/styles/introduce.css'
@@ -123,6 +124,7 @@ export default defineClientConfig({
 
     layouts: {      
     Layout: () => h(Layout, null, {
+      'layout-top': () => h(ReadingBackground),
       //https://github.com/physnya/blog/blob/main/docs/.vuepress/components/AsideOutlineAfter.vue
       'aside-outline-after': () => h(AsideOutlineAfter),
       'nav-bar-content-after': () => h('div', { class: 'navbar-custom-controls' }, [
