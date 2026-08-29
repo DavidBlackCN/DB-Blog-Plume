@@ -58,6 +58,15 @@ html.has-reading-background .vp-sidebar .curtain {
   backdrop-filter: blur(4px) saturate(1.02);
 }
 
+/* Plume 桌面端的侧栏与正文默认同为 z-index: 1；阅读背景让正文形成
+ * 独立层叠上下文后，透明的正文区域会盖住侧栏命中区。仅在桌面端将
+ * 侧栏提高一层，移动端继续沿用主题的抽屉层级变量。 */
+@media (min-width: 960px) {
+  html.has-reading-background .vp-sidebar {
+    z-index: 2;
+  }
+}
+
 @media (max-width: 959px) {
   html.has-reading-background {
     --vp-sidebar-bg-color: color-mix(in srgb, var(--vp-c-bg) 94%, transparent);
