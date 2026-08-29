@@ -47,9 +47,13 @@ const scale = computed(() => props.size / 64)
 
 const style = computed(() => ({
   '--loader-size': `${props.size}px`,
+  '--loader-frame-height': `${68 * scale.value}px`,
   '--loader-color': props.color,
   '--loader-duration': `${props.duration}ms`,
   '--loader-amplitude': `${props.amplitude * scale.value}px`,
+  '--loader-amplitude-negative': `${props.amplitude * scale.value * -1}px`,
+  '--loader-delay-2': `${props.duration * -0.144}ms`,
+  '--loader-delay-3': `${props.duration * -0.288}ms`,
   '--loader-bar-width': `${8 * scale.value}px`,
   '--loader-gap': `${10 * scale.value}px`,
   '--loader-height-1': `${38 * scale.value}px`,
@@ -75,7 +79,7 @@ const style = computed(() => ({
 .loading-bars {
   display: inline-flex;
   width: var(--loader-size);
-  height: calc(var(--loader-size) * 1.0625);
+  height: var(--loader-frame-height);
 
   align-items: center;
   justify-content: center;
@@ -103,7 +107,7 @@ const style = computed(() => ({
   animation:
     loading-bars-slide
     var(--loader-duration)
-    var(--motion-ease-in-out, cubic-bezier(0.77, 0, 0.175, 1))
+    ease-in-out
     infinite;
 }
 
@@ -115,28 +119,23 @@ const style = computed(() => ({
    * 这里改成周期比例，因此 duration 改变后
    * 三根柱子的节奏仍保持一致。
    */
-  animation-delay: calc(var(--loader-duration) * 0.144);
+  animation-delay: var(--loader-delay-2);
 }
 
 .loading-bars__bar:nth-child(3) {
   height: var(--loader-height-3);
-  animation-delay: calc(var(--loader-duration) * 0.288);
+  animation-delay: var(--loader-delay-3);
 }
 
 @keyframes loading-bars-slide {
   0%,
   100% {
-    transform: translate3d(0, var(--loader-amplitude), 0);
-    opacity: 0.62;
+    transform: translate3d(0, var(--loader-amplitude), 0) scaleY(.84);
+    opacity: 0.54;
   }
 
   50% {
-    transform:
-      translate3d(
-        0,
-        calc(var(--loader-amplitude) * -1),
-        0
-      );
+    transform: translate3d(0, var(--loader-amplitude-negative), 0) scaleY(1.06);
     opacity: 1;
   }
 }

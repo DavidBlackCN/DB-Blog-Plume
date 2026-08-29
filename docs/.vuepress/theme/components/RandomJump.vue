@@ -83,8 +83,6 @@ onMounted(() => {
         <div class="random-jump__loader">
           <LoadingBars
             :size="56"
-            :duration="960"
-            :amplitude="5"
             label="正在抽取随机页面"
           />
         </div>

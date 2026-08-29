@@ -10,7 +10,7 @@
     <Transition name="home-loader">
       <div v-if="isLoading" class="home-loader">
         <div class="home-loader-mark">
-          <LoadingBars :size="76" :duration="880" :amplitude="7" label="正在加载主页" />
+          <LoadingBars :size="76" label="正在加载主页" />
           <span aria-hidden="true">LOADING HOME</span>
         </div>
       </div>
@@ -668,7 +668,8 @@ onUnmounted(() => {
 }
 @media (max-width:760px) {
   .blog-home { min-height: auto; padding: 24px 14px 28px; } .home-layout { grid-template-columns: minmax(0,1fr); gap: 14px; max-width: 620px; }
-  .center-column { grid-column: 1; grid-row: 1; } .left-column { grid-row: 2; } .right-column { display: flex; grid-column: 1; grid-row: 3; }
+  .center-column { grid-column: 1; grid-row: 1; } .left-column { grid-row: 2; } .right-column { display: flex; width: 100%; grid-column: 1; grid-row: 3; align-items: stretch; }
+  .right-column > .home-card { width: 100%; }
   .terminal-card { height: 178px; flex-basis: 178px; } .terminal-body { height: 128px; padding-inline: 18px; } .profile-card { min-height: 430px; padding-inline: 20px; }
   .navigation-card { min-height: auto; } .clock-card { min-height: 188px; } .calendar-card { min-height: 432px; } .center-utilities { grid-template-columns: 72px minmax(0,1fr); }
 }
