@@ -131,7 +131,7 @@ function initBackground() {
   let lastMouseX = -9999
   let lastMouseY = -9999
 
-  const palettes = {
+  const fallbackPalettes = {
     light: {
       grid: 'rgba(69, 96, 107, .15)', gridMajor: 'rgba(42, 116, 139, .28)',
       star: '#617985', cyan: '#1689aa', violet: '#755baa',
@@ -146,7 +146,49 @@ function initBackground() {
 
   const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark'
     || document.documentElement.classList.contains('dark')
-  const palette = () => isDark() ? palettes.dark : palettes.light
+
+  function withAlpha(color: string, alpha: number) {
+    const value = color.trim()
+    const hex = value.match(/^#([\da-f]{3}|[\da-f]{6})$/i)?.[1]
+    if (hex) {
+      const normalized = hex.length === 3 ? [...hex].map(char => char + char).join('') : hex
+      const red = Number.parseInt(normalized.slice(0, 2), 16)
+      const green = Number.parseInt(normalized.slice(2, 4), 16)
+      const blue = Number.parseInt(normalized.slice(4, 6), 16)
+      return `rgba(${red}, ${green}, ${blue}, ${alpha})`
+    }
+
+    const rgb = value.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/i)
+    return rgb ? `rgba(${rgb[1]}, ${rgb[2]}, ${rgb[3]}, ${alpha})` : value
+  }
+
+  function readPalette() {
+    const dark = isDark()
+    const fallback = dark ? fallbackPalettes.dark : fallbackPalettes.light
+    const styles = getComputedStyle(document.documentElement)
+    const token = (name: string, fallbackValue: string) => styles.getPropertyValue(name).trim() || fallbackValue
+    const brand = token('--vp-c-brand-1', fallback.cyan)
+    const brandAlt = token('--vp-c-brand-2', fallback.violet)
+    const textStrong = token('--vp-c-text-1', fallback.meteorHead)
+    const textMuted = token('--vp-c-text-2', fallback.star)
+    const textSubtle = token('--vp-c-text-3', fallback.neutral)
+
+    return {
+      grid: withAlpha(brand, dark ? .12 : .1),
+      gridMajor: withAlpha(brand, dark ? .24 : .22),
+      star: textMuted,
+      cyan: brand,
+      violet: brandAlt,
+      packetA: brand,
+      packetB: brandAlt,
+      meteor: brand,
+      meteorHead: dark ? textStrong : brandAlt,
+      neutral: textSubtle,
+    }
+  }
+
+  let activePalette = readPalette()
+  const palette = () => activePalette
   const stars: Star3D[] = []
   const particles: PixelDebris[] = []
   const packets: DataPacket[] = []
@@ -186,7 +228,8 @@ function initBackground() {
 
   function spawnPixels(x: number, y: number, count = 6, color?: string) {
     if (reducedMotion) return
-    const colors = [palette().packetA, palette().packetB, palette().neutral]
+    const pixelPalette = isDark() ? fallbackPalettes.dark : fallbackPalettes.light
+    const colors = [pixelPalette.packetA, pixelPalette.packetB, pixelPalette.neutral]
     for (let index = 0; index < count; index++) {
       const angle = Math.random() * Math.PI * 2
       const speed = 1.4 + Math.random() * 3.4
@@ -271,7 +314,7 @@ function initBackground() {
     if (readingMode && event.target instanceof Element && event.target.closest('a, button, input, textarea, select, summary')) return
     const point = localPoint(event.clientX, event.clientY)
     if (point.x < 0 || point.x > width || point.y < 0 || point.y > height) return
-    spawnPixels(point.x, point.y, readingMode ? 8 : 18, palette().packetA)
+    spawnPixels(point.x, point.y, readingMode ? 8 : 18)
     if (!readingMode) addShockwave(event.clientX, event.clientY, palette().packetA)
   }
 
@@ -423,9 +466,13 @@ function initBackground() {
   resize()
   for (let index = 0; index < starCount; index++) stars.push(createStar(true))
   const resizeObserver = new ResizeObserver(() => { resize(); if (reducedMotion) render(0, true) })
-  const themeObserver = new MutationObserver(() => { meteor.color = palette().meteor; if (reducedMotion) render(0, true) })
+  const themeObserver = new MutationObserver(() => {
+    activePalette = readPalette()
+    meteor.color = activePalette.meteor
+    if (reducedMotion) render(0, true)
+  })
   resizeObserver.observe(rootElement)
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class'] })
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-color-style', 'class'] })
   if (props.interactive && finePointer && !reducedMotion) {
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('pointerdown', handlePointerDown, { passive: true })

@@ -700,6 +700,5 @@ html[data-theme='dark'] .blog-home .social-bilibili { --social-color: #ff8eaf; -
 html[data-theme='dark'] .blog-home .social-mail { --social-color: #ff9ba3; --social-bg: #38282b; --social-hover: #452d31; }
 html[data-theme='dark'] .blog-home .social-qq { --social-color: #f3ba4d; --social-bg: #37342f; --social-hover: #444039; }
 html[data-theme='dark'] .blog-home .social-plume { --social-color: #83c9d2; --social-bg: #29363a; --social-hover: #304249; }
-html[data-theme='dark'] .blog-home .social-qq .social-logo { filter: drop-shadow(0 0 1px rgb(255 255 255 / 62%)); }
 html[data-theme='dark'] .blog-home .social-plume .social-logo { filter: brightness(1.28) saturate(.92); }
 </style>
