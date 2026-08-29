@@ -13,7 +13,7 @@ permalink: /blog/xue-wen/claude-code-for-vs-code-cha-jian-pei-zhi/
 ## 首次使用
 安装后在编辑器即可打开**Claude Code**对话面板  
 相比较于例如 **Cursor/Codex/Copilot** 等 AI 工具选择用侧边栏作为聊天区域，**Claude Code VSC**采用的是编辑区视图，这点相比较于其他常见的 AI 面板，可视区域会更大，内容也会更多。
-![](/assets/202603/13-1.png)
+![](/assets/blog/2026/claude-code-vscode/claude-code-editor-view.webp)
 
 第一次打开插件，会提示登录以使用官方服务，如果开通了官方服务可以直接去登录，或者你也可以参照以下方法使用**第三方中转站**的API
 
@@ -45,7 +45,7 @@ permalink: /blog/xue-wen/claude-code-for-vs-code-cha-jian-pei-zhi/
 
 3. 打开**CC-Switch**，在最上方选择 `Claude`，然后点击右上角加号 `添加新供应商`
 
-    ![](/assets/202605/9-1.png)
+    ![](/assets/blog/2026/claude-code-vscode/cc-switch-add-provider.webp)
 
 4. 填写 `供应商名称`，`API Key`，`请求地址`，`模型预设`等内容，以下为接入**DeepSeek V4**的填写示例：
 
@@ -60,7 +60,7 @@ permalink: /blog/xue-wen/claude-code-for-vs-code-cha-jian-pei-zhi/
 
 5. 保存配置后启用，回到**VSCode**中打开**Claude Code终端**即可正常使用
 
-    ![](/assets/202605/9-2.png)
+    ![](/assets/blog/2026/claude-code-vscode/cc-switch-provider-settings.webp)
 
 ### 参考
 <LinkCard icon="meteor-icons:link" title="CC-Switch 使用教程" href="https://deeprouter.apifox.cn/8174851m0" />
@@ -81,7 +81,7 @@ permalink: /blog/xue-wen/claude-code-for-vs-code-cha-jian-pei-zhi/
     ```
 
 3. 回到**VS Code**并打开**Claude Code**插件设置，然后==跳转到 JSON 配置文件的编辑页面==
-    ![](/assets/202603/13-2.png)
+    ![](/assets/blog/2026/claude-code-vscode/claude-code-settings-json.webp)
 
     - `Claude Code: Disable Login Prompt` -> `true`
     - `Claude Code: Environment Variables` -> `在 settings.json 中编辑`

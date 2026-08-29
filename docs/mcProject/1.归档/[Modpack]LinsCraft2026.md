@@ -11,7 +11,7 @@ badge: Archive
 - 使用Fancy Menu mod制作首页
 - 部分素材来自LinsCraft官方团队，版权所有
 
-![整合包首页截图](/assets/202602/17-1.png)
+![整合包首页截图](/assets/projects/linscraft-2026/homepage.webp)
 
 >感谢各位参加林氏创艺2026马年元旦跨年晚会！  
 自 2013 年服务器建立至今，我们已携手走完了一个十二生肖的轮回。  

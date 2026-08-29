@@ -30,7 +30,7 @@ fatal: unpack-objects failed
 
 在`源码管理` -> `Additional Behaviours` -> 点击`新增` -> `高级的克隆行为` -> `克隆和拉取操作的超时时间（分钟）` -> 填写时长 -> `保存配置并重新构建`
 
-![](/assets/202604/20-1.png)
+![](/assets/blog/2026/vuepress-deployment-optimizations/jenkins-git-timeout.webp)
 
 ## 浅克隆
 
@@ -38,7 +38,7 @@ fatal: unpack-objects failed
 
 在`源码管理` -> `Additional Behaviours` -> 点击`新增` -> `高级的克隆行为` -> 勾选`浅克隆`
 
-![](/assets/202604/20-1.png)
+![](/assets/blog/2026/vuepress-deployment-optimizations/jenkins-git-timeout.webp)
 
 ## 扩大Git缓冲区
 
@@ -98,7 +98,7 @@ git config core.quotepath false && git fetch --unshallow && pnpm docs:build
 ```
 > `git config core.quotepath false` 用于解决可能的中文路径乱码问题
 
-![](/assets/202604/20-2.png)
+![](/assets/blog/2026/vuepress-deployment-optimizations/edgeone-build-settings.webp)
 ## 参考链接
 
 [腾讯云 EdgeOne Pages 默认浅克隆无法获取全部项目 Git 记录](https://www.cyfor.cn/%E8%85%BE%E8%AE%AF%E4%BA%91edgeone-pages%E9%BB%98%E8%AE%A4%E6%B5%85%E5%85%8B%E9%9A%86%E6%97%A0%E6%B3%95%E8%8E%B7%E5%8F%96%E5%85%A8%E9%83%A8%E9%A1%B9%E7%9B%AEgit%E8%AE%B0%E5%BD%95/#page)

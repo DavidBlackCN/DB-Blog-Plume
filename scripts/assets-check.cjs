@@ -212,15 +212,61 @@ function collectTextFiles(dirPath) {
 }
 
 function getAssetUrl(filePath) {
-  const relative =
-    normalizeSlash(
-      path.relative(
-        ASSETS_DIR,
-        filePath
-      )
-    );
+  const relative = getAssetRelative(filePath);
 
   return `/assets/${relative}`;
+}
+
+function getAssetRelative(filePath) {
+  return normalizeSlash(
+    path.relative(
+      ASSETS_DIR,
+      filePath
+    )
+  );
+}
+
+function collectFiles(dirPath) {
+  const files = [];
+
+  if (!fs.existsSync(dirPath)) {
+    return files;
+  }
+
+  for (const entry of fs.readdirSync(
+    dirPath,
+    { withFileTypes: true }
+  )) {
+    const fullPath = path.join(
+      dirPath,
+      entry.name
+    );
+
+    if (entry.isDirectory()) {
+      files.push(...collectFiles(fullPath));
+      continue;
+    }
+
+    if (entry.isFile()) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+function isValidBlogAssetPath(relativePath) {
+  return /^blog\/\d{4}\/[a-z0-9]+(?:-[a-z0-9]+)*\/[^/]+$/
+    .test(relativePath);
+}
+
+function isUnsemanticFileStem(stem) {
+  /*
+   * 仅拦截明显的旧编号形式，例如 1、9-1、16-10。
+   * 不把 2026-04-18 这类日期或正常语义化文件名误判为问题。
+   */
+  return /^\d+$/.test(stem) ||
+    /^\d{1,2}-\d{1,2}$/.test(stem);
 }
 
 function extractAssetReferences(
@@ -242,7 +288,7 @@ function extractAssetReferences(
    * query / hash 会自动忽略
    */
   const regexp =
-    /\/assets\/[^"'`\s)<>\]}]+?\.(?:jpe?g|png|webp|avif|gif|svg)(?:[?#][^"'`\s)<>\]}]*)?/gi;
+    /(?:^|[\s"'`(=:\[])(\/assets\/[^"'`\s)<>\]}]+?\.(?:jpe?g|png|webp|avif|gif|svg)(?:[?#][^"'`\s)<>\]}]*)?)/gim;
 
   const references = [];
 
@@ -251,7 +297,7 @@ function extractAssetReferences(
       regexp
     )
   ) {
-    let url = match[0];
+    let url = match[1];
 
     url = url
       .split('?')[0]
@@ -442,8 +488,14 @@ function main() {
     const name =
       path.basename(image);
 
+    const stem = path.basename(
+      image,
+      ext
+    );
+
     if (
-      /[\s#?%]/.test(name)
+      /[\s#?%]/.test(name) ||
+      isUnsemanticFileStem(stem)
     ) {
       naming.push({
         url,
@@ -467,6 +519,33 @@ function main() {
     ...hashMap.values()
   ].filter(
     files => files.length > 1
+  );
+
+  /*
+   * 7. 目录结构
+   */
+  const rootImages = [];
+  const invalidBlogPaths = [];
+
+  for (const image of images) {
+    const relative = getAssetRelative(image);
+
+    if (!relative.includes('/')) {
+      rootImages.push(getAssetUrl(image));
+    }
+
+    if (
+      relative.split('/')[0] === 'blog' &&
+      !isValidBlogAssetPath(relative)
+    ) {
+      invalidBlogPaths.push(getAssetUrl(image));
+    }
+  }
+
+  const miscFiles = collectFiles(
+    path.join(ASSETS_DIR, 'misc')
+  ).map(filePath =>
+    `/assets/${getAssetRelative(filePath)}`
   );
 
   /*
@@ -577,6 +656,42 @@ function main() {
     }
   }
 
+  if (rootImages.length) {
+    console.log('');
+    console.log(
+      `⚠️ assets 根目录直放图片 (${rootImages.length})`
+    );
+
+    for (const url of rootImages) {
+      console.log(`  ${url}`);
+    }
+  }
+
+  if (invalidBlogPaths.length) {
+    console.log('');
+    console.log(
+      `⚠️ blog 目录结构不规范 (${invalidBlogPaths.length})`
+    );
+    console.log(
+      '  应使用 /assets/blog/YYYY/article-slug/filename'
+    );
+
+    for (const url of invalidBlogPaths) {
+      console.log(`  ${url}`);
+    }
+  }
+
+  if (miscFiles.length) {
+    console.log('');
+    console.log(
+      `⚠️ misc 中待整理文件 (${miscFiles.length})`
+    );
+
+    for (const url of miscFiles) {
+      console.log(`  ${url}`);
+    }
+  }
+
   if (duplicates.length) {
     console.log('');
     console.log(
@@ -605,7 +720,10 @@ function main() {
     large.length +
     legacy.length +
     naming.length +
-    duplicates.length;
+    duplicates.length +
+    rootImages.length +
+    invalidBlogPaths.length +
+    miscFiles.length;
 
   console.log('');
   console.log(

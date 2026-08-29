@@ -89,7 +89,7 @@ OpenJDK 64-Bit Server VM (build 21.0.3+11-Debian-2, mixed mode, sharing)
 - [Download Node.js®](https://nodejs.org/en/download)
 选择对应的安装项并复制命令执行：
 
-![](/assets/202508/16-1.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/nodejs-download.webp)
 
 由于我的项目使用[pnpm](https://pnpm.io/zh/)作为包管理器，所以命令如下：
 ``` bash
@@ -148,11 +148,11 @@ http://你的服务器IP地址:8080/restart
 
 - 安装插件 ==NodeJS Plugin==
 
-![](/assets/202508/16-2.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-nodejs-plugin.webp)
 
 - 配置NodeJS
 
-![](/assets/202508/16-3.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-nodejs-configuration.webp)
 
 
 ## 部署任务
@@ -171,17 +171,17 @@ ssh-keygen -t rsa -C "你的邮箱地址"
 cat ~/.ssh/id_rsa.pub
 ```
 
-![](/assets/202508/16-10.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/github-ssh-public-key.webp)
 
 2. 获取私钥的值，新建凭据并添加到Credentials中
 ``` bash
 cat ~/.ssh/id_rsa
 ```
 
-![](/assets/202508/16-9.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-ssh-private-key.webp)
 
 
-![在Private Key中添加私钥的值](/assets/202508/16-11.png)
+![在Private Key中添加私钥的值](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-credentials-private-key.webp)
 :::
 
 
@@ -190,26 +190,26 @@ cat ~/.ssh/id_rsa
 - 在项目仓库的==Settings==里配置Webhook
 - 我们的预期是push后自动化构建，所以只需要push event，添加好以后测试连接
 
-![](/assets/202508/16-12.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/github-webhook-settings.webp)
 
-![](/assets/202508/16-13.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/github-webhook-test.webp)
 
 
 ### 新建任务
 
 - 在Jenkins首页点击 ==新建任务== 输入任务名称并选择 **自由项目**
 
-![](/assets/202508/16-4.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-new-job.webp)
 
 #### 项目配置
 
-![](/assets/202508/16-5.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-job-settings-01.webp)
 
-![](/assets/202508/16-6.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-job-settings-02.webp)
 
-![](/assets/202508/16-7.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-job-settings-03.webp)
 
-![](/assets/202508/16-8.png)
+![](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-job-settings-04.webp)
 
 #### 命令
 ``` bash
@@ -246,13 +246,13 @@ jenkins ALL=(ALL) NOPASSWD: /bin/rm -rf /opt/1panel/www/sites/davidblack.cc/inde
 
 ## 执行任务测试
 
-![在每一次的测试中都可以看控制台输出，方便快速定位错误](/assets/202508/16-14.png)
+![在每一次的测试中都可以看控制台输出，方便快速定位错误](/assets/blog/2025/vuepress-jenkins-deployment/jenkins-console-output.webp)
 
 ## 配置静态网站
 
 我使用1Panel(OpenResty)创建静态网站，Nginx创建可自行折腾，一般情况下将Nginx指向Jenkins构建的 `TARGET_DIR` 即可
 
-![1Panel示例，过于简单不多介绍](/assets/202508/16-15.png)
+![1Panel示例，过于简单不多介绍](/assets/blog/2025/vuepress-jenkins-deployment/onepanel-static-site.webp)
 
 
 ## 使用&推送

@@ -2,7 +2,7 @@
 title: 第一篇Blog
 createTime: 2025/08/13 23:08:56
 permalink: /article/8da3soyk/
-cover: /assets/202508/13-1.png
+cover: /assets/blog/2025/first-blog/cover.webp
 coverStyle:
   width: 200
 sticky: true
@@ -28,4 +28,4 @@ tags:
 
 最后再放一张大合影喵，这是我初学 Mine-imator 的第一个作品，同时也作为我18岁生日的贺图喵.
 
-![](/assets/202508/13-1.png)
+![](/assets/blog/2025/first-blog/cover.webp)

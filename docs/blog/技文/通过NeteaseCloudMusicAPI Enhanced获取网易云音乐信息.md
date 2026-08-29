@@ -57,10 +57,10 @@ set PORT=4000 && node app.js  # Windows
    `Project` -> `Add New Project` -> `Import Git Repository` -> `Application Preset` 选择 `Other` -> `Deploy`
    :::
 3. 等待**部署完成**，出现此页面则代表部署成功
-    ![](/assets/202603/2-1.png)
+    ![](/assets/blog/2026/netease-cloud-music-api/deployment-success.webp)
 4. (可选)`Add Domain`添加自定义域名
 5. **访问项目地址**查看效果
-    ![](/assets/202603/2-2.png)
+    ![](/assets/blog/2026/netease-cloud-music-api/api-homepage.webp)
 ::::
 
 ## 腾讯云serverless部署<Badge type="tip" text="未尝试" />
@@ -81,7 +81,7 @@ set PORT=4000 && node app.js  # Windows
     ```
 7. 点击 `完成`，等待**部署完成**
 8. 点击 `资源列表` 的 `API网关` 里的 `URL`，访问项目地址查看效果
-    ![](/assets/202603/2-2.png)
+    ![](/assets/blog/2026/netease-cloud-music-api/api-homepage.webp)
 ::::
 
 ## API使用

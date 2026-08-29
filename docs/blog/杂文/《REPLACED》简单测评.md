@@ -9,7 +9,7 @@ tags: [游戏]
 <!-- more -->
 
 有生之年系列！花了三天陆陆续续打完了——
-![](/assets/202604/19-16.jpg)
+![](/assets/blog/2026/replaced-review/cover.webp)
 
 **美术10分**：2.5D像素独立游戏的天花板+电影化运镜  
 **音乐9分**：配乐非常优秀，属于那种游戏玩完后还会再去单独搜来听的那种  
@@ -23,16 +23,16 @@ tags: [游戏]
 
 ::: card-masonry
 
-![](/assets/202603/1-2.png)
+![](/assets/blog/2026/replaced-review/gameplay-01.webp)
 
-![](/assets/202603/1-3.png)
+![](/assets/blog/2026/replaced-review/gameplay-02.webp)
 
-![](/assets/202603/1-4.png)
+![](/assets/blog/2026/replaced-review/gameplay-03.webp)
 
-![](/assets/202603/1-5.png)
+![](/assets/blog/2026/replaced-review/gameplay-04.webp)
 
-![](/assets/202603/1-6.png)
+![](/assets/blog/2026/replaced-review/gameplay-05.webp)
 
-![](/assets/202603/1-7.png)
+![](/assets/blog/2026/replaced-review/gameplay-06.webp)
 
 :::
