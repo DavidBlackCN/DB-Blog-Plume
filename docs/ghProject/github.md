@@ -3,8 +3,8 @@ title: Github项目
 createTime: 2025/08/05 21:41:33
 permalink: /ghProject/a5xjsf6c/
 ---
-1111
+## DB-Blog-Plume
 
-<GitHubCard url="https://github.com/vuejs/core" />
+下面的内容直接来自项目仓库 README；仓库更新后，页面刷新即可获得最新版本。
 
-<GitHubCard url="https://github.com/ycccccccy/echotrace" />
+<GitHubReadme url="https://github.com/DavidBlackCN/DB-Blog-Plume" />
