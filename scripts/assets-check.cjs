@@ -269,13 +269,27 @@ function isUnsemanticFileStem(stem) {
     /^\d{1,2}-\d{1,2}$/.test(stem);
 }
 
+function stripMarkdownCode(content) {
+  return content
+    .replace(
+      /(^|\r?\n)[ \t]{0,3}(`{3,}|~{3,})[^\r\n]*(?:\r?\n)[\s\S]*?(?:\r?\n)[ \t]{0,3}\2(?=\r?\n|$)/g,
+      '$1'
+    )
+    .replace(/`[^`\r\n]*`/g, '');
+}
+
 function extractAssetReferences(
   filePath
 ) {
-  const content = fs.readFileSync(
+  let content = fs.readFileSync(
     filePath,
     'utf8'
   );
+
+  // 文档中的命令和路径示例不应作为真实资源引用。
+  if (path.extname(filePath).toLowerCase() === '.md') {
+    content = stripMarkdownCode(content);
+  }
 
   /*
    * 支持：
@@ -286,6 +300,7 @@ function extractAssetReferences(
    * cover: /assets/foo.webp
    *
    * query / hash 会自动忽略
+   * Markdown fenced / inline code 会忽略，避免示例造成 Missing。
    */
   const regexp =
     /(?:^|[\s"'`(=:\[])(\/assets\/[^"'`\s)<>\]}]+?\.(?:jpe?g|png|webp|avif|gif|svg)(?:[?#][^"'`\s)<>\]}]*)?)/gim;
