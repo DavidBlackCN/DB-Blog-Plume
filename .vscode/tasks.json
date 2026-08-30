@@ -2,22 +2,6 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Blog: Git Commit CZ",
-      "detail": "启动交互式规范提交。",
-      "type": "process",
-      "command": "pnpm",
-      "args": ["commit"],
-      "group": "build",
-      "problemMatcher": [],
-      "presentation": {
-        "focus": true,
-        "panel": "dedicated"
-      },
-      "options": {
-        "cwd": "${workspaceFolder}"
-      }
-    },
-    {
       "label": "Blog: 启动开发服务器",
       "detail": "运行 docs:dev。",
       "type": "process",
@@ -34,11 +18,43 @@
       }
     },
     {
-      "label": "Blog: 启动开发服务器（清理缓存）",
-      "detail": "运行 docs:dev-clean。",
+      "label": "Blog: Git Commit CZ",
+      "detail": "启动交互式规范提交。",
       "type": "process",
       "command": "pnpm",
-      "args": ["docs:dev-clean"],
+      "args": ["commit"],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Assets: 新建资源文件目录",
+      "detail": "运行 assets:add。",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["assets:add"],
+      "group": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "focus": true,
+        "panel": "dedicated"
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+        {
+      "label": "Assets: 图片资源文件优化",
+      "detail": "预览图片优化结果，并可在同一终端确认写入。",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["images:optimize"],
       "group": "build",
       "problemMatcher": [],
       "presentation": {

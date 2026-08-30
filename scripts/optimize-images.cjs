@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 const sharp = require('sharp');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
@@ -71,6 +72,12 @@ const inputPaths = args.filter(
 const APPLY = flags.has('--apply');
 const KEEP_SOURCE = flags.has('--keep-source');
 const FORCE = flags.has('--force');
+const NO_INTERACTIVE = flags.has('--no-interactive');
+const INTERACTIVE =
+  !APPLY &&
+  !NO_INTERACTIVE &&
+  process.stdin.isTTY &&
+  process.stdout.isTTY;
 
 function formatBytes(bytes) {
   if (bytes < 1024) {
@@ -488,7 +495,9 @@ async function main() {
     `模式: ${
       APPLY
         ? '写入'
-        : 'dry-run'
+        : INTERACTIVE
+          ? '预览（可确认写入）'
+          : 'dry-run'
     }`
   );
 
@@ -496,7 +505,7 @@ async function main() {
     `图片数: ${images.length}`
   );
 
-  if (!APPLY) {
+  if (!APPLY && !INTERACTIVE) {
     console.log('');
     console.log(
       '提示：当前不会修改文件。'
@@ -578,6 +587,53 @@ async function main() {
   }
 
   console.log('');
+
+  if (!INTERACTIVE || converted === 0) {
+    return;
+  }
+
+  const readline = require('readline/promises');
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  let confirmed = false;
+
+  try {
+    const answer = (await rl.question(
+      '确认转换以上图片、更新引用并按安全规则删除源文件？[y/N] '
+    )).trim().toLowerCase();
+
+    confirmed = ['y', 'yes', '是'].includes(answer);
+  } finally {
+    rl.close();
+  }
+
+  if (!confirmed) {
+    console.log('已取消，未修改任何文件。');
+    return;
+  }
+
+  console.log('');
+  console.log('开始写入优化结果…');
+
+  const applied = spawnSync(
+    process.execPath,
+    [__filename, '--apply', ...args],
+    {
+      cwd: ROOT_DIR,
+      stdio: 'inherit'
+    }
+  );
+
+  if (applied.error) {
+    throw applied.error;
+  }
+
+  if (applied.status !== 0) {
+    process.exitCode = applied.status || 1;
+  }
 }
 
 main().catch(error => {
