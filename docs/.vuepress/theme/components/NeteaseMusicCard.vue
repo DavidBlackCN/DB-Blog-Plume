@@ -1,373 +1,958 @@
 <template>
-  <div class="nm-card" :class="{ 'is-loading': loading, 'is-error': error }">
-    <!-- 1. 加载状态 -->
-    <div v-if="loading" class="nm-skeleton">
-      <div class="nm-skeleton-content">
-        <div class="nm-skeleton-cover"></div>
-        <div class="nm-skeleton-info">
-          <div class="nm-skeleton-title"></div>
-          <div class="nm-skeleton-text"></div>
+  <article
+    class="nm-card"
+    :class="{ 'is-loading': loading, 'is-error': error }"
+    :aria-busy="loading"
+  >
+    <div v-if="loading" class="nm-skeleton" role="status">
+      <span class="sr-only">正在加载网易云音乐信息</span>
+      <div class="nm-skeleton-top">
+        <span class="nm-skeleton-kicker"></span>
+        <span class="nm-skeleton-brand"></span>
+      </div>
+      <div class="nm-skeleton-main">
+        <span class="nm-skeleton-cover"></span>
+        <div class="nm-skeleton-copy">
+          <span class="nm-skeleton-title"></span>
+          <span class="nm-skeleton-text"></span>
+          <span class="nm-skeleton-text is-short"></span>
+          <span class="nm-skeleton-lyric"></span>
+        </div>
+      </div>
+      <div class="nm-skeleton-footer">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="nm-skeleton-comment">
+        <span class="nm-skeleton-avatar"></span>
+        <div>
+          <span class="nm-skeleton-comment-name"></span>
+          <span class="nm-skeleton-comment-text"></span>
         </div>
       </div>
     </div>
 
-    <!-- 2. 错误状态 -->
-    <div v-else-if="error" class="nm-error-message">
-      <Icon name="octicon:alert-16" />
-      <span>{{ error }}</span>
+    <div v-else-if="error" class="nm-error-message" role="alert">
+      <span class="nm-error-icon" aria-hidden="true">
+        <Icon icon="octicon:alert-16" />
+      </span>
+      <div>
+        <strong>音乐卡片加载失败</strong>
+        <p>{{ error }}</p>
+      </div>
     </div>
 
-    <!-- 3. 正常内容 -->
     <div v-else-if="songData" class="nm-card-content">
-      <!-- 右上角网易云 Logo -->
-      <div class="nm-brand-logo" @click="openNetease">
-        <Icon name="simple-icons:neteasecloudmusic" size="18" color="#e03f3c" />
-      </div>
+      <header class="nm-card-header">
+        <span class="nm-kicker">NETEASE / TRACK {{ songData.id }}</span>
+        <a
+          class="nm-brand"
+          :href="songUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="在网易云音乐中打开"
+        >
+          <Icon icon="simple-icons:neteasecloudmusic" aria-hidden="true" />
+          <span>网易云音乐</span>
+        </a>
+      </header>
 
       <div class="nm-main">
-        <!-- 左侧：封面 -->
-        <div class="nm-cover-wrapper" @click="openNetease">
-          <img :src="songData.al.picUrl + '?param=140y140'" class="nm-cover" loading="lazy">
-          <div class="nm-play-btn">
-            <Icon name="ic:baseline-play-circle-filled" size="30" color="#e03f3c" />
-          </div>
-        </div>
+        <a
+          class="nm-cover-link"
+          :href="songUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          :aria-label="`在网易云音乐中收听《${songData.name}》`"
+        >
+          <span class="nm-record" aria-hidden="true"></span>
+          <span class="nm-cover-frame">
+            <img
+              :src="coverUrl"
+              class="nm-cover"
+              :alt="`${songData.name} 的专辑封面`"
+              loading="lazy"
+            >
+            <span class="nm-play-indicator" aria-hidden="true">
+              <Icon icon="solar:play-bold" />
+            </span>
+          </span>
+        </a>
 
-        <!-- 右侧：详情 -->
         <div class="nm-info">
           <div class="nm-title-row">
-            <h3 class="nm-title" @click="openNetease">{{ songData.name }}</h3>
-            <div class="nm-quality-tags">
-              <span v-if="isHiRes" class="tag hires">Hi-Res</span>
-              <span v-else-if="isSQ" class="tag sq">SQ</span>
-            </div>
+            <h3 class="nm-title">
+              <a :href="songUrl" target="_blank" rel="noopener noreferrer">
+                {{ songData.name }}
+              </a>
+            </h3>
+            <span v-if="qualityLabel" class="nm-quality">{{ qualityLabel }}</span>
           </div>
 
-          <div class="nm-meta">
-            <span class="nm-artist">{{ formatArtists(songData.ar) }}</span>
-            <span class="nm-dot">·</span>
-            <span class="nm-album">{{ songData.al.name }}</span>
+          <p v-if="songSubtitle" class="nm-subtitle">{{ songSubtitle }}</p>
+
+          <div class="nm-metadata">
+            <span class="nm-meta-line">
+              <Icon icon="solar:user-speak-rounded-linear" aria-hidden="true" />
+              <span>{{ artistNames }}</span>
+            </span>
+            <span class="nm-meta-line">
+              <Icon icon="solar:album-linear" aria-hidden="true" />
+              <span>{{ albumName }}</span>
+            </span>
           </div>
 
-          <!-- 精彩歌词 -->
-          <div v-if="hotLyric" class="nm-lyric-box">
-            <p class="nm-lyric-text">“ {{ hotLyric }} ”</p>
-          </div>
+          <figure v-if="featuredLyric.original" class="nm-lyric">
+            <Icon class="nm-lyric-icon" icon="mingcute:quote-left-fill" aria-hidden="true" />
+            <figcaption>
+              <p>{{ featuredLyric.original }}</p>
+              <p v-if="featuredLyric.translation" class="nm-lyric-translation">
+                {{ featuredLyric.translation }}
+              </p>
+            </figcaption>
+          </figure>
         </div>
       </div>
 
-      <!-- 底部：统计与评论 -->
-      <div class="nm-footer">
-        <!-- 统计信息全部靠左 -->
-        <div class="nm-stats">
-          <div class="nm-stat-item highlight">
-             <Icon name="ic:outline-mode-comment" size="14" />
-             <span>{{ formatNumber(commentCount) }} 评论</span>
-          </div>
-          <div v-if="publishTime" class="nm-stat-item">
-             <Icon name="ic:outline-calendar-month" size="14" />
-             <span>{{ publishTime }} 发行</span>
-          </div>
+      <footer class="nm-footer">
+        <div class="nm-stats" aria-label="歌曲信息">
+          <span class="nm-stat is-highlight">
+            <Icon icon="solar:chat-round-dots-linear" aria-hidden="true" />
+            {{ formatNumber(commentCount) }} 条评论
+          </span>
+          <span v-if="durationLabel" class="nm-stat">
+            <Icon icon="solar:clock-circle-linear" aria-hidden="true" />
+            {{ durationLabel }}
+          </span>
+          <time v-if="publishDate" class="nm-stat" :datetime="publishDate.iso">
+            <Icon icon="solar:calendar-linear" aria-hidden="true" />
+            {{ publishDate.label }} 发行
+          </time>
         </div>
-        
-        <!-- 热门评论 -->
-        <div v-if="hotComment" class="nm-hot-comment">
-          <img :src="hotComment.user.avatarUrl + '?param=60y60'" class="comment-avatar">
-          <div class="comment-text-group">
-            <div class="comment-user">{{ hotComment.user.nickname }}</div>
-            <div class="comment-content">{{ hotComment.content }}</div>
-          </div>
+
+        <div class="nm-actions">
+          <a
+            v-if="mvUrl"
+            class="nm-action is-secondary"
+            :href="mvUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon icon="solar:videocamera-record-linear" aria-hidden="true" />
+            MV
+          </a>
+          <a
+            class="nm-action is-primary"
+            :href="songUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            去收听
+            <Icon icon="solar:arrow-right-up-linear" aria-hidden="true" />
+          </a>
         </div>
-      </div>
+      </footer>
+
+      <aside v-if="hotComment" class="nm-comment" aria-label="热门评论">
+        <img
+          :src="`${hotComment.user.avatarUrl}?param=72y72`"
+          class="nm-comment-avatar"
+          :alt="`${hotComment.user.nickname} 的头像`"
+          loading="lazy"
+        >
+        <div class="nm-comment-body">
+          <div class="nm-comment-heading">
+            <span class="nm-comment-user">{{ hotComment.user.nickname }}</span>
+            <span class="nm-comment-label">热门评论</span>
+          </div>
+          <p class="nm-comment-content">{{ hotComment.content }}</p>
+        </div>
+        <span v-if="hotComment.likedCount" class="nm-comment-likes">
+          <Icon icon="solar:heart-angle-linear" aria-hidden="true" />
+          {{ formatNumber(hotComment.likedCount) }}
+        </span>
+      </aside>
     </div>
-  </div>
+  </article>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps({
   id: { type: String, required: true },
-  baseUrl: { type: String, default: 'https://api.neteasemusic.davidblackcn.online/' } 
-});
+  baseUrl: { type: String, default: 'https://api.neteasemusic.davidblackcn.online/' }
+})
 
-const songData = ref(null);
-const hotLyric = ref("");
-const hotComment = ref(null);
-const commentCount = ref(0); 
-const loading = ref(true);
-const error = ref(null);
-const isHiRes = ref(false);
-const isSQ = ref(false);
+const songData = ref(null)
+const privilegeData = ref(null)
+const featuredLyric = ref({ original: '', translation: '' })
+const hotComment = ref(null)
+const commentCount = ref(0)
+const loading = ref(true)
+const error = ref('')
 
-const fetchAllData = async () => {
-  const songId = props.id.toString().match(/\d+/)?.[0];
+let activeController = null
+
+const songUrl = computed(() => songData.value
+  ? `https://music.163.com/#/song?id=${songData.value.id}`
+  : 'https://music.163.com/')
+
+const mvUrl = computed(() => songData.value?.mv
+  ? `https://music.163.com/#/mv?id=${songData.value.mv}`
+  : '')
+
+const coverUrl = computed(() => {
+  const url = songData.value?.al?.picUrl
+  return url ? `${url}?param=240y240` : ''
+})
+
+const artistNames = computed(() => {
+  const artists = songData.value?.ar
+  return artists?.length ? artists.map(artist => artist.name).join(' / ') : '未知歌手'
+})
+
+const albumName = computed(() => songData.value?.al?.name || '未知专辑')
+
+const songSubtitle = computed(() => {
+  const aliases = [
+    ...(songData.value?.alia || []),
+    ...(songData.value?.tns || [])
+  ].filter(Boolean)
+  return [...new Set(aliases)].join(' · ')
+})
+
+const qualityLabel = computed(() => {
+  const song = songData.value
+  const privilege = privilegeData.value
+  const level = privilege?.maxBrLevel || privilege?.playMaxBrLevel || ''
+
+  if (song?.hr || level === 'hires') return 'Hi-Res'
+  if (song?.sq || level === 'lossless' || privilege?.maxbr >= 900000) return 'SQ'
+  if (song?.h || privilege?.maxbr >= 320000) return 'HQ'
+  return ''
+})
+
+const durationLabel = computed(() => {
+  const duration = Number(songData.value?.dt)
+  if (!duration) return ''
+  const totalSeconds = Math.floor(duration / 1000)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = String(totalSeconds % 60).padStart(2, '0')
+  return `${minutes}:${seconds}`
+})
+
+const publishDate = computed(() => {
+  const timestamp = Number(songData.value?.publishTime)
+  if (!timestamp) return null
+  const date = new Date(timestamp)
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return {
+    iso: `${year}-${month}-${day}`,
+    label: `${year}.${month}.${day}`
+  }
+})
+
+function formatNumber(value) {
+  const number = Number(value) || 0
+  if (number >= 100000000) return `${(number / 100000000).toFixed(1).replace(/\.0$/, '')} 亿`
+  if (number >= 10000) return `${(number / 10000).toFixed(1).replace(/\.0$/, '')} 万`
+  return number.toLocaleString('zh-CN')
+}
+
+function parseTimedLyrics(rawLyric = '') {
+  return rawLyric
+    .split('\n')
+    .flatMap((line) => {
+      const content = line.replace(/\[[^\]]+\]/g, '').trim()
+      const timeTags = [...line.matchAll(/\[(\d{1,3}):(\d{2})(?:[.:](\d{1,3}))?\]/g)]
+      if (!content || !timeTags.length) return []
+
+      return timeTags.map((match) => {
+        const fraction = (match[3] || '0').padEnd(3, '0').slice(0, 3)
+        return {
+          content,
+          time: Number(match[1]) * 60000 + Number(match[2]) * 1000 + Number(fraction)
+        }
+      })
+    })
+    .filter(row => !/^(作词|作曲|编曲|制作人|混音|录音|母带|发行|出品|监制)\s*[:：]/.test(row.content))
+}
+
+function pickFeaturedLyric(lyricData) {
+  const originalRows = parseTimedLyrics(lyricData?.lrc?.lyric)
+    .filter(row => row.content.length >= 3)
+  if (!originalRows.length) return { original: '', translation: '' }
+
+  const translatedRows = parseTimedLyrics(lyricData?.tlyric?.lyric)
+  const preferredIndex = Math.min(
+    originalRows.length - 1,
+    Math.max(0, Math.floor(originalRows.length * 0.42))
+  )
+  const selected = originalRows[preferredIndex]
+  const translation = translatedRows.find(row => Math.abs(row.time - selected.time) <= 400)?.content || ''
+
+  return {
+    original: selected.content,
+    translation: translation !== selected.content ? translation : ''
+  }
+}
+
+async function requestJson(url, signal) {
+  const response = await fetch(url, { signal })
+  if (!response.ok) throw new Error(`接口响应异常（${response.status}）`)
+  const data = await response.json()
+  if (Number(data?.code) >= 400) throw new Error(data.message || `接口返回错误（${data.code}）`)
+  return data
+}
+
+async function requestLyrics(apiBase, songId, signal) {
+  try {
+    return await requestJson(`${apiBase}/lyric/new?id=${songId}`, signal)
+  } catch (lyricError) {
+    if (lyricError?.name === 'AbortError') throw lyricError
+    return requestJson(`${apiBase}/lyric?id=${songId}`, signal)
+  }
+}
+
+function resetData() {
+  songData.value = null
+  privilegeData.value = null
+  featuredLyric.value = { original: '', translation: '' }
+  hotComment.value = null
+  commentCount.value = 0
+}
+
+async function fetchAllData() {
+  const songId = String(props.id).match(/\d+/)?.[0]
   if (!songId) {
-    error.value = "ID 格式错误";
-    loading.value = false;
-    return;
+    resetData()
+    error.value = '歌曲 ID 格式错误'
+    loading.value = false
+    return
   }
 
-  loading.value = true;
-  error.value = null;
+  activeController?.abort()
+  activeController = new AbortController()
+  const { signal } = activeController
+  const apiBase = props.baseUrl.replace(/\/$/, '')
+
+  resetData()
+  error.value = ''
+  loading.value = true
 
   try {
-    const apiBase = props.baseUrl.replace(/\/$/, '');
-    
-    const [detailRes, lyricRes, commentRes, dynamicRes] = await Promise.all([
-      fetch(`${apiBase}/song/detail?ids=${songId}`),
-      fetch(`${apiBase}/lyric?id=${songId}`),
-      fetch(`${apiBase}/comment/music?id=${songId}&limit=1`),
-      fetch(`${apiBase}/song/detail/dynamic?id=${songId}`)
-    ]);
+    const [detailResult, lyricResult, commentResult] = await Promise.allSettled([
+      requestJson(`${apiBase}/song/detail?ids=${songId}`, signal),
+      requestLyrics(apiBase, songId, signal),
+      requestJson(`${apiBase}/comment/music?id=${songId}&limit=1`, signal)
+    ])
 
-    const detailData = await detailRes.json();
-    const lyricData = await lyricRes.json();
-    const commentData = await commentRes.json();
-    const dynamicDataRaw = await dynamicRes.json();
+    if (detailResult.status === 'rejected') throw detailResult.reason
 
-    if (!detailData.songs?.[0]) throw new Error("未找到歌曲");
+    const detailData = detailResult.value
+    const song = detailData.songs?.[0]
+    if (!song) throw new Error('未找到这首歌曲')
 
-    songData.value = detailData.songs[0];
-    
-    // 数据解析
-    const dynamicData = dynamicDataRaw.data || dynamicDataRaw;
-    commentCount.value = dynamicData.commentCount || commentData.total || 0;
+    songData.value = song
+    privilegeData.value = detailData.privileges?.[0] || null
 
-    // 音质
-    if (detailData.privileges?.[0]) {
-      const p = detailData.privileges[0];
-      isHiRes.value = p.hr || p.maxbr > 320000;
-      isSQ.value = p.sq || (p.fl > 0 && p.fl <= 320000);
+    if (lyricResult.status === 'fulfilled') {
+      featuredLyric.value = pickFeaturedLyric(lyricResult.value)
     }
 
-    // 歌词
-    if (lyricData.lrc?.lyric) {
-      const lines = lyricData.lrc.lyric.split('\n')
-        .map(l => l.replace(/\[.*\]/, '').trim())
-        .filter(l => l.length > 3 && !l.includes(':') && !l.includes('：'));
-      hotLyric.value = lines[Math.floor(lines.length / 2)] || lines[0];
+    if (commentResult.status === 'fulfilled') {
+      const commentData = commentResult.value
+      commentCount.value = Number(commentData.total) || 0
+      hotComment.value = commentData.hotComments?.[0] || commentData.comments?.[0] || null
     }
-
-    // 评论
-    if (commentData.hotComments?.length > 0) {
-      hotComment.value = commentData.hotComments[0];
-    } else if (commentData.comments?.length > 0) {
-       hotComment.value = commentData.comments[0];
-    }
-
-  } catch (err) {
-    error.value = `加载失败: ${err.message}`;
-    console.error(err);
+  } catch (fetchError) {
+    if (fetchError?.name === 'AbortError') return
+    error.value = fetchError?.message || '暂时无法获取歌曲信息'
   } finally {
-    loading.value = false;
+    if (!signal.aborted) loading.value = false
   }
-};
+}
 
-const formatArtists = (ar) => ar ? ar.map(a => a.name).join('/') : '未知歌手';
-const formatNumber = (num) => {
-  if (!num || num <= 0) return 0;
-  return num > 10000 ? (num / 10000).toFixed(1) + 'w' : num;
-};
-const publishTime = computed(() => {
-  if (!songData.value?.publishTime) return null;
-  return new Date(songData.value.publishTime).getFullYear();
-});
-
-const openNetease = () => {
-  if (songData.value) window.open(`https://music.163.com/#/song?id=${songData.value.id}`, '_blank');
-};
-
-onMounted(fetchAllData);
-watch(() => props.id, fetchAllData);
+onMounted(fetchAllData)
+watch(() => [props.id, props.baseUrl], fetchAllData)
+onBeforeUnmount(() => activeController?.abort())
 </script>
 
 <style scoped>
+/* Northstar 网易云音乐卡片 */
 .nm-card {
-  position: relative; /* 必须，为了定位 Logo */
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 14px;
-  padding: 16px;
-  background-color: var(--vp-c-bg-soft);
-  transition: all 0.3s;
-  margin: 1.5rem 0;
-  text-align: left !important;
+  --nm-accent: #e60026;
+  --nm-accent-hover: #c90021;
+  --nm-accent-soft: rgba(230, 0, 38, 0.08);
+  --nm-accent-soft-strong: rgba(230, 0, 38, 0.13);
+  --nm-accent-border: rgba(230, 0, 38, 0.42);
+  --nm-ease-out: var(--motion-ease-out, cubic-bezier(0.23, 1, 0.32, 1));
+  position: relative;
+  box-sizing: border-box;
+  margin: 1.25rem 0;
   overflow: hidden;
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-elv);
+  color: var(--vp-c-text-1);
+  font-family: var(--font-ui);
+  text-align: left;
+  overflow-wrap: anywhere;
+  transition: border-color 160ms ease,
+    background-color 160ms ease,
+    transform 180ms var(--nm-ease-out);
 }
 
-.nm-card:hover {
-  border-color: #e03f3c;
-  box-shadow: 0 8px 24px rgba(224,63,60,0.12);
-}
-
-/* 网易云 Logo 样式 */
-.nm-brand-logo {
+.nm-card::before {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  opacity: 0.6;
-  cursor: pointer;
-  transition: opacity 0.3s;
-  z-index: 10;
+  z-index: 1;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--nm-accent);
+  content: '';
 }
-.nm-brand-logo:hover { opacity: 1; }
+
+:global(html.dark .nm-card),
+:global([data-theme="dark"] .nm-card) {
+  --nm-accent: #ff6673;
+  --nm-accent-hover: #ff8992;
+  --nm-accent-soft: rgba(255, 102, 115, 0.11);
+  --nm-accent-soft-strong: rgba(255, 102, 115, 0.17);
+  --nm-accent-border: rgba(255, 102, 115, 0.48);
+}
+
+.nm-card-content,
+.nm-skeleton,
+.nm-error-message {
+  padding: 16px 18px 16px 20px;
+}
+
+.nm-skeleton {
+  box-sizing: border-box;
+  min-height: 330px;
+}
+
+.nm-card-header,
+.nm-skeleton-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 26px;
+  gap: 12px;
+}
+
+.nm-kicker {
+  color: var(--vp-c-text-3);
+  font-family: var(--font-code);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.3;
+}
+
+.nm-brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--nm-accent-soft);
+  color: var(--nm-accent);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 140ms ease, background-color 140ms ease;
+}
+
+.nm-brand svg { flex: 0 0 auto; font-size: 15px; }
 
 .nm-main {
-  display: flex !important;
-  align-items: center !important; /* 歌曲图片与文字垂直居中 */
-  gap: 16px;
-  margin-right: 20px; /* 为 Logo 留出空间 */
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  margin-top: 14px;
 }
 
-.nm-cover-wrapper {
+.nm-cover-link {
   position: relative;
-  width: 90px;
-  height: 90px;
-  flex-shrink: 0;
-  border-radius: 10px;
+  display: block;
+  width: 116px;
+  height: 104px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nm-record {
+  position: absolute;
+  top: 9px;
+  right: 0;
+  width: 86px;
+  height: 86px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--nm-accent) 0 9%, #d6d7da 10% 15%, transparent 16%),
+    repeating-radial-gradient(circle, #25272c 0 3px, #17181b 4px 6px);
+}
+
+.nm-cover-frame {
+  position: absolute;
+  z-index: 1;
+  top: 4px;
+  left: 0;
+  display: block;
+  width: 96px;
+  height: 96px;
   overflow: hidden;
-  cursor: pointer;
-  line-height: 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 10px;
+  background: var(--vp-c-bg-alt);
 }
 
 .nm-cover {
-  width: 90px !important;
-  height: 90px !important;
-  object-fit: cover;
-  display: block !important;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
   margin: 0 !important;
+  object-fit: cover;
+  transition: transform 180ms var(--nm-ease-out), filter 160ms ease;
 }
 
-.nm-play-btn {
+.nm-play-indicator {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.15);
+  display: grid;
+  place-items: center;
+  background: rgba(16, 17, 20, 0.4);
+  color: #fff;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 160ms ease;
 }
-.nm-card:hover .nm-play-btn { opacity: 1; }
 
-.nm-info { flex: 1; min-width: 0; }
-
-.nm-title-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+.nm-play-indicator svg {
+  width: 32px;
+  height: 32px;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--nm-accent);
+  transform: scale(0.94);
+  transition: transform 180ms var(--nm-ease-out);
 }
+
+.nm-info { min-width: 0; }
+.nm-title-row { display: flex; align-items: center; gap: 8px; }
 
 .nm-title {
+  min-width: 0;
   margin: 0 !important;
-  font-size: 1.15rem !important;
+  font-family: var(--font-heading);
+  font-size: 1.16rem !important;
   font-weight: 700;
-  color: var(--vp-c-text-1);
+  line-height: 1.35;
+}
+
+.nm-title a {
+  display: block;
   overflow: hidden;
+  color: var(--vp-c-text-1);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+
+.nm-quality {
+  flex: 0 0 auto;
+  padding: 2px 5px;
+  border: 1px solid var(--nm-accent-border);
+  border-radius: 5px;
+  background: var(--nm-accent-soft);
+  color: var(--nm-accent);
+  font-family: var(--font-code);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.nm-subtitle {
+  margin: 3px 0 0 !important;
+  overflow: hidden;
+  color: var(--vp-c-text-3);
+  font-size: 0.75rem;
+  line-height: 1.4;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.tag {
-  font-size: 10px;
-  padding: 0 4px;
-  border-radius: 3px;
-  border: 1px solid;
-  font-weight: bold;
-}
-.tag.hires { color: #e03f3c; border-color: #e03f3c; }
-.tag.sq { color: #feac2c; border-color: #feac2c; }
+.nm-metadata { display: grid; gap: 4px; margin-top: 8px; }
 
-.nm-meta {
-  font-size: 0.85rem;
+.nm-meta-line {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
   color: var(--vp-c-text-2);
-  margin-bottom: 10px;
+  font-size: 0.78rem;
+  line-height: 1.35;
 }
 
-.nm-lyric-box {
-  background: var(--vp-c-default-soft);
-  padding: 6px 12px;
-  border-radius: 6px;
-  border-left: 3px solid #e03f3c;
+.nm-meta-line svg { flex: 0 0 auto; color: var(--nm-accent); font-size: 14px; }
+.nm-meta-line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.nm-lyric {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 11px 0 0;
+  padding: 8px 10px;
+  border-radius: 7px;
+  background: var(--nm-accent-soft);
+  text-align: left;
 }
-.nm-lyric-text {
+
+.nm-lyric-icon { flex: 0 0 auto; margin-top: 2px; color: var(--nm-accent); font-size: 13px; }
+.nm-lyric figcaption {
+  min-width: 0;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.nm-lyric p {
   margin: 0 !important;
-  font-size: 0.85rem;
-  font-style: italic;
-  color: var(--vp-c-text-1);
   overflow: hidden;
+  color: var(--vp-c-text-1);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  text-align: left !important;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.nm-lyric .nm-lyric-translation {
+  margin-top: 2px !important;
+  color: var(--vp-c-text-3);
+  font-size: 0.7rem;
 }
 
 .nm-footer {
-  margin-top: 14px;
-  border-top: 1px solid var(--vp-c-divider);
-  padding-top: 12px;
-}
-
-.nm-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 12px;
-  justify-content: flex-start !important;
-}
-
-.nm-stat-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  color: var(--vp-c-text-3);
-}
-.nm-stat-item.highlight { color: #e03f3c; }
-
-/* 核心优化：评论头像与文字完美垂直居中 */
-.nm-hot-comment {
-  display: flex !important;
-  align-items: center !important; /* 强制垂直居中 */
+  justify-content: space-between;
   gap: 12px;
-  background: var(--vp-c-bg-alt);
-  padding: 8px 12px;
-  border-radius: 10px;
-  width: 100%;
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vp-c-divider);
 }
 
-.comment-avatar {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 50% !important;
-  flex-shrink: 0;
+.nm-stats,
+.nm-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+
+.nm-stat,
+.nm-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  gap: 5px;
+  border-radius: 6px;
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.nm-stat { color: var(--vp-c-text-3); }
+.nm-stat svg, .nm-action svg { flex: 0 0 auto; font-size: 14px; }
+.nm-stat.is-highlight { color: var(--nm-accent); }
+
+.nm-action {
+  padding: 4px 8px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 140ms ease,
+    border-color 140ms ease,
+    background-color 140ms ease,
+    transform 140ms var(--nm-ease-out);
+}
+
+.nm-action.is-primary {
+  border-color: var(--nm-accent-border);
+  background: var(--nm-accent-soft);
+  color: var(--nm-accent);
+}
+
+.nm-comment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+}
+
+.nm-comment-avatar {
+  display: block;
+  flex: 0 0 auto;
+  width: 34px !important;
+  height: 34px !important;
   margin: 0 !important;
   border: 1px solid var(--vp-c-divider);
+  border-radius: 50% !important;
+  background: var(--vp-c-bg-alt);
+  object-fit: cover;
 }
 
-.comment-text-group {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column; /* 垂直排列用户名和内容 */
-  justify-content: center;
-}
+.nm-card .nm-comment-avatar:hover { transform: none; }
+.nm-comment-body { min-width: 0; flex: 1; }
+.nm-comment-heading { display: flex; align-items: center; gap: 7px; margin-bottom: 2px; }
 
-.comment-user {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--vp-c-text-2);
-  margin-bottom: 1px;
-}
-
-.comment-content {
-  font-size: 12px;
-  color: var(--vp-c-text-1);
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.nm-comment-user {
   overflow: hidden;
-  text-align: left !important;
+  color: var(--vp-c-text-2);
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nm-comment-label {
+  flex: 0 0 auto;
+  color: var(--nm-accent);
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.nm-comment-content {
+  display: -webkit-box;
+  margin: 0 !important;
+  overflow: hidden;
+  color: var(--vp-c-text-1);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.nm-comment-likes {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 4px;
+  color: var(--vp-c-text-3);
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+}
+
+.nm-comment-likes svg { color: var(--nm-accent); font-size: 13px; }
+
+.nm-skeleton-main {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  align-items: center;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.nm-skeleton-copy { display: grid; gap: 8px; }
+
+.nm-skeleton-kicker,
+.nm-skeleton-brand,
+.nm-skeleton-cover,
+.nm-skeleton-title,
+.nm-skeleton-text,
+.nm-skeleton-lyric,
+.nm-skeleton-footer span,
+.nm-skeleton-avatar,
+.nm-skeleton-comment-name,
+.nm-skeleton-comment-text {
+  display: block;
+  border-radius: 6px;
+  background: var(--vp-c-divider);
+  animation: nm-skeleton-pulse 1.1s ease-in-out infinite alternate;
+}
+
+.nm-skeleton-kicker { width: 120px; height: 9px; }
+.nm-skeleton-brand { width: 84px; height: 26px; }
+.nm-skeleton-cover { width: 96px; height: 96px; border-radius: 10px; }
+.nm-skeleton-title { width: min(52%, 240px); height: 18px; }
+.nm-skeleton-text { width: min(82%, 380px); height: 11px; }
+.nm-skeleton-text.is-short { width: min(58%, 260px); }
+.nm-skeleton-lyric { width: 100%; height: 44px; margin-top: 3px; }
+
+.nm-skeleton-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.nm-skeleton-footer span { width: 74px; height: 28px; }
+
+.nm-skeleton-comment {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+}
+
+.nm-skeleton-comment > div {
+  display: grid;
+  gap: 6px;
+}
+
+.nm-skeleton-avatar { width: 34px; height: 34px; border-radius: 50%; }
+.nm-skeleton-comment-name { width: min(28%, 110px); height: 9px; }
+.nm-skeleton-comment-text { width: min(82%, 420px); height: 10px; }
+
+.nm-error-message {
+  display: flex;
+  align-items: center;
+  min-height: 112px;
+  gap: 12px;
+  color: var(--vp-c-danger-1);
+}
+
+.nm-error-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--vp-c-danger-soft, rgba(230, 0, 38, 0.1));
+  font-size: 17px;
+}
+
+.nm-error-message strong { color: var(--vp-c-text-1); font-size: 0.86rem; }
+.nm-error-message p { margin: 3px 0 0 !important; color: var(--vp-c-text-2); font-size: 0.76rem; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nm-card:hover {
+    border-color: var(--nm-accent-border);
+    background: var(--vp-c-bg-safe);
+    transform: translateY(-2px);
+  }
+
+  .nm-brand:hover,
+  .nm-action.is-primary:hover {
+    background: var(--nm-accent-soft-strong);
+    color: var(--nm-accent-hover);
+  }
+
+  .nm-title a:hover { color: var(--nm-accent-hover); }
+  .nm-cover-link:hover .nm-cover { filter: saturate(1.04); transform: scale(1.025); }
+  .nm-cover-link:hover .nm-play-indicator { opacity: 1; }
+  .nm-cover-link:hover .nm-play-indicator svg { transform: scale(1); }
+
+  .nm-action:hover {
+    border-color: var(--nm-accent-border);
+    color: var(--vp-c-text-1);
+    transform: translateY(-1px);
+  }
+}
+
+.nm-brand:focus-visible,
+.nm-cover-link:focus-visible,
+.nm-title a:focus-visible,
+.nm-action:focus-visible {
+  outline: 2px solid var(--nm-accent);
+  outline-offset: 2px;
+}
+
+.nm-brand:active,
+.nm-action:active { transform: scale(0.97); }
+
+@media (max-width: 640px) {
+  .nm-card-content,
+  .nm-skeleton,
+  .nm-error-message { padding: 14px 14px 14px 17px; }
+
+  .nm-main,
+  .nm-skeleton-main { grid-template-columns: 98px minmax(0, 1fr); gap: 13px; }
+  .nm-cover-link { width: 98px; height: 90px; }
+  .nm-cover-frame, .nm-skeleton-cover { width: 84px; height: 84px; }
+  .nm-record { top: 7px; width: 76px; height: 76px; }
+  .nm-title { font-size: 1.03rem !important; }
+  .nm-lyric-translation, .nm-comment-label { display: none; }
+  .nm-footer { align-items: flex-start; flex-direction: column; }
+  .nm-actions { align-self: stretch; justify-content: flex-end; }
+}
+
+@media (max-width: 420px) {
+  .nm-kicker {
+    max-width: 145px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nm-brand span, .nm-comment-likes { display: none; }
+  .nm-brand { width: 28px; padding: 3px; justify-content: center; }
+  .nm-main, .nm-skeleton-main { grid-template-columns: 82px minmax(0, 1fr); gap: 11px; }
+  .nm-cover-link { width: 82px; height: 78px; }
+  .nm-cover-frame, .nm-skeleton-cover { width: 72px; height: 72px; }
+  .nm-record { top: 6px; width: 66px; height: 66px; }
+  .nm-lyric { padding: 7px 8px; }
+  .nm-comment-avatar { width: 30px !important; height: 30px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nm-card,
+  .nm-brand,
+  .nm-cover,
+  .nm-play-indicator,
+  .nm-play-indicator svg,
+  .nm-title a,
+  .nm-action {
+    transition: color 140ms ease,
+      border-color 140ms ease,
+      background-color 140ms ease,
+      opacity 140ms ease;
+  }
+
+  .nm-skeleton-kicker,
+  .nm-skeleton-brand,
+  .nm-skeleton-cover,
+  .nm-skeleton-title,
+  .nm-skeleton-text,
+  .nm-skeleton-lyric,
+  .nm-skeleton-footer span,
+  .nm-skeleton-avatar,
+  .nm-skeleton-comment-name,
+  .nm-skeleton-comment-text { animation: none; }
+}
+
+@keyframes nm-skeleton-pulse {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
 }
 </style>
