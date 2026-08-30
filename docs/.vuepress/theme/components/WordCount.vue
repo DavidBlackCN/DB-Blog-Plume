@@ -1,27 +1,36 @@
 <template>
-  <span
+  <div
     class="word-count-display"
-    :class="{ 'is-loading': loading, 'is-error': error }"
+    :class="{ 'is-loading': loading, 'is-error': error, 'has-no-icon': !showIcon }"
     role="status"
     aria-live="polite"
     aria-atomic="true"
   >
-    <span v-if="loading" class="word-count-loading">
-      <Icon class="word-count-status-icon" icon="octicon:graph-16" aria-hidden="true" />
+    <span v-if="showIcon" class="word-count-icon-shell" aria-hidden="true">
+      <Icon
+        class="word-count-icon"
+        :icon="error ? 'octicon:alert-16' : loading ? 'octicon:graph-16' : icon"
+      />
+    </span>
+
+    <span class="word-count-copy">
+      <span class="word-count-eyebrow">{{ eyebrow }}</span>
+      <span class="word-count-label">{{ labelText }}</span>
+    </span>
+
+    <span v-if="loading" class="word-count-state-text word-count-loading">
       {{ loadingText }}
     </span>
 
-    <span v-else-if="error" class="word-count-error">
-      <Icon class="word-count-status-icon" icon="octicon:alert-16" aria-hidden="true" />
+    <span v-else-if="error" class="word-count-state-text word-count-error">
       {{ errorText }}
     </span>
 
     <span v-else class="word-count-value">
-      <Icon v-if="showIcon" class="word-count-icon" :icon="icon" aria-hidden="true" />
-      <span v-if="label" class="word-count-label">{{ label }}</span>
-      <span class="word-count-text">{{ displayText }}</span>
+      <strong>{{ displayNumber }}</strong>
+      <small>{{ suffix.trim() }}</small>
     </span>
-  </span>
+  </div>
 </template>
 
 <script setup>
@@ -116,6 +125,11 @@ const props = defineProps({
     default: ''
   },
 
+  eyebrow: {
+    type: String,
+    default: 'READING / WORDS'
+  },
+
   icon: {
     type: String,
     default: 'octicon:book-16'
@@ -168,9 +182,8 @@ const wordCount = computed(() => {
   return Number(data.groups[targetGroupPath.value] || 0)
 })
 
-const displayText = computed(() => {
-  return `${wordCount.value.toLocaleString()}${props.suffix}`
-})
+const displayNumber = computed(() => wordCount.value.toLocaleString())
+const labelText = computed(() => props.label.replace(/[：:]\s*$/, '') || '当前分组字数')
 
 onMounted(async () => {
   try {
@@ -186,43 +199,114 @@ onMounted(async () => {
 
 <style scoped>
 .word-count-display {
-  display: inline-flex;
+  display: grid;
+  box-sizing: border-box;
+  width: 100%;
   align-items: center;
-  min-height: 32px;
-  padding: 4px 9px;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 999px;
-  background: var(--vp-c-bg-soft);
+  min-height: 88px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px;
+  margin: 1rem 0;
+  padding: 14px 16px;
+  border: 2px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-elv);
   color: var(--vp-c-text-1);
   font-family: var(--font-ui);
-  font-size: 0.875rem;
-  line-height: 1.45;
+  line-height: 1.35;
   transition: border-color var(--motion-duration-fast) ease,
     background-color var(--motion-duration-fast) ease,
     color var(--motion-duration-fast) ease;
 }
 
-.word-count-display.is-loading,
-.word-count-display.is-error {
-  color: var(--vp-c-text-2);
+.word-count-icon-shell {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-hard);
 }
 
 .word-count-display.is-error {
   border-color: var(--vp-c-danger-3);
-  background: var(--vp-c-danger-soft);
 }
 
-.word-count-loading,
-.word-count-error,
+.word-count-display.has-no-icon {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.word-count-display.is-error .word-count-icon-shell {
+  background: var(--vp-c-danger-soft);
+  color: var(--vp-c-danger-1);
+}
+
+.word-count-copy {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.word-count-eyebrow {
+  color: var(--vp-c-text-3);
+  font-family: var(--font-code);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.word-count-icon {
+  flex-shrink: 0;
+  font-size: 22px;
+}
+
+.word-count-label {
+  overflow: hidden;
+  color: var(--vp-c-text-1);
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .word-count-value {
   display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.word-count-value {
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 5px;
+  min-width: 7rem;
+  color: var(--vp-c-brand-hard);
+  font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums;
   transition: opacity var(--motion-duration-normal) var(--motion-ease-out),
     transform var(--motion-duration-normal) var(--motion-ease-out);
+}
+
+.word-count-value strong {
+  font-size: clamp(1.45rem, 4vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.word-count-value small {
+  color: var(--vp-c-text-3);
+  font-size: 0.75rem;
+}
+
+.word-count-state-text {
+  justify-self: end;
+  color: var(--vp-c-text-3);
+  font-size: 0.8125rem;
+}
+
+.word-count-error {
+  color: var(--vp-c-danger-1);
+}
+
+.word-count-display.is-loading .word-count-icon {
+  animation: word-count-pulse 900ms ease-in-out infinite alternate;
 }
 
 @starting-style {
@@ -232,34 +316,39 @@ onMounted(async () => {
   }
 }
 
-.word-count-status-icon,
-.word-count-icon {
-  flex-shrink: 0;
-  font-size: 1em;
-}
+@media (max-width: 480px) {
+  .word-count-display {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px 12px;
+    padding: 13px;
+  }
 
-.word-count-icon {
-  color: var(--vp-c-brand-1);
-}
+  .word-count-value,
+  .word-count-state-text {
+    grid-column: 2;
+    justify-self: start;
+    justify-content: flex-start;
+    min-width: 0;
+  }
 
-.word-count-label {
-  color: var(--vp-c-text-2);
-}
 
-.word-count-text {
-  color: var(--vp-c-brand-hard);
-  font-family: var(--font-code);
-  font-variant-numeric: tabular-nums;
-  font-weight: 400;
-}
+  .word-count-display.has-no-icon {
+    grid-template-columns: minmax(0, 1fr);
+  }
 
-.word-count-error {
-  color: var(--vp-c-danger-1);
+  .word-count-display.has-no-icon .word-count-value,
+  .word-count-display.has-no-icon .word-count-state-text {
+    grid-column: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .word-count-value {
     transition: opacity var(--motion-duration-fast) ease;
+  }
+
+  .word-count-display.is-loading .word-count-icon {
+    animation: none;
   }
 
   @starting-style {
@@ -268,5 +357,10 @@ onMounted(async () => {
       transform: none;
     }
   }
+}
+
+@keyframes word-count-pulse {
+  from { opacity: 0.5; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
 }
 </style>
