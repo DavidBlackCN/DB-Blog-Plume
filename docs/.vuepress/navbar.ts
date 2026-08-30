@@ -41,7 +41,6 @@ export default defineNavbarConfig([
     items: [
       { text: 'README', link: '/more/gh-readme', icon: 'gg:readme' },
       { text: '关于我', link: '/more/index', icon: 'mdi:account-circle' },
-      { text: '主题预览', link: '/more/主题预览', icon: 'mdi:colour-lens' },
       { text: '随机跳转', link: '/more/随机跳转', icon: 'mdi:shuffle' }
     ]
   },

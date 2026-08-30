@@ -8,6 +8,8 @@ import RepoCard from './theme/components/RepoCard.vue'
 import GitHubCard from './theme/components/GitHubCard.vue'
 import GiteeCard from './theme/components/GiteeCard.vue'
 import NeteaseMusicCard from './theme/components/NeteaseMusicCard.vue'
+import GitHubReadme from './theme/components/GitHubReadme.vue'
+import GroupDirectory from './theme/components/GroupDirectory.vue'
 import WordCount from './theme/components/WordCount.vue'
 import LoadingBars from './theme/components/LoadingBars.vue'
 import ReadingBackground from './theme/components/ReadingBackground.vue'
@@ -109,6 +111,8 @@ export default defineClientConfig({
     app.component('GitHubCard', GitHubCard)
     app.component('GiteeCard', GiteeCard)
     app.component('NeteaseMusicCard', NeteaseMusicCard)
+    app.component('GitHubReadme', GitHubReadme)
+    app.component('GroupDirectory', GroupDirectory)
     app.component('WordCount', WordCount)
     app.component('LoadingBars', LoadingBars)
     setupWalineLoadingBars()
