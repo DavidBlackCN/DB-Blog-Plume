@@ -31,8 +31,9 @@ export default defineNavbarConfig([
     text: '导航',
     icon: 'line-md:compass-loop',
     items: [
-      { text: 'Minecraft-Nav', link: '/nav/MinecraftNav', icon: 'mdi:minecraft' },
-      { text: 'Demo-Nav', link: '/nav/DemoNav', icon: 'material-symbols:demography'}
+      { text: '导航页说明', link: '/nav/nav-intro', icon: 'mdi:information' },
+      { text: '示例导航页', link: '/nav/nav-example', icon: 'material-symbols:demography'},
+      { text: 'Minecraft导航页', link: '/nav/nav-minecraft', icon: 'mdi:minecraft' },
     ]
   },
   {
