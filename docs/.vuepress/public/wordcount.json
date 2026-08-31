@@ -1,9 +1,9 @@
 {
-  "total": 17258,
-  "fileCount": 44,
-  "lastUpdated": "2026-08-30T12:37:33.378Z",
+  "total": 17265,
+  "fileCount": 45,
+  "lastUpdated": "2026-08-30T18:49:34.619Z",
   "groups": {
-    "/": 17258,
+    "/": 17265,
     "/blog/": 12098,
     "/blog/xue-wen/": 373,
     "/blog/xue-wen/claude-code-for-vs-code-cha-jian-pei-zhi/": 373,
@@ -39,7 +39,8 @@
     "/mcProject/modpack-alsace-design/": 359,
     "/mcProject/modpack-alsace-design/ri-zhi/": 82,
     "/mcProject/modpack-alsace-design/jian-jie/": 277,
-    "/more/": 486,
+    "/more/": 493,
+    "/more/friends/": 7,
     "/more/gh-readme/": 472,
     "/more/random/": 7,
     "/nav/": 14,
