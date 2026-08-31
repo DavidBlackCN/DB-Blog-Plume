@@ -4,4 +4,5 @@ createTime: 2026/03/09 16:39:41
 permalink: /ghProject/
 ---
 
-<GroupDirectory title="项目目录" description="项目介绍页会随当前分组中的 Markdown 文件自动更新。" />
+此处可以跳转到各个分组页面
+
