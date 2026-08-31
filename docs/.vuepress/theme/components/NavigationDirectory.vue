@@ -645,7 +645,7 @@ onBeforeUnmount(() => {
   gap: 8px;
   min-height: 46px;
   padding: 0 7px 0 12px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1.5px solid var(--vp-c-divider);
   border-radius: 10px;
   background: var(--vp-c-bg-elv);
   transition: border-color 150ms ease, background-color 150ms ease;
@@ -781,7 +781,7 @@ onBeforeUnmount(() => {
   min-height: 126px;
   flex-direction: column;
   padding: 12px;
-  border: 1px solid var(--vp-c-divider);
+  border: 1.5px solid var(--vp-c-divider);
   border-radius: 10px;
   background: var(--vp-c-bg-elv);
   color: inherit;
