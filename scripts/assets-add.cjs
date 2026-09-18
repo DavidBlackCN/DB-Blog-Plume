@@ -21,13 +21,14 @@ const CURRENT_YEAR = String(
 const TYPE_OPTIONS = [
   { label: 'Blog', base: ['blog'], needsYear: true },
   { label: 'Project', base: ['projects'] },
+  { label: 'Docs', base: ['docs'] },
   { label: 'Site', base: ['site'] },
   { label: 'Common', base: ['common'] }
 ];
 
 function printHelp() {
   console.log('用法: pnpm assets:add');
-  console.log('交互式创建 Blog、Project、Site 或 Common 素材目录。');
+  console.log('交互式创建 Blog、Project、Docs、Site 或 Common 素材目录。');
 }
 
 function isSafeKebabCase(value) {

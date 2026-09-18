@@ -1,13 +1,14 @@
 ---
 pageLayout: page
+sidebar: false
+aside: false
+comments: false
 externalLinkIcon: false
 photoSwipe: false
 ---
 
-<BlogHome />
+<BlogHorizon />
 
 <script setup>
-import BlogHome from
-'/.vuepress/theme/components/BlogHome.vue'
+import BlogHorizon from '/.vuepress/theme/components/BlogHorizon.vue'
 </script>
-

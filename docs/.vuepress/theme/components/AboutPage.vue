@@ -1,6 +1,6 @@
 <template>
   <main class="about-page">
-    <AboutHero />
+    <AboutHero v-if="showHero" />
     <AboutSiteGuide />
 
     <section class="about-section" aria-labelledby="about-profile-title">
@@ -29,6 +29,12 @@ import AboutPersonality from './about/AboutPersonality.vue'
 import AboutSiteGuide from './about/AboutSiteGuide.vue'
 import AboutSiteStats from './about/AboutSiteStats.vue'
 import AboutTechStack from './about/AboutTechStack.vue'
+
+withDefaults(defineProps<{
+  showHero?: boolean
+}>(), {
+  showHero: true,
+})
 </script>
 
 <style>
