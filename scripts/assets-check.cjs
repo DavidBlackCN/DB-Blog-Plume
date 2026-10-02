@@ -360,6 +360,20 @@ function main() {
     collectImages(ASSETS_DIR)
       .sort();
 
+  // WebP 是 RIFF 二进制；Git 换行转换会破坏内容，即使路径存在也无法显示。
+  for (const image of images) {
+    if (path.extname(image).toLowerCase() !== '.webp') continue;
+    const data = fs.readFileSync(image);
+    if (
+      data.length < 12 ||
+      data.toString('ascii', 0, 4) !== 'RIFF' ||
+      data.toString('ascii', 8, 12) !== 'WEBP' ||
+      data.readUInt32LE(4) + 8 !== data.length
+    ) {
+      throw new Error(`WebP 文件损坏，请检查 Git binary 属性并恢复原图: ${relativeToRoot(image)}`);
+    }
+  }
+
   const textFiles =
     collectTextFiles(DOCS_DIR)
       .sort();

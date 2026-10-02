@@ -2,7 +2,7 @@
   <div ref="stageElement" :class="['horizon-stage', { 'is-failed': failed }]" aria-hidden="true">
     <div class="horizon-stage__placeholder" />
     <picture>
-      <source srcset="/assets/site/插画5-1.webp" type="image/webp">
+      <source v-if="!usePngFallback" srcset="/assets/site/插画5-1.webp?v=2" type="image/webp">
       <img
         ref="imageElement"
         :class="['horizon-stage__image', { 'is-loaded': loaded }]"
@@ -32,6 +32,7 @@ const imageElement = ref<HTMLImageElement>()
 const stageElement = ref<HTMLElement>()
 const loaded = ref(false)
 const failed = ref(false)
+const usePngFallback = ref(false)
 let settled = false
 
 function settle() {
@@ -53,6 +54,11 @@ async function handleLoad() {
 }
 
 function handleError() {
+  // picture 只按格式支持选择 source，WebP 下载或解码失败不会自动回退到 img。
+  if (!usePngFallback.value) {
+    usePngFallback.value = true
+    return
+  }
   failed.value = true
   settle()
 }
