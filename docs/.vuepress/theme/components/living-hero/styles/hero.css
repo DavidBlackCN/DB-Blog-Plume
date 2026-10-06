@@ -1,0 +1,59 @@
+.blog-living-hero .hero-stage{ position: relative; width: 100%; height: 100%; overflow: hidden; background: #151313; }
+.blog-living-hero .hero-image{ position: absolute; display: block; max-width: none; }
+.blog-living-hero .hero-canvas{ position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; }
+.blog-living-hero .hero-canvas.canvas-ready{ opacity: 1; }
+.blog-living-hero .blink-layer{ position: absolute; inset: 0; pointer-events: none; }
+.blog-living-hero .blink-eye, .blog-living-hero .blink-region{ position: absolute; display: block; }
+.blog-living-hero .blink-eye{ opacity: 0; }
+.blog-living-hero .blink-region{ border: 1px solid #52edcf; background: #52edcf24; }
+.blog-living-hero .leaves-canvas{ position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.blog-living-hero .artwork-overlay{ position: absolute; pointer-events: none; }
+.blog-living-hero .artwork-overlay.show-bounds{ outline: 2px solid #e9d27f; outline-offset: -2px; }
+.blog-living-hero .artwork-overlay.show-grid{ background-image: linear-gradient(to right, #fff7 1px, transparent 1px), linear-gradient(to bottom, #fff7 1px, transparent 1px); background-size: 10% 10%; }
+.blog-living-hero .debug-panel{ position: absolute; z-index: 2; left: 16px; top: 16px; display: grid; gap: 8px; width: min(290px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow: auto; padding: 15px; border: 1px solid #ffffff38; border-radius: 8px; background: #181717df; box-shadow: 0 8px 32px #0006; color: #f5f0ec; font-size: 13px; backdrop-filter: blur(14px); }
+.blog-living-hero .debug-panel header{ display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.blog-living-hero .debug-panel header div{ display: grid; gap: 2px; }
+.blog-living-hero .debug-panel header button{ padding: 2px 6px; font-size: 10px; }
+.blog-living-hero .debug-reopen{ position: absolute; z-index: 2; top: 16px; left: 16px; padding: 5px 8px; border: 1px solid #ffffff38; border-radius: 5px; background: #181717cf; color: #f5f0ec; font-size: 11px; cursor: pointer; }
+.blog-living-hero .debug-panel header strong{ font-size: 14px; }
+.blog-living-hero .debug-panel small{ color: #bdaba2; font-size: 11px; }
+.blog-living-hero .debug-panel label{ display: flex; justify-content: space-between; align-items: center; gap: 6px; min-height: 22px; }
+.blog-living-hero .debug-panel label:has(input[type='checkbox']){ justify-content: flex-start; }
+.blog-living-hero .debug-panel input[type='range']{ width: 100%; accent-color: #d6a56c; }
+.blog-living-hero .debug-panel input[type='color']{ width: 38px; height: 24px; padding: 1px; border: 1px solid #ffffff44; border-radius: 4px; background: transparent; }
+.blog-living-hero .debug-panel .range-control{ display: grid; gap: 2px; }
+.blog-living-hero .lighting-controls{ display: grid; gap: 6px; padding: 7px 0; border-top: 1px solid #ffffff30; border-bottom: 1px solid #ffffff30; }
+.blog-living-hero .lighting-controls summary{ cursor: pointer; font-weight: 600; }
+.blog-living-hero .debug-panel .time-control > span{ display: flex; justify-content: space-between; align-items: center; }
+.blog-living-hero .debug-panel .time-control output{ font-variant-numeric: tabular-nums; color: #e8c18e; }
+.blog-living-hero .debug-panel .time-ticks{ display: flex; justify-content: space-between; color: #bdaba2; font-size: 9px; font-variant-numeric: tabular-nums; }
+.blog-living-hero .debug-panel .lighting-time-shortcuts{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+.blog-living-hero .debug-panel .lighting-time-shortcuts button{ min-width: 0; padding: 3px 1px; font-size: 10px; }
+.blog-living-hero .debug-panel .lighting-time-shortcuts button[aria-pressed='true']{ border-color: #e4bc82; color: #ffe2b7; }
+.blog-living-hero .debug-panel .time-actions{ display: flex; gap: 5px; }
+.blog-living-hero .debug-panel .time-actions button{ flex: 1; }
+.blog-living-hero .debug-panel button:disabled{ opacity: 0.48; cursor: default; }
+.blog-living-hero .debug-panel .time-mode{ color: #e8c18e; font-size: 11px; }
+.blog-living-hero .debug-panel input[type='checkbox']{ accent-color: #d6a56c; }
+.blog-living-hero .debug-panel select{ background: #332e2b; color: #fff; border: 1px solid #ffffff44; border-radius: 4px; padding: 2px 5px; }
+.blog-living-hero .debug-panel button{ background: #43332d; color: #fff; border: 1px solid #ffffff44; border-radius: 4px; padding: 5px; cursor: pointer; }
+.blog-living-hero .debug-panel footer{ display: grid; gap: 3px; color: #d9cbc4; font-size: 11px; }
+@media (max-width: 600px){.blog-living-hero .debug-panel{ top: auto; bottom: 10px; left: 10px; padding: 10px; max-height: 32vh; }
+ }
+.blog-living-hero .hero-stage{ isolation: isolate; }
+.blog-living-hero .hero-stage .hero-image{ margin: 0; border: 0; border-radius: 0; }
+.blog-living-hero .hero-content{ position: relative; z-index: 1; pointer-events: none; }
+.blog-living-hero .hero-content > *{ pointer-events: auto; }
+.blog-living-hero .hero-loading{ position: absolute; left: 16px; bottom: 16px; z-index: 1; color: #eee; font: 12px/1.5 system-ui, sans-serif; }
+.blog-living-hero dialog.debug-panel{ position: fixed; inset: 0 0 0 auto; margin: 0; width: min(360px, 92vw); height: 100dvh; max-height: none; max-width: none; box-sizing: border-box; border-radius: 0; padding: 24px; overscroll-behavior: contain; }
+.blog-living-hero dialog.debug-panel:not([open]){ display: none; }
+.blog-living-hero dialog.debug-panel[open]{ animation: debug-arrive 180ms ease-out; }
+.blog-living-hero dialog.debug-panel::backdrop{ background: #05070b26; }
+.blog-living-hero .debug-reopen{ top: auto; left: auto; right: 20px; bottom: 78px; padding: 9px 12px; font-size: 11px; }
+@keyframes debug-arrive{ from { transform: translateX(100%); } to { transform: translateX(0); } }
+.blog-living-hero .hero-entrance .hero-canvas, .blog-living-hero .hero-entrance .leaves-canvas{ transition: opacity 650ms ease-out; }
+.blog-living-hero .hero-entrance[data-presented="false"] .leaves-canvas{ opacity: 0; }
+@media (prefers-reduced-motion: reduce){.blog-living-hero dialog.debug-panel[open]{ animation: none; }
+.blog-living-hero .hero-entrance .hero-canvas, .blog-living-hero .hero-entrance .leaves-canvas{ transition: none; }
+ }
+

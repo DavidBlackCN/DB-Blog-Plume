@@ -8,6 +8,7 @@
   --font-heading-primary: "MapleMono-Bold", "MiSans-Regular", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "MapleMono-SemiBold", "MiSans-Regular", ui-sans-serif, system-ui, sans-serif;
   --font-code: "MapleMono-Regular", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --font-body: "MiSans-Regular", var(--font-ui);
   --vp-font-family-base: var(--font-ui);
   --vp-font-family-mono: var(--font-code);
   

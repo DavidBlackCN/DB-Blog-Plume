@@ -7,8 +7,14 @@ externalLinkIcon: false
 photoSwipe: false
 ---
 
-<BlogHorizon />
+<BlogLivingHero />
 
 <script setup>
-import BlogHorizon from '/.vuepress/theme/components/BlogHorizon.vue'
+import BlogLivingHero from '/.vuepress/theme/components/BlogLivingHero.vue'
 </script>
+
+<!-- <BlogHome />
+
+<script setup>
+import BlogHome from '/.vuepress/theme/components/BlogHome.vue'
+</script> -->

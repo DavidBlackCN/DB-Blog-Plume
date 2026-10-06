@@ -1,0 +1,162 @@
+.blog-living-hero .dream-page{
+ --ink: #f4ecdf; --muted: #d3c7bb; --line: #e8d9c52b; --accent: #e8cbb0;
+ --ui: clamp(14px, .9vw, 28px); --small: .82em; --ease: cubic-bezier(.23,1,.32,1);
+ position: relative; width: 100%; height: 100svh; overflow: hidden; background: #151313; color: var(--ink);
+ font: var(--ui)/1.5 "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+.blog-living-hero .dream-art{ position: absolute; inset: 0; }
+.blog-living-hero .dream-page button, .blog-living-hero .dream-page select{ font: inherit; color: inherit; }
+.blog-living-hero .dream-page button{ display: inline-flex; justify-content: center; align-items: center; gap: .5em; cursor: pointer; border: 0; background: none; border-radius: 6px; padding: .4em .55em; touch-action: manipulation; transition: background-color 160ms ease, color 160ms ease, transform 120ms var(--ease); }
+.blog-living-hero .dream-page button:disabled{ cursor: default; opacity: .6; }
+.blog-living-hero .dream-page button:not(:disabled):active{ transform: scale(.97); }
+.blog-living-hero .dream-page :is(button,select,input):focus-visible{ outline: 2px solid var(--accent); outline-offset: 4px; }
+.blog-living-hero .ui-icon{ width: 1.2em; height: 1.2em; flex: 0 0 auto; }
+.blog-living-hero .interface{ position: absolute; z-index: 1; text-shadow: 0 1px 12px #000a; transition: opacity 180ms ease; }
+.blog-living-hero .is-immersive .interface:not(.clock-block), .blog-living-hero .is-immersive .frame-line{ opacity: 0; visibility: hidden; pointer-events: none; }
+.blog-living-hero .frame-line{ position: absolute; inset: 20px; border: 1px solid #e7d2be18; border-radius: 8px; pointer-events: none; }
+.blog-living-hero .dream-header{ top: 4.5%; left: 4.8%; right: 4.8%; display: flex; align-items: center; justify-content: space-between; }
+.blog-living-hero .dream-page .wordmark{ padding: 0; gap: .8em; font: 1.5em "Songti SC",SimSun,serif; letter-spacing: .15em; text-shadow: inherit; }
+.blog-living-hero .wordmark .ui-icon{ width: .8em; opacity: .8; }
+.blog-living-hero .wordmark small{ font: .43em "Segoe UI",sans-serif; letter-spacing: .16em; opacity: .8; }
+.blog-living-hero .top-actions{ display: flex; gap: 1.5em; align-items: center; font-size: var(--small); }
+.blog-living-hero .live-tag{ display: flex; gap: .6em; align-items: center; }
+.blog-living-hero .live-tag i{ width: 4px; height: 4px; background: var(--accent); border-radius: 50%; }
+.blog-living-hero .icon-button{ font-size: 1.4em !important; }
+.blog-living-hero .clock-block{ left: 8.7%; top: 21%; width: 29%; }
+.blog-living-hero .eyebrow{ font-size: .78em; letter-spacing: .13em; margin: 0 0 1em; color: var(--muted); }
+.blog-living-hero .greeting{ display: flex; align-items: center; gap: .8em; white-space: nowrap; }
+.blog-living-hero .greeting i{ flex: 0 0 .5em; height: .5em; border-radius: 50%; background: #85caa0; box-shadow: 0 0 0 3px #85caa016,0 0 9px #85caa038; }
+.blog-living-hero .clock{ font: 400 clamp(90px,8.3vw,320px)/1.03 Georgia,"Times New Roman",serif; letter-spacing: -.045em; font-variant-numeric: tabular-nums; display: block; margin-left: -.035em; }
+.blog-living-hero .date-line{ display: flex; gap: 1.2em; align-items: center; margin-top: 1.3em; font-size: .88em; letter-spacing: .04em; color: var(--muted); }
+.blog-living-hero .date-rule{ width: 1.6em; height: 1px; background: #fff5; }
+.blog-living-hero .profile{ margin-top: 2em; }
+.blog-living-hero .profile h1{ font: 2em/1.4 "Songti SC",SimSun,serif; margin: 0; }
+.blog-living-hero .profile h1 small{ font: .44em "Segoe UI",sans-serif; margin-left: .8em; letter-spacing: .04em; color: var(--muted); }
+.blog-living-hero .profile-role{ font-size: .83em; letter-spacing: .045em; margin: .5em 0 1.1em; color: var(--muted); }
+.blog-living-hero .profile-intro{ font-size: .93em; line-height: 1.85; margin: 0; color: #ece2d6; }
+.blog-living-hero .profile-motto{ position: relative; margin: 1.7em 0 0; padding: .2em 0 0 1.4em; max-width: 21em; }
+.blog-living-hero .quote-mark{ position: absolute; top: -.25em; left: -.1em; font: italic 3.5em/1 Georgia,serif; color: #dec2a681; }
+.blog-living-hero .profile-motto blockquote{ margin: 0; font: 1.26em/1.7 "KaiTi","STKaiti","Songti SC",serif; letter-spacing: .06em; }
+.blog-living-hero .profile-motto figcaption{ display: flex; align-items: center; gap: .7em; margin-top: .7em; font-size: .76em; color: var(--muted); }
+.blog-living-hero .profile-motto figcaption > span:first-child{ width: 1.8em; height: 1px; background: #d7b99580; }
+.blog-living-hero .signature{ font: italic 1.4em Georgia,serif; margin-left: auto; color: #dcc5aa; opacity: .75; }
+.blog-living-hero .social-links{ display: flex; gap: .8em; margin-top: 1.35em; }
+.blog-living-hero .social-links button{ width: 2.8em; height: 2.8em; border: 1px solid var(--line); border-radius: 50%; background: #29232720; color: #eee0cf; }
+.blog-living-hero .social-links .ui-icon{ width: 1.25em; height: 1.25em; }
+.blog-living-hero .scene-caption{ right: 5%; top: 44%; display: flex; align-items: center; gap: 1em; writing-mode: vertical-rl; font: 1.3em/1.6 "Songti SC",SimSun,serif; letter-spacing: .18em; }
+.blog-living-hero .scene-caption > span{ width: 1px; height: 1.8em; background: #fff5; }
+.blog-living-hero .scene-caption small{ font: .55em/1.8 "Songti SC",SimSun,serif; opacity: .65; letter-spacing: .2em; }
+.blog-living-hero .bottom-meta{ bottom: 3.5%; left: 4.8%; font-size: .76em; letter-spacing: .13em; color: #e8ddd0b0; }
+.blog-living-hero .bottom-meta b{ font-weight: 400; padding: 0 .5em; }
+.blog-living-hero .utility-bar{ position: absolute; right: 3%; bottom: 2.7%; z-index: 3; display: flex; align-items: center; gap: .6em; font-size: .85em; color: #e8ddd0d9; text-shadow: 0 1px 8px #000; padding: .35em .5em; border: 1px solid #ead3bc16; border-radius: 9px; background: #25252c42; backdrop-filter: blur(12px); }
+.blog-living-hero .utility-divider{ width: 1px; height: 1em; background: var(--line); }
+.blog-living-hero .view-picker{ display: flex; gap: .35em; align-items: center; padding-left: .4em; }
+.blog-living-hero .view-picker select{ background: transparent; border: 0; max-width: 7em; cursor: pointer; }
+.blog-living-hero .dream-page select option{ background: #2c2931; color: var(--ink); }
+.blog-living-hero .dock-toggle .ui-icon:last-child{ width: .9em; transition: transform 200ms var(--ease); }
+.blog-living-hero .dock-toggle .rotated{ transform: rotate(180deg); }
+.blog-living-hero .control-dock{ right: 3%; bottom: calc(2.7% + 4.2em); width: clamp(340px,19vw,640px); font-size: clamp(13px,.8vw,22px); max-height: calc(94svh - 5em); box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #cbb5a055 transparent; padding: 1.45em 1.45em 0; border: 1px solid #ddd6e030; border-radius: 1.1em; background: linear-gradient(145deg,#383b4bef,#252731f5); backdrop-filter: blur(16px); box-shadow: 0 12px 35px #0003; transform-origin: bottom right; text-shadow: none; }
+.blog-living-hero .dock-heading{ display: flex; align-items: center; gap: .6em; }
+.blog-living-hero .period-name{ display: flex; align-items: center; gap: .55em; font-size: 1.12em; }
+.blog-living-hero .period-name .ui-icon{ font-size: 1.3em; color: var(--accent); }
+.blog-living-hero .dock-heading > output{ font: 2.3em/1 Georgia,serif; font-variant-numeric: tabular-nums; margin-left: auto; }
+.blog-living-hero .dream-page .sync-button{ border: 1px solid var(--line); border-radius: 2em; padding: .5em .7em; font-size: .78em; white-space: nowrap; color: var(--muted); }
+.blog-living-hero .dream-page input[type=range]{ appearance: none; display: block; height: 1.4em; background: transparent; cursor: pointer; margin: 0; width: 100%; }
+.blog-living-hero .dream-page input[type=range]::-webkit-slider-runnable-track{ height: .2em; border-radius: 4px; background: linear-gradient(90deg,#b49e8d,#797789); }
+.blog-living-hero .dream-page input[type=range]::-webkit-slider-thumb{ appearance: none; height: .9em; width: .9em; border-radius: 50%; background: #f7e4d2; margin-top: -.35em; box-shadow: 0 0 0 0 #f7e4d220; transition: box-shadow 160ms ease; }
+.blog-living-hero .dream-page input[type=range]::-moz-range-track{ height: .2em; background: #99909a; }
+.blog-living-hero .dream-page input[type=range]::-moz-range-thumb{ height: .9em; width: .9em; border: 0; background: #f7e4d2; border-radius: 50%; }
+.blog-living-hero .dream-page input.timeline[type=range]{ margin-top: 1.4em; }
+.blog-living-hero .time-ticks{ display: flex; justify-content: space-between; font-size: .74em; color: var(--muted); margin-top: .3em; }
+.blog-living-hero .dock-bottom{ display: flex; align-items: center; justify-content: space-between; gap: .5em; margin-top: 1.2em; padding: .7em 0; border-top: 1px solid var(--line); }
+.blog-living-hero .presets, .blog-living-hero .playback{ display: flex; align-items: center; }
+.blog-living-hero .presets{ gap: .12em; }
+.blog-living-hero .presets button{ padding: .4em .3em; font-size: .88em; color: var(--muted); white-space: nowrap; }
+.blog-living-hero .presets button[aria-pressed=true]{ color: #fff0de; background: #e9d2b312; }
+.blog-living-hero .playback{ gap: .2em; font-size: .86em; white-space: nowrap; }
+.blog-living-hero .playback > span{ width: 1px; height: 1em; background: var(--line); }
+.blog-living-hero .playback button{ padding: .4em .3em; }
+.blog-living-hero .settings-heading{ display: flex; align-items: center; gap: .5em; border-top: 1px solid var(--line); padding: .7em 0; }
+.blog-living-hero .settings-heading small{ margin-left: auto; font-size: .8em; color: var(--muted); }
+.blog-living-hero .dream-page .settings-launch{ width: 1.8em; height: 1.8em; flex: 0 0 auto; padding: 0; border-radius: 50%; color: var(--muted); }
+.blog-living-hero .light-details{ padding: .2em 0 1.2em; }
+.blog-living-hero .settings-mode{ display: flex; justify-content: space-between; align-items: center; gap: .5em; margin-bottom: 1.2em; font-size: .75em; color: var(--muted); }
+.blog-living-hero .settings-mode button{ border: 1px solid var(--line); padding: .55em .65em; }
+.blog-living-hero .light-details fieldset{ border: 0; padding: 0; margin: 0; min-width: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1em 1.4em; }
+.blog-living-hero .light-details fieldset:disabled{ opacity: .5; }
+.blog-living-hero .light-control{ min-width: 0; }
+.blog-living-hero .light-control > span{ display: flex; justify-content: space-between; font-size: .88em; gap: .5em; }
+.blog-living-hero .light-control output{ font-variant-numeric: tabular-nums; color: var(--accent); }
+.blog-living-hero .light-control input{ margin-top: .6em !important; }
+.blog-living-hero .drawer-quality{ border-top: 1px solid var(--line); margin-top: 1.2em; padding-top: .8em; font-size: .8em; }
+.blog-living-hero .drawer-quality label{ display: flex; justify-content: space-between; align-items: center; }
+.blog-living-hero .drawer-quality select{ border: 1px solid var(--line); border-radius: 5px; padding: .4em; background: transparent; }
+.blog-living-hero .panel-enter-active{ transition: opacity 180ms ease,transform 240ms var(--ease); }
+.blog-living-hero .panel-leave-active{ transition: opacity 120ms ease,transform 140ms var(--ease); }
+.blog-living-hero .panel-enter-from, .blog-living-hero .panel-leave-to{ opacity: 0; transform: translateY(8px) scale(.98); }
+.blog-living-hero .details-enter-active{ transition: opacity 160ms ease,transform 180ms var(--ease); }
+.blog-living-hero .details-leave-active{ position: absolute; visibility: hidden; }
+.blog-living-hero .details-enter-from{ opacity: 0; transform: translateY(5px); }
+.blog-living-hero .arrival-status, .blog-living-hero .page-notice{ position: absolute; z-index: 2; left: 4.8%; bottom: 8%; font-size: .85em; text-shadow: 0 1px 8px #000; }
+.blog-living-hero .arrival-status{ display: flex; align-items: center; gap: 1em; }
+.blog-living-hero .arrival-status progress{ width: 60px; height: 3px; accent-color: var(--accent); }
+.blog-living-hero .page-notice:empty{ display: none; }
+.blog-living-hero .sr-only{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media (hover:hover) and (pointer:fine){.blog-living-hero .dream-page button:not(:disabled):hover{ background-color: #ead8c315; color: #fff7ed; }
+.blog-living-hero .social-links button:hover{ transform: translateY(-2px); border-color: #ead8c35c; }
+.blog-living-hero .dream-page input[type=range]:hover::-webkit-slider-thumb{ box-shadow: 0 0 0 5px #f7e4d218; }
+ }
+@media (max-width:760px){.blog-living-hero .dream-page{ --ui: 14px; }
+.blog-living-hero .frame-line{ inset: 10px; }
+.blog-living-hero .dream-header{ top: 24px; left: 24px; right: 24px; }
+.blog-living-hero .wordmark small{ display: none; }
+.blog-living-hero .top-actions{ gap: .5em; }
+.blog-living-hero .clock-block{ top: 12%; left: 26px; width: calc(100% - 52px); }
+.blog-living-hero .eyebrow{ font-size: 10px; letter-spacing: .06em; margin-bottom: .5em; }
+.blog-living-hero .clock{ font-size: clamp(68px,20vw,100px); }
+.blog-living-hero .date-line{ margin-top: .5em; font-size: 12px; }
+.blog-living-hero .profile{ margin-top: 1em; }
+.blog-living-hero .profile h1{ font-size: 1.7em; }
+.blog-living-hero .profile-role{ margin: .3em 0; }
+.blog-living-hero .profile-intro{ display: none; }
+.blog-living-hero .profile-motto{ position: fixed; top: 66%; left: 26px; margin: 0; width: calc(100% - 80px); }
+.blog-living-hero .social-links{ position: fixed; top: 77%; left: 26px; margin: 0; }
+.blog-living-hero .scene-caption, .blog-living-hero .bottom-meta{ display: none; }
+.blog-living-hero .utility-bar{ right: 16px; left: 16px; bottom: 20px; justify-content: center; gap: .45em; font-size: 12px; padding: 6px; }
+.blog-living-hero .utility-bar.immersive-only{ left: auto; }
+.blog-living-hero .utility-bar button{ min-height: 32px; }
+.blog-living-hero .control-dock{ right: 16px; bottom: 80px; width: calc(100% - 32px); max-height: calc(100svh - 100px); padding: 18px 18px 0; }
+.blog-living-hero .dock-heading > output{ font-size: 2.2em; }
+.blog-living-hero .arrival-status{ top: 37%; bottom: auto; }
+
+}
+@media (max-height:760px) and (min-width:761px){.blog-living-hero .clock-block{ top: 17%; }
+.blog-living-hero .clock{ font-size: min(8.3vw,18vh); }
+.blog-living-hero .profile{ margin-top: 1.2em; }
+.blog-living-hero .profile-intro{ font-size: .85em; line-height: 1.6; }
+.blog-living-hero .profile-motto{ margin-top: 1em; }
+.blog-living-hero .social-links{ margin-top: .8em; }
+ }
+@media (max-height:600px){.blog-living-hero .profile-intro, .blog-living-hero .profile-motto, .blog-living-hero .social-links{ display: none; }
+.blog-living-hero .scene-caption{ display: none; }
+ }
+@media (prefers-reduced-motion:reduce){.blog-living-hero .dream-page *, .blog-living-hero .panel-enter-active, .blog-living-hero .panel-leave-active{ transition: none !important; animation: none !important; }
+ }
+.blog-living-hero .keyboard-navigation .panel-enter-active, .blog-living-hero .keyboard-navigation .panel-leave-active, .blog-living-hero .keyboard-navigation .details-enter-active{ transition: none; }
+.blog-living-hero .profile-motto{ display: flex; align-items: baseline; gap: .8em; max-width: none; white-space: nowrap; }
+.blog-living-hero .profile-motto figcaption{ margin: 0; flex: 0 0 auto; gap: .5em; }
+.blog-living-hero .profile-motto figcaption > span:first-child{ width: 1em; }
+.blog-living-hero .themed-select{ position: relative; }
+.blog-living-hero .themed-select > button{ font: inherit; padding: .35em .3em; }
+.blog-living-hero .themed-select > button .ui-icon{ width: .8em; transform: rotate(180deg); }
+.blog-living-hero .themed-select > button .select-open{ transform: none; }
+.blog-living-hero .select-options{ position: absolute; right: 0; bottom: calc(100% + 12px); min-width: 10em; padding: .4em; background: #2b2e3af5; border: 1px solid var(--line); border-radius: .7em; box-shadow: 0 8px 30px #0004; backdrop-filter: blur(14px); transform-origin: bottom right; text-shadow: none; }
+.blog-living-hero .select-options button{ width: 100%; justify-content: space-between; white-space: nowrap; padding: .65em .75em; }
+.blog-living-hero .select-options button[aria-checked=true]{ background: #ead8c310; color: var(--accent); }
+.blog-living-hero .select-options button:focus-visible{ outline-offset: -2px; }
+@media (max-width:760px){.blog-living-hero .profile-motto{ gap: .5em; padding-left: 1em; }
+.blog-living-hero .profile-motto blockquote{ font-size: 1.12em; letter-spacing: 0; }
+.blog-living-hero .profile-motto figcaption{ font-size: .72em; }
+.blog-living-hero .control-dock{ width: calc(100% - 32px); }
+ }
+

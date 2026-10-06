@@ -63,7 +63,8 @@ export function useSiteInsights() {
   const siteUv = ref('--')
   const loading = ref(true)
   const unavailable = ref(false)
-  const runtime = ref<SiteRuntime>(getRuntime())
+  // Static HTML and the first client render must agree, even days after a build.
+  const runtime = ref<SiteRuntime>({ years: '--', days: '--', hours: '--', minutes: '--', seconds: '--' })
   const callbackName = `__siteInsights_${Date.now().toString(36)}_${instanceCount++}`
 
   let requestScript: HTMLScriptElement | undefined
@@ -78,6 +79,7 @@ export function useSiteInsights() {
 
   const runtimeLabel = computed(() => {
     const value = runtime.value
+    if (value.years === '--') return '正在同步网站运行时间'
     return `网站已运行 ${Number(value.years)} 年 ${Number(value.days)} 天 ${Number(value.hours)} 小时 ${Number(value.minutes)} 分钟 ${Number(value.seconds)} 秒`
   })
 

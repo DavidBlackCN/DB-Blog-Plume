@@ -1,0 +1,432 @@
+import vertexSource from '../../shaders/hero.vert.glsl?raw'
+import fragmentSource from '../../shaders/hero.frag.glsl?raw'
+import type { ArtworkLayout } from '../coordinates/artwork'
+import type { LightingState, RenderView } from '../types'
+import type { SkyPhaseId, SkyState } from '../../config/sky'
+import type { MoonDirection } from '../../config/moonlight'
+import type { LampState } from '../../config/lamps'
+import type { BreathingState } from '../animation/breathing'
+import { breathingConfig } from '../animation/breathing'
+import { hairConfig, type HairState } from '../animation/hair'
+import { PostPipeline } from './PostPipeline'
+import type { PostState } from '../../config/post'
+
+function skyPhaseIndex(phase: SkyPhaseId): number {
+  return phase === 'dawn' ? 0 : phase === 'noon' ? 1 : phase === 'dusk' ? 2 : 3
+}
+
+function compile(gl: WebGL2RenderingContext, type: number, source: string): WebGLShader {
+  const shader = gl.createShader(type)
+  if (!shader) throw new Error('Could not allocate shader')
+  gl.shaderSource(shader, source)
+  gl.compileShader(shader)
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    const message = gl.getShaderInfoLog(shader) || 'Unknown shader error'
+    gl.deleteShader(shader)
+    throw new Error(message)
+  }
+  return shader
+}
+
+export class BaseRenderer {
+  private gl: WebGL2RenderingContext
+  private program: WebGLProgram
+  private buffer: WebGLBuffer
+  private positionLocation: number
+  private texture: WebGLTexture
+  private normalTexture: WebGLTexture
+  private skyTextures: WebGLTexture[]
+  private skyEdgeReconstructionTexture: WebGLTexture
+  private skyEdgeCoverageTexture: WebGLTexture
+  private hairMaskTexture: WebGLTexture
+  private materialMaskTexture: WebGLTexture
+  private lampSourceTexture: WebGLTexture
+  private lampInfluenceTexture: WebGLTexture
+  private towerReceiverTexture: WebGLTexture
+  private sceneDepthTexture: WebGLTexture
+  private atmosphereProtectionLocation: WebGLUniformLocation
+  private blinkTextures: WebGLTexture[]
+  private rectLocation: WebGLUniformLocation
+  private viewLocation: WebGLUniformLocation
+  private lightingEnabledLocation: WebGLUniformLocation
+  private exposureLocation: WebGLUniformLocation
+  private relightStrengthLocation: WebGLUniformLocation
+  private lightLocation: WebGLUniformLocation
+  private moonDirectionLocation: WebGLUniformLocation
+  private lightIntensityLocation: WebGLUniformLocation
+  private lightColorLocation: WebGLUniformLocation
+  private ambientIntensityLocation: WebGLUniformLocation
+  private ambientColorLocation: WebGLUniformLocation
+  private diffuseWrapLocation: WebGLUniformLocation
+  private diffuseThresholdLocation: WebGLUniformLocation
+  private diffuseSoftnessLocation: WebGLUniformLocation
+  private bandStrengthLocation: WebGLUniformLocation
+  private bandThresholdLocation: WebGLUniformLocation
+  private bandSoftnessLocation: WebGLUniformLocation
+  private directionalStrengthLocation: WebGLUniformLocation
+  private upperSceneAttenuationLocation: WebGLUniformLocation
+  private skyEnabledLocation: WebGLUniformLocation
+  private skyRepairEnabledLocation: WebGLUniformLocation
+  private skyPhaseALocation: WebGLUniformLocation
+  private skyPhaseBLocation: WebGLUniformLocation
+  private skyMixLocation: WebGLUniformLocation
+  private skyNightWeightLocation: WebGLUniformLocation
+  private blinkAmountLocation: WebGLUniformLocation
+  private breathPhaseLocation: WebGLUniformLocation
+  private breathStrengthLocation: WebGLUniformLocation
+  private breathOverlayLocation: WebGLUniformLocation
+  private hairTimeLocation: WebGLUniformLocation
+  private hairStrengthLocation: WebGLUniformLocation
+  private headMassStrengthLocation: WebGLUniformLocation
+  private headHairStrengthLocation: WebGLUniformLocation
+  private hairSheenStrengthLocation: WebGLUniformLocation
+  private hairOverlayLocation: WebGLUniformLocation
+  private detailEnabledLocation: WebGLUniformLocation
+  private sceneLinearLocation: WebGLUniformLocation
+  private lampWeightLocation: WebGLUniformLocation
+  private lampMaskViewLocation: WebGLUniformLocation
+  private post: PostPipeline
+  private disposed = false
+  constructor(private canvas: HTMLCanvasElement, image: HTMLImageElement, normalImage: HTMLImageElement, skyImages: HTMLImageElement[], skyEdgeReconstructionImage: HTMLImageElement, skyEdgeCoverageImage: HTMLImageElement, hairMaskImage: HTMLImageElement, materialMaskImage: HTMLImageElement, lampSourceImage: HTMLImageElement, lampInfluenceImage: HTMLImageElement, blinkImages: HTMLImageElement[], sceneDepthImage: HTMLImageElement, towerReceiverImage: HTMLImageElement) {
+    const gl = canvas.getContext('webgl2', { alpha: false, antialias: false })
+    if (!gl) throw new Error('WebGL2 unavailable')
+    this.gl = gl
+    const vertex = compile(gl, gl.VERTEX_SHADER, vertexSource)
+    const fragment = compile(gl, gl.FRAGMENT_SHADER, fragmentSource)
+    const program = gl.createProgram()
+    if (!program) throw new Error('Could not allocate program')
+    gl.attachShader(program, vertex)
+    gl.attachShader(program, fragment)
+    gl.linkProgram(program)
+    gl.deleteShader(vertex)
+    gl.deleteShader(fragment)
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      const message = gl.getProgramInfoLog(program) || 'Unknown link error'
+      gl.deleteProgram(program)
+      throw new Error(message)
+    }
+    this.program = program
+    const buffer = gl.createBuffer()
+    const texture = gl.createTexture()
+    const normalTexture = gl.createTexture()
+    const skyTextures = skyImages.map(() => gl.createTexture())
+    const skyEdgeReconstructionTexture = gl.createTexture()
+    const skyEdgeCoverageTexture = gl.createTexture()
+    const hairMaskTexture = gl.createTexture()
+    const materialMaskTexture = gl.createTexture()
+    const lampSourceTexture = gl.createTexture()
+    const lampInfluenceTexture = gl.createTexture()
+    const towerReceiverTexture = gl.createTexture()
+    const sceneDepthTexture = gl.createTexture()
+    const blinkTextures = blinkImages.map(() => gl.createTexture())
+    const rectLocation = gl.getUniformLocation(program, 'u_rect')
+    const viewLocation = gl.getUniformLocation(program, 'u_view')
+    const locations = {
+      light: gl.getUniformLocation(program, 'u_lightDirection'),
+      moonDirection: gl.getUniformLocation(program, 'u_moonDirection'),
+      lightingEnabled: gl.getUniformLocation(program, 'u_lightingEnabled'),
+      exposure: gl.getUniformLocation(program, 'u_exposure'),
+      relightStrength: gl.getUniformLocation(program, 'u_relightStrength'),
+      lightIntensity: gl.getUniformLocation(program, 'u_lightIntensity'),
+      lightColor: gl.getUniformLocation(program, 'u_lightColor'),
+      ambientIntensity: gl.getUniformLocation(program, 'u_ambientIntensity'),
+      ambientColor: gl.getUniformLocation(program, 'u_ambientColor'),
+      diffuseWrap: gl.getUniformLocation(program, 'u_diffuseWrap'),
+      diffuseThreshold: gl.getUniformLocation(program, 'u_diffuseThreshold'),
+      diffuseSoftness: gl.getUniformLocation(program, 'u_diffuseSoftness'),
+      bandStrength: gl.getUniformLocation(program, 'u_bandStrength'),
+      bandThreshold: gl.getUniformLocation(program, 'u_bandThreshold'),
+      bandSoftness: gl.getUniformLocation(program, 'u_bandSoftness'),
+      directionalStrength: gl.getUniformLocation(program, 'u_directionalStrength'),
+      upperSceneAttenuation: gl.getUniformLocation(program, 'u_upperSceneAttenuation'),
+      skyEnabled: gl.getUniformLocation(program, 'u_skyEnabled'),
+      skyRepairEnabled: gl.getUniformLocation(program, 'u_skyRepairEnabled'),
+      skyPhaseA: gl.getUniformLocation(program, 'u_skyPhaseA'),
+      skyPhaseB: gl.getUniformLocation(program, 'u_skyPhaseB'),
+      skyMix: gl.getUniformLocation(program, 'u_skyMix'),
+      skyNightWeight: gl.getUniformLocation(program, 'u_skyNightWeight'),
+      blinkAmount: gl.getUniformLocation(program, 'u_blinkAmount'),
+      breathPhase: gl.getUniformLocation(program, 'u_breathPhase'),
+      breathStrength: gl.getUniformLocation(program, 'u_breathStrength'),
+      breathOverlay: gl.getUniformLocation(program, 'u_breathOverlay'),
+      hairTime: gl.getUniformLocation(program, 'u_hairTime'),
+      hairStrength: gl.getUniformLocation(program, 'u_hairStrength'),
+      headMassStrength: gl.getUniformLocation(program, 'u_headMassStrength'),
+      headHairStrength: gl.getUniformLocation(program, 'u_headHairStrength'),
+      hairSheenStrength: gl.getUniformLocation(program, 'u_hairSheenStrength'),
+      hairOverlay: gl.getUniformLocation(program, 'u_hairOverlay'),
+      detailEnabled: gl.getUniformLocation(program, 'u_detailEnabled'),
+      sceneLinear: gl.getUniformLocation(program, 'u_sceneLinear'),
+      lampWeight: gl.getUniformLocation(program, 'u_lampWeight'),
+      lampMaskView: gl.getUniformLocation(program, 'u_lampMaskView'),
+      atmosphereProtection: gl.getUniformLocation(program, 'u_atmosphereProtection'),
+    }
+    if (!buffer || !texture || !normalTexture || !skyEdgeReconstructionTexture || !skyEdgeCoverageTexture || !hairMaskTexture || !materialMaskTexture || !lampSourceTexture || !lampInfluenceTexture || !sceneDepthTexture || !towerReceiverTexture || skyTextures.some(texture => !texture) || blinkTextures.some(texture => !texture) || !rectLocation || !viewLocation || Object.values(locations).some(location => !location)) throw new Error('Could not allocate WebGL resources')
+    this.buffer = buffer
+    this.texture = texture
+    this.normalTexture = normalTexture
+    this.skyTextures = skyTextures as WebGLTexture[]
+    this.skyEdgeReconstructionTexture = skyEdgeReconstructionTexture
+    this.skyEdgeCoverageTexture = skyEdgeCoverageTexture
+    this.hairMaskTexture = hairMaskTexture
+    this.materialMaskTexture = materialMaskTexture
+    this.lampSourceTexture = lampSourceTexture
+    this.lampInfluenceTexture = lampInfluenceTexture
+    this.sceneDepthTexture = sceneDepthTexture
+    this.towerReceiverTexture = towerReceiverTexture
+    this.atmosphereProtectionLocation = locations.atmosphereProtection!
+    this.blinkTextures = blinkTextures as WebGLTexture[]
+    this.rectLocation = rectLocation
+    this.viewLocation = viewLocation
+    this.lightingEnabledLocation = locations.lightingEnabled!
+    this.exposureLocation = locations.exposure!
+    this.relightStrengthLocation = locations.relightStrength!
+    this.lightLocation = locations.light!
+    this.moonDirectionLocation = locations.moonDirection!
+    this.lightIntensityLocation = locations.lightIntensity!
+    this.lightColorLocation = locations.lightColor!
+    this.ambientIntensityLocation = locations.ambientIntensity!
+    this.ambientColorLocation = locations.ambientColor!
+    this.diffuseWrapLocation = locations.diffuseWrap!
+    this.diffuseThresholdLocation = locations.diffuseThreshold!
+    this.diffuseSoftnessLocation = locations.diffuseSoftness!
+    this.bandStrengthLocation = locations.bandStrength!
+    this.bandThresholdLocation = locations.bandThreshold!
+    this.bandSoftnessLocation = locations.bandSoftness!
+    this.directionalStrengthLocation = locations.directionalStrength!
+    this.upperSceneAttenuationLocation = locations.upperSceneAttenuation!
+    this.skyEnabledLocation = locations.skyEnabled!
+    this.skyRepairEnabledLocation = locations.skyRepairEnabled!
+    this.skyPhaseALocation = locations.skyPhaseA!
+    this.skyPhaseBLocation = locations.skyPhaseB!
+    this.skyMixLocation = locations.skyMix!
+    this.skyNightWeightLocation = locations.skyNightWeight!
+    this.blinkAmountLocation = locations.blinkAmount!
+    this.breathPhaseLocation = locations.breathPhase!
+    this.breathStrengthLocation = locations.breathStrength!
+    this.breathOverlayLocation = locations.breathOverlay!
+    this.hairTimeLocation = locations.hairTime!
+    this.hairStrengthLocation = locations.hairStrength!
+    this.headMassStrengthLocation = locations.headMassStrength!
+    this.headHairStrengthLocation = locations.headHairStrength!
+    this.hairSheenStrengthLocation = locations.hairSheenStrength!
+    this.hairOverlayLocation = locations.hairOverlay!
+    this.detailEnabledLocation = locations.detailEnabled!
+    this.sceneLinearLocation = locations.sceneLinear!
+    this.lampWeightLocation = locations.lampWeight!
+    this.lampMaskViewLocation = locations.lampMaskView!
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW)
+    gl.useProgram(program)
+    const position = gl.getAttribLocation(program, 'a_position')
+    this.positionLocation = position
+    gl.enableVertexAttribArray(position)
+    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.bindTexture(gl.TEXTURE_2D, texture)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+    gl.uniform1i(gl.getUniformLocation(program, 'u_base'), 0)
+    gl.activeTexture(gl.TEXTURE1)
+    gl.bindTexture(gl.TEXTURE_2D, normalTexture)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, normalImage)
+    gl.uniform1i(gl.getUniformLocation(program, 'u_normal'), 1)
+    skyTextures.forEach((skyTexture, index) => {
+      gl.activeTexture(gl.TEXTURE2 + index)
+      gl.bindTexture(gl.TEXTURE_2D, skyTexture)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, skyImages[index])
+      gl.uniform1i(gl.getUniformLocation(program, `u_sky[${index}]`), 2 + index)
+    })
+    gl.activeTexture(gl.TEXTURE8)
+    gl.bindTexture(gl.TEXTURE_2D, skyEdgeReconstructionTexture)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, skyEdgeReconstructionImage)
+    gl.uniform1i(gl.getUniformLocation(program, 'u_skyEdgeReconstruction'), 8)
+    gl.activeTexture(gl.TEXTURE11)
+    gl.bindTexture(gl.TEXTURE_2D, skyEdgeCoverageTexture)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, skyEdgeCoverageImage)
+    gl.uniform1i(gl.getUniformLocation(program, 'u_skyEdgeCoverage'), 11)
+    gl.activeTexture(gl.TEXTURE9)
+    gl.bindTexture(gl.TEXTURE_2D, hairMaskTexture)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, hairMaskImage)
+    gl.uniform1i(gl.getUniformLocation(program, 'u_hairMask'), 9)
+    gl.activeTexture(gl.TEXTURE10)
+    gl.bindTexture(gl.TEXTURE_2D, materialMaskTexture)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, materialMaskImage)
+    gl.uniform1i(gl.getUniformLocation(program, 'u_materialMask'), 10)
+    for (const [unit, lampTexture, lampImage, uniform] of [
+      [12, lampSourceTexture, lampSourceImage, 'u_lampSource'],
+      [13, lampInfluenceTexture, lampInfluenceImage, 'u_lampInfluence'],
+      [14, sceneDepthTexture, sceneDepthImage, 'u_sceneDepth'],
+      [15, towerReceiverTexture, towerReceiverImage, 'u_towerReceiver'],
+    ] as const) {
+      gl.activeTexture(gl.TEXTURE0 + unit)
+      gl.bindTexture(gl.TEXTURE_2D, lampTexture)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, lampImage)
+      gl.uniform1i(gl.getUniformLocation(program, uniform), unit)
+    }
+    blinkTextures.forEach((blinkTexture, index) => {
+      gl.activeTexture(gl.TEXTURE6 + index)
+      gl.bindTexture(gl.TEXTURE_2D, blinkTexture)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, blinkImages[index])
+      gl.uniform1i(gl.getUniformLocation(program, index === 0 ? 'u_blinkLeft' : 'u_blinkRight'), 6 + index)
+    })
+    this.post = new PostPipeline(gl)
+  }
+
+  render(layout: ArtworkLayout, dprCap: number, view: RenderView, lighting: LightingState, sky: SkyState, moonDirection: MoonDirection, breathing: BreathingState, breathPhase: number, hair: HairState, hairSeconds: number, blinkAmount: number, detailEnabled: boolean, postState: PostState, directionalStrength: number, lamps: LampState): void {
+    if (this.disposed) return
+    const gl = this.gl
+    const dpr = Math.min(window.devicePixelRatio || 1, dprCap)
+    const width = Math.max(1, Math.round(layout.viewportWidth * dpr))
+    const height = Math.max(1, Math.round(layout.viewportHeight * dpr))
+    if (this.canvas.width !== width || this.canvas.height !== height) {
+      this.canvas.width = width
+      this.canvas.height = height
+    }
+    const usePost = postState.enabled && view === 'lit' && lighting.enabled && lamps.maskView === 'none' && !breathing.showRegion && !hair.showRegion
+    if (usePost) this.post.begin(width, height)
+    else {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+      gl.drawBuffers([gl.BACK])
+      gl.viewport(0, 0, width, height)
+      gl.clearColor(0.08, 0.075, 0.075, 1)
+      gl.clear(gl.COLOR_BUFFER_BIT)
+    }
+    gl.useProgram(this.program)
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer)
+    gl.vertexAttribPointer(this.positionLocation, 2, gl.FLOAT, false, 0, 0)
+    gl.activeTexture(gl.TEXTURE0)
+    gl.bindTexture(gl.TEXTURE_2D, this.texture)
+    gl.activeTexture(gl.TEXTURE1)
+    gl.bindTexture(gl.TEXTURE_2D, this.normalTexture)
+    this.skyTextures.forEach((texture, index) => {
+      gl.activeTexture(gl.TEXTURE2 + index)
+      gl.bindTexture(gl.TEXTURE_2D, texture)
+    })
+    this.blinkTextures.forEach((texture, index) => {
+      gl.activeTexture(gl.TEXTURE6 + index)
+      gl.bindTexture(gl.TEXTURE_2D, texture)
+    })
+    gl.activeTexture(gl.TEXTURE8)
+    gl.bindTexture(gl.TEXTURE_2D, this.skyEdgeReconstructionTexture)
+    gl.activeTexture(gl.TEXTURE11)
+    gl.bindTexture(gl.TEXTURE_2D, this.skyEdgeCoverageTexture)
+    gl.activeTexture(gl.TEXTURE9)
+    gl.bindTexture(gl.TEXTURE_2D, this.hairMaskTexture)
+    gl.activeTexture(gl.TEXTURE10)
+    gl.bindTexture(gl.TEXTURE_2D, this.materialMaskTexture)
+    gl.activeTexture(gl.TEXTURE12)
+    gl.bindTexture(gl.TEXTURE_2D, this.lampSourceTexture)
+    gl.activeTexture(gl.TEXTURE13)
+    gl.bindTexture(gl.TEXTURE_2D, this.lampInfluenceTexture)
+    gl.activeTexture(gl.TEXTURE14)
+    gl.bindTexture(gl.TEXTURE_2D, this.sceneDepthTexture)
+    gl.activeTexture(gl.TEXTURE15)
+    gl.bindTexture(gl.TEXTURE_2D, this.towerReceiverTexture)
+    gl.uniform1f(this.atmosphereProtectionLocation, postState.atmosphere?.enabled ? postState.atmosphere.bloomProtection : 0)
+    gl.uniform1i(this.viewLocation, view === 'normal' ? 1 : view === 'lit' ? 2 : 0)
+    gl.uniform1i(this.lightingEnabledLocation, lighting.enabled ? 1 : 0)
+    gl.uniform1f(this.exposureLocation, lighting.exposureStops)
+    gl.uniform1f(this.relightStrengthLocation, lighting.relightStrength)
+    gl.uniform3f(this.lightLocation, lighting.direction.x, lighting.direction.y, lighting.direction.z)
+    gl.uniform3f(this.moonDirectionLocation, moonDirection.x, moonDirection.y, moonDirection.z)
+    gl.uniform1f(this.lightIntensityLocation, lighting.enabled ? lighting.intensity : 0)
+    gl.uniform3f(this.lightColorLocation, lighting.color.r, lighting.color.g, lighting.color.b)
+    gl.uniform1f(this.ambientIntensityLocation, lighting.ambientIntensity)
+    gl.uniform3f(this.ambientColorLocation, lighting.ambientColor.r, lighting.ambientColor.g, lighting.ambientColor.b)
+    gl.uniform1f(this.diffuseWrapLocation, lighting.diffuseWrap)
+    gl.uniform1f(this.diffuseThresholdLocation, lighting.diffuseThreshold)
+    gl.uniform1f(this.diffuseSoftnessLocation, lighting.diffuseSoftness)
+    gl.uniform1f(this.bandStrengthLocation, lighting.bandStrength)
+    gl.uniform1f(this.bandThresholdLocation, lighting.bandThreshold)
+    gl.uniform1f(this.bandSoftnessLocation, lighting.bandSoftness)
+    gl.uniform1f(this.directionalStrengthLocation, directionalStrength)
+    gl.uniform1f(this.upperSceneAttenuationLocation, lighting.upperSceneAttenuation)
+    gl.uniform1i(this.skyEnabledLocation, lighting.skyEnabled ? 1 : 0)
+    gl.uniform1i(this.skyRepairEnabledLocation, 1)
+    gl.uniform1i(this.skyPhaseALocation, skyPhaseIndex(sky.first))
+    gl.uniform1i(this.skyPhaseBLocation, skyPhaseIndex(sky.second))
+    gl.uniform1f(this.skyMixLocation, sky.mix)
+    gl.uniform1f(this.skyNightWeightLocation,
+      (sky.first === 'night' ? 1 - sky.mix : 0) + (sky.second === 'night' ? sky.mix : 0))
+    gl.uniform1f(this.blinkAmountLocation, Math.max(0, Math.min(1,
+      blinkAmount)))
+    gl.uniform1f(this.breathPhaseLocation, breathPhase)
+    gl.uniform1f(this.breathStrengthLocation, breathing.enabled ? breathing.strength * breathingConfig.maxDisplacementPx : 0)
+    gl.uniform1i(this.breathOverlayLocation, breathing.showRegion ? 1 : 0)
+    gl.uniform1f(this.hairTimeLocation, hairSeconds)
+    gl.uniform1f(this.hairStrengthLocation, hair.enabled ? hair.strength * hairConfig.maxDisplacementPx : 0)
+    gl.uniform1f(this.headMassStrengthLocation, hair.enabled ? hair.strength * hairConfig.headMassDisplacementPx : 0)
+    gl.uniform1f(this.headHairStrengthLocation, hair.enabled ? hair.strength * hairConfig.headHairDisplacementPx : 0)
+    gl.uniform1f(this.hairSheenStrengthLocation, 1)
+    gl.uniform1i(this.hairOverlayLocation, hair.showRegion ? 1 : 0)
+    gl.uniform1i(this.detailEnabledLocation, detailEnabled ? 1 : 0)
+    gl.uniform1i(this.sceneLinearLocation, usePost ? 1 : 0)
+    gl.uniform1f(this.lampWeightLocation, lamps.enabled && lighting.enabled && view === 'lit' ? lamps.weight * lamps.strength : 0)
+    gl.uniform1i(this.lampMaskViewLocation, lamps.maskView === 'source' ? 1 : lamps.maskView === 'influence' ? 2 : 0)
+    gl.uniform4f(this.rectLocation, layout.x / layout.viewportWidth, 1 - (layout.y + layout.height) / layout.viewportHeight, layout.width / layout.viewportWidth, layout.height / layout.viewportHeight)
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+    if (usePost) {
+      this.post.render(postState, lighting.exposureStops,
+        { x: layout.x / layout.viewportWidth, y: 1 - (layout.y + layout.height) / layout.viewportHeight,
+          width: layout.width / layout.viewportWidth, height: layout.height / layout.viewportHeight })
+    }
+    if (gl.getError() !== gl.NO_ERROR) throw new Error('WebGL draw failed')
+  }
+
+  destroy(): void {
+    if (this.disposed) return
+    this.disposed = true
+    const gl = this.gl
+    gl.deleteTexture(this.texture)
+    gl.deleteTexture(this.normalTexture)
+    this.skyTextures.forEach(texture => gl.deleteTexture(texture))
+    gl.deleteTexture(this.skyEdgeReconstructionTexture)
+    gl.deleteTexture(this.skyEdgeCoverageTexture)
+    gl.deleteTexture(this.hairMaskTexture)
+    gl.deleteTexture(this.materialMaskTexture)
+    gl.deleteTexture(this.lampSourceTexture)
+    gl.deleteTexture(this.lampInfluenceTexture)
+    gl.deleteTexture(this.sceneDepthTexture)
+    gl.deleteTexture(this.towerReceiverTexture)
+    this.blinkTextures.forEach(texture => gl.deleteTexture(texture))
+    gl.deleteBuffer(this.buffer)
+    gl.deleteProgram(this.program)
+    this.post.destroy()
+  }
+}
