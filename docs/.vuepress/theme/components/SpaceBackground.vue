@@ -2,7 +2,6 @@
   <div
     ref="root"
     class="space-background"
-    :class="{ 'is-reading': props.variant === 'reading' }"
     aria-hidden="true"
   >
     <canvas ref="canvas" class="space-background__canvas"></canvas>
@@ -18,6 +17,7 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
+import { drawPixelDebris, spawnPixelDebris, type PixelDebris } from '../utils/pixelBurst'
 
 interface Star3D {
   x: number
@@ -27,17 +27,6 @@ interface Star3D {
   colorType: number
   phase: number
   twinkleSpeed: number
-}
-
-interface PixelDebris {
-  x: number
-  y: number
-  vx: number
-  vy: number
-  size: number
-  life: number
-  maxLife: number
-  color: string
 }
 
 interface DataPacket {
@@ -75,10 +64,8 @@ interface Meteor {
 
 const props = withDefaults(defineProps<{
   interactive?: boolean
-  variant?: 'full' | 'reading'
 }>(), {
   interactive: true,
-  variant: 'full',
 })
 
 const root = ref<HTMLElement | null>(null)
@@ -111,12 +98,11 @@ function initBackground() {
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches
-  const readingMode = props.variant === 'reading'
-  const starCount = readingMode ? (finePointer ? 96 : 64) : (finePointer ? 150 : 92)
+  const starCount = finePointer ? 150 : 92
   const maxDepth = 1000
   const fieldOfView = 410
   const gridSpacing = 38
-  const frameInterval = 1000 / (readingMode ? 30 : (finePointer ? 45 : 30))
+  const frameInterval = 1000 / (finePointer ? 45 : 30)
   let width = 0
   let height = 0
   let centerX = 0
@@ -230,19 +216,7 @@ function initBackground() {
     if (reducedMotion) return
     const pixelPalette = isDark() ? fallbackPalettes.dark : fallbackPalettes.light
     const colors = [pixelPalette.packetA, pixelPalette.packetB, pixelPalette.neutral]
-    for (let index = 0; index < count; index++) {
-      const angle = Math.random() * Math.PI * 2
-      const speed = 1.4 + Math.random() * 3.4
-      particles.push({
-        x, y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        size: 2 + Math.random() * 2,
-        life: 0,
-        maxLife: 34 + Math.random() * 20,
-        color: color || colors[Math.floor(Math.random() * colors.length)],
-      })
-    }
+    spawnPixelDebris(particles, x, y, count, colors, color)
   }
 
   function addShockwave(clientX: number, clientY: number, color = palette().packetA) {
@@ -289,7 +263,7 @@ function initBackground() {
   }
 
   function handleMouseMove(event: MouseEvent) {
-    if (!props.interactive || readingMode || reducedMotion || !finePointer) return
+    if (!props.interactive || reducedMotion || !finePointer) return
     const point = localPoint(event.clientX, event.clientY)
     if (point.x < 0 || point.x > width || point.y < 0 || point.y > height) return
     targetMouseX = ((event.clientX / window.innerWidth) * 2 - 1) * 48
@@ -311,11 +285,10 @@ function initBackground() {
   function handlePointerDown(event: PointerEvent) {
     if (!props.interactive || reducedMotion || !finePointer) return
     if (event.target instanceof Element && event.target.closest('[data-space-burst="manual"]')) return
-    if (readingMode && event.target instanceof Element && event.target.closest('a, button, input, textarea, select, summary')) return
     const point = localPoint(event.clientX, event.clientY)
     if (point.x < 0 || point.x > width || point.y < 0 || point.y > height) return
-    spawnPixels(point.x, point.y, readingMode ? 8 : 18)
-    if (!readingMode) addShockwave(event.clientX, event.clientY, palette().packetA)
+    spawnPixels(point.x, point.y, 18)
+    addShockwave(event.clientX, event.clientY, palette().packetA)
   }
 
   function render(now = 0, force = false) {
@@ -348,8 +321,8 @@ function initBackground() {
     for (let index = 0; index < stars.length; index++) {
       const star = stars[index]
       if (!reducedMotion) {
-        if (!readingMode) star.z -= .82
-        star.phase += star.twinkleSpeed * (readingMode ? .12 : 1)
+        star.z -= .82
+        star.phase += star.twinkleSpeed
         if (star.z <= 1) { stars[index] = createStar(false); continue }
       }
       const projection = fieldOfView / star.z
@@ -416,19 +389,7 @@ function initBackground() {
       if (wave.radius >= wave.maxRadius) shockwaves.splice(index, 1)
     }
 
-    for (let index = particles.length - 1; index >= 0; index--) {
-      const particle = particles[index]
-      particle.x += particle.vx
-      particle.y += particle.vy
-      particle.vx *= .94
-      particle.vy *= .94
-      particle.life++
-      context.fillStyle = particle.color
-      context.globalAlpha = Math.max(0, 1 - particle.life / particle.maxLife) * (dark ? .94 : .88)
-      context.fillRect(Math.round(particle.x), Math.round(particle.y), particle.size, particle.size)
-      context.globalAlpha = 1
-      if (particle.life >= particle.maxLife) particles.splice(index, 1)
-    }
+    drawPixelDebris(context, particles, dark ? .94 : .88)
 
     if (meteor.active && !reducedMotion) {
       meteor.x += meteor.dx
@@ -477,9 +438,9 @@ function initBackground() {
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('pointerdown', handlePointerDown, { passive: true })
   }
-  const firstMeteorTimer = reducedMotion || readingMode ? undefined : window.setTimeout(spawnMeteor, 2400)
-  const meteorTimer = reducedMotion || readingMode ? undefined : window.setInterval(spawnMeteor, 9000)
-  const packetTimer = reducedMotion || readingMode ? undefined : window.setInterval(spawnPacket, 1500)
+  const firstMeteorTimer = reducedMotion ? undefined : window.setTimeout(spawnMeteor, 2400)
+  const meteorTimer = reducedMotion ? undefined : window.setInterval(spawnMeteor, 9000)
+  const packetTimer = reducedMotion ? undefined : window.setInterval(spawnPacket, 1500)
   render(0, true)
 
   return () => {
@@ -515,40 +476,6 @@ onUnmounted(() => cleanup?.())
     radial-gradient(circle at 9% 68%, color-mix(in srgb, var(--vp-c-brand-soft) 30%, transparent) 0, transparent 30%),
     radial-gradient(circle at 92% 74%, color-mix(in srgb, var(--vp-c-brand-soft) 24%, transparent) 0, transparent 27%),
     linear-gradient(145deg, color-mix(in srgb, var(--vp-c-bg-soft) 52%, var(--vp-c-bg)) 0%, var(--vp-c-bg) 47%, color-mix(in srgb, var(--vp-c-bg-soft) 38%, var(--vp-c-bg)) 100%);
-}
-
-.space-background.is-reading {
-  position: fixed;
-  inset: var(--vp-nav-height, 64px) 0 0;
-  z-index: 0;
-}
-
-.space-background.is-reading::before {
-  opacity: .34;
-  animation: none;
-}
-
-.space-background.is-reading::after {
-  display: none;
-}
-
-.space-background.is-reading .space-background__canvas {
-  opacity: .52;
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-.space-background.is-reading .space-background__orbits {
-  opacity: .36;
-}
-
-.space-background.is-reading .space-background__orbit,
-.space-background.is-reading .space-background__glow {
-  animation: none;
-}
-
-.space-background.is-reading .space-background__glow {
-  opacity: .2;
 }
 
 .space-background::before {
@@ -613,10 +540,6 @@ onUnmounted(() => cleanup?.())
   --space-orbit: color-mix(in srgb, var(--vp-c-brand-1) 34%, transparent);
   --space-orbit-soft: color-mix(in srgb, var(--vp-c-brand-3) 20%, transparent);
   --space-glow: color-mix(in srgb, var(--vp-c-brand-soft) 42%, transparent);
-}
-
-:global(html[data-theme='light'] .space-background.is-reading .space-background__canvas) {
-  opacity: .42;
 }
 
 @keyframes glow-left { to { transform: translate3d(9%, 7%, 0) scale(1.06); opacity: .48; } }

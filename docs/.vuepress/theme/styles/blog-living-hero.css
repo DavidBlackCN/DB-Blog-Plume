@@ -1,4 +1,12 @@
 /* Host adapter. Renderer/artwork parameters remain in the migrated module. */
+/* Hide viewport scrollbar chrome only; keep native page scrolling enabled.
+ * BlogLivingHero removes this root class on route leave. */
+html.living-hero-home-active {
+  scrollbar-width: none;
+}
+html.living-hero-home-active::-webkit-scrollbar {
+  display: none;
+}
 html.living-hero-home-active body { background-image: none; }
 html.living-hero-home-active .vp-page > .vp-doc { padding: 0; }
 .blog-living-hero { min-width: 0; color: var(--vp-c-text-1); }
