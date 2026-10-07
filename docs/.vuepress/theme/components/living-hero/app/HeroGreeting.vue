@@ -1,37 +1,66 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 const props = defineProps<{ text: string }>()
-const mounted = ref(false)
-const complete = ref(false)
-let finishTimer: ReturnType<typeof setTimeout> | undefined
+const letters = computed(() => Array.from(props.text))
+// SSR renders the complete greeting. The client owns one monotonic reveal count.
+const visibleCount = ref(Infinity)
+const typing = ref(false)
+let mounted = false
+let timer: ReturnType<typeof setTimeout> | undefined
+let media: MediaQueryList | undefined
+
+function stop(): void {
+  clearTimeout(timer)
+  timer = undefined
+  typing.value = false
+}
+function finish(): void {
+  stop()
+  visibleCount.value = letters.value.length
+}
+function advance(): void {
+  visibleCount.value += 1
+  if (visibleCount.value >= letters.value.length) finish()
+  else timer = setTimeout(advance, 60)
+}
+function start(): void {
+  if (!mounted) return
+  stop()
+  if (media?.matches || !letters.value.length) { finish(); return }
+  visibleCount.value = 1
+  typing.value = letters.value.length > 1
+  if (typing.value) timer = setTimeout(advance, 60)
+}
+function preferenceChanged(): void { if (media?.matches) finish() }
+// The clock can update every second without restarting an unchanged greeting.
+watch(() => props.text, start)
 onMounted(() => {
-  mounted.value = true
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) complete.value = true
-  else finishTimer = setTimeout(() => { complete.value = true }, props.text.length * 60 + 1500)
+  mounted = true
+  media = matchMedia('(prefers-reduced-motion: reduce)')
+  media.addEventListener('change', preferenceChanged)
+  start()
 })
-onBeforeUnmount(() => { clearTimeout(finishTimer) })
+onBeforeUnmount(() => {
+  mounted = false
+  stop()
+  media?.removeEventListener('change', preferenceChanged)
+})
 </script>
 
 <template>
-  <span class="hero-greeting-text" :class="{ 'is-ready': mounted && !complete }" :style="{ '--typing-duration': `${text.length * 60}ms` }">
+  <span class="hero-greeting-text" :data-typing="typing">
     <span class="horizon-sr-only">{{ text }}</span>
-    <span :key="text" aria-hidden="true"><span v-for="(letter, index) in text" :key="index" class="greeting-letter" :style="{ '--letter-index': index }">{{ letter }}</span><span class="greeting-cursor">▎</span></span>
+    <span aria-hidden="true"><span v-for="(letter, index) in letters" :key="index" class="greeting-letter" :class="{ 'is-hidden': index >= visibleCount, 'has-caret': typing && index === visibleCount - 1 }">{{ letter }}</span></span>
   </span>
 </template>
 
 <style scoped>
 .hero-greeting-text { min-width: 0; }
 .greeting-letter { position: relative; display: inline-block; white-space: pre; }
-.greeting-letter::after { content: '▎'; position: absolute; left: 100%; top: 0; opacity: 0; color: var(--accent); }
-.greeting-cursor { opacity: 0; color: var(--accent); }
-/* One introductory typing pass; opacity leaves the full sentence's layout stable. */
-.is-ready .greeting-letter { animation: greeting-type 1ms steps(1, end) both; animation-delay: calc(var(--letter-index) * 60ms); }
-.is-ready .greeting-letter::after { animation: greeting-caret 60ms steps(1, end); animation-delay: calc(var(--letter-index) * 60ms); }
-.is-ready .greeting-cursor { animation: greeting-blink 700ms steps(1, end) 2; animation-delay: var(--typing-duration); }
-@keyframes greeting-type { from { opacity: 0; } to { opacity: 1; } }
-@keyframes greeting-caret { from { opacity: 1; } to { opacity: 0; } }
-@keyframes greeting-blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+.greeting-letter.is-hidden { opacity: 0; }
+.greeting-letter.has-caret::after { content: '▎'; position: absolute; left: 100%; top: 0; color: var(--accent); }
 @media (prefers-reduced-motion: reduce) {
-  .is-ready .greeting-letter, .is-ready .greeting-letter::after, .is-ready .greeting-cursor { animation: none; }
+  .greeting-letter.is-hidden { opacity: 1; }
+  .greeting-letter.has-caret::after { content: none; }
 }
 </style>
